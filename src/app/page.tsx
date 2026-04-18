@@ -1,18 +1,25 @@
 import HeroSection from '@/components/home/HeroSection';
-import AboutSnapshot from '@/components/home/AboutSnapshot';
-import ApplicationsGrid from '@/components/home/ApplicationsGrid';
-import QualityPillars from '@/components/home/QualityPillars';
-import ExportMarkets from '@/components/home/ExportMarkets';
+import BrandRefinement from '@/components/home/BrandRefinement';
+import GlobalReach from '@/components/home/GlobalReach';
 import InquiryCTA from '@/components/home/InquiryCTA';
 
+/**
+ * IndoPelts - Home Page
+ * Standardized to 4-section architecture for luxury focus.
+ */
 export default function Home() {
   return (
     <>
+      {/* SECTION 1: HERO */}
       <HeroSection />
-      <AboutSnapshot />
-      <ApplicationsGrid />
-      <QualityPillars />
-      <ExportMarkets />
+
+      {/* SECTION 2: BRAND & QUALITY */}
+      <BrandRefinement />
+
+      {/* SECTION 3: SECTORS & GLOBAL REACH */}
+      <GlobalReach />
+
+      {/* SECTION 4: CONVERSION */}
       <InquiryCTA />
     </>
   );

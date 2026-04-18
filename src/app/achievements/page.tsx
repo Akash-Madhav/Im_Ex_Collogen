@@ -2,7 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { SectionHeading } from '@/components/shared/SectionHeading';
+import { Card } from '@/components/shared/Card';
+import { Badge } from '@/components/shared/Badge';
+import { Button } from '@/components/shared/Button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -11,31 +14,11 @@ if (typeof window !== 'undefined') {
 }
 
 const milestones = [
-  {
-    year: '2012',
-    title: 'Operational Debut',
-    desc: 'Established primary collection nodes in Southern India, standardizing raw material intake for consistent collagen output.',
-  },
-  {
-    year: '2014',
-    title: 'Global Export Authorization',
-    desc: 'Secured critical international quality certifications, enabling direct B2B supply to the European Union and East Asia.',
-  },
-  {
-    year: '2017',
-    title: ' Chennai Facility Expansion',
-    desc: 'Expanded processing capacity to 1,500 MT per month with the integration of semi-automated dehairing lines.',
-  },
-  {
-    year: '2021',
-    title: 'Zero-Waste Initiative',
-    desc: 'Implemented a closed-loop processing system, repurposing organic by-products and improving eco-compliance scores.',
-  },
-  {
-    year: '2024',
-    title: 'Digital Spec Protocol',
-    desc: 'Launch of real-time batch testing data portal for tier-1 pharmaceutical manufacturing clients.',
-  },
+  { year: '2012', title: 'Operational Debut', desc: 'Established primary collection nodes in Southern India, standardizing intake.' },
+  { year: '2014', title: 'Global Authorization', desc: 'Secured international quality certifications for EU and East Asia distribution.' },
+  { year: '2017', title: 'Capacity Scaling', desc: 'Expanded Chennai processing facility to 1,500 MT per month capacity.' },
+  { year: '2021', title: 'Zero-Waste Initiative', desc: 'Implemented closed-loop systems, repurposing organic by-products.' },
+  { year: '2024', title: 'Digital Spec Protocol', desc: 'Launched real-time chemical data portal for tier-1 pharma clients.' },
 ];
 
 export default function AchievementsPage() {
@@ -45,90 +28,97 @@ export default function AchievementsPage() {
     const ctx = gsap.context(() => {
       gsap.from('.milestone-card', {
         scrollTrigger: {
-          trigger: '.timeline-container',
+          trigger: '.timeline-area',
           start: 'top 80%',
         },
-        y: 40,
+        y: 30,
         opacity: 0,
-        stagger: 0.15,
+        stagger: 0.1,
         duration: 0.8,
         ease: 'power3.out'
       });
     }, containerRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="min-h-screen pt-24 bg-bg">
-      <div className="flex flex-col lg:flex-row min-h-screen">
-        
-        {/* Left: Sticky Image Column (40%) */}
-        <div className="lg:w-[40%] h-[400px] lg:h-screen lg:sticky lg:top-0 order-2 lg:order-1 relative overflow-hidden">
+    <div ref={containerRef} className="bg-bg-primary pt-24">
+      
+      {/* SECTION 1: HERO */}
+      <section className="relative h-[60vh] flex items-center overflow-hidden border-b border-border-subtle">
+        <div className="absolute inset-0 z-0">
           <Image 
             src="/industrial_selection.png"
-            alt="Industrial Excellence"
+            alt="Corporate History"
             fill
-            className="object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
+            className="object-cover opacity-30 grayscale"
           />
-          <div className="absolute inset-0 bg-accent/10 mix-blend-overlay" />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-bg" />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/40 to-transparent" />
         </div>
+        <div className="container-custom relative z-10">
+          <SectionHeading 
+            kicker="Corporate Evolution"
+            title={<>A Decade of <br /><span className="italic">Industrial Precision.</span></>}
+          />
+        </div>
+      </section>
 
-        {/* Right: Content Column (60%) */}
-        <div className="lg:w-[60%] px-6 md:px-20 py-20 order-1 lg:order-2">
-          <div className="max-w-2xl">
-            <h5 className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent mb-6">
-              Corporate Evolution
-            </h5>
-            <h1 className="text-[clamp(40px,5vw,64px)] font-display font-medium text-text-primary leading-[1.1] mb-12">
-              A Decade of <br />
-              <span className="italic">Industrial Precision.</span>
-            </h1>
-
-            <p className="text-text-secondary text-lg leading-relaxed mb-20 opacity-90">
-              The journey of IndoPelts International is a timeline of rigorous refinement. From a local procurement agent to a Tier-1 global exporter, we have focused exclusively on perfecting the science of buffalo pelt preservation.
-            </p>
-
-            {/* Timeline */}
-            <div className="timeline-container relative pl-8 border-l border-border/40 space-y-20">
+      {/* SECTION 2: TIMELINE */}
+      <section className="section-padding timeline-area border-b border-border-subtle">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+            <div className="lg:col-span-4">
+              <h3 className="text-xl font-display font-bold text-text-premium mb-6">Historical Trajectory</h3>
+              <p className="text-text-muted font-body leading-relaxed">
+                Our legacy is built on the pursuit of zero-defect processing. From local procurement to global logistics authority.
+              </p>
+            </div>
+            <div className="lg:col-span-8 space-y-12 relative border-l border-border-subtle pl-10">
               {milestones.map((item, i) => (
                 <div key={i} className="milestone-card relative group">
-                  {/* Dot */}
-                  <div className="absolute -left-[37px] top-2 w-[17px] h-[17px] rounded-full border-2 border-accent bg-bg z-10 scale-75 group-hover:scale-100 transition-transform duration-300" />
-                  
-                  <div className="space-y-4">
-                    <span className="text-[32px] font-mono font-bold text-accent-dim group-hover:text-accent transition-colors duration-300">
-                      {item.year}
-                    </span>
-                    <h3 className="text-2xl font-display font-medium text-text-primary">
-                      {item.title}
-                    </h3>
-                    <p className="text-text-tertiary leading-relaxed max-w-lg group-hover:text-text-secondary transition-colors duration-300">
-                      {item.desc}
-                    </p>
-                  </div>
+                  <div className="absolute -left-[54px] top-2 w-4 h-4 rounded-full border-2 border-accent-gold bg-bg-primary z-10 scale-75 group-hover:scale-110 transition-transform" />
+                  <span className="text-[28px] font-display font-bold text-accent-gold/40 group-hover:text-accent-gold transition-colors block mb-2">{item.year}</span>
+                  <h4 className="text-xl font-display font-medium text-text-premium mb-3">{item.title}</h4>
+                  <p className="text-text-dim text-sm leading-relaxed max-w-xl">{item.desc}</p>
                 </div>
               ))}
             </div>
-
-            {/* Bottom CTA */}
-            <div className="mt-32 pt-20 border-t border-border flex items-center justify-between">
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-widest text-text-tertiary">Next Step</p>
-                <p className="text-text-primary font-bold mt-2">Explore our industrial grade pelts</p>
-              </div>
-              <Link 
-                href="/products" 
-                className="w-16 h-16 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:text-bg transition-all duration-300"
-              >
-                →
-              </Link>
-            </div>
           </div>
         </div>
+      </section>
 
-      </div>
+      {/* SECTION 3: INDUSTRIAL IMPACT */}
+      <section className="section-padding bg-bg-secondary border-b border-border-subtle">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card variant="elevated" className="text-center">
+              <h4 className="text-3xl font-display font-bold text-accent-gold mb-2">99.8%</h4>
+              <p className="text-[10px] uppercase tracking-widest text-text-dim">Batch Consistency</p>
+            </Card>
+            <Card variant="elevated" className="text-center">
+              <h4 className="text-3xl font-display font-bold text-accent-gold mb-2">10+</h4>
+              <p className="text-[10px] uppercase tracking-widest text-text-dim">Global Compliance Awards</p>
+            </Card>
+            <Card variant="elevated" className="text-center">
+              <h4 className="text-3xl font-display font-bold text-accent-gold mb-2">Tier-1</h4>
+              <p className="text-[10px] uppercase tracking-widest text-text-dim">Pharma Grade Preferred</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: NEXT STEP CTA */}
+      <section className="section-padding text-center">
+        <div className="container-custom">
+          <Badge variant="outline" className="mb-8">Looking Forward</Badge>
+          <h2 className="text-4xl font-display font-bold text-text-premium mb-12">Building the Future of <span className="italic text-accent-gold">Global Collagen.</span></h2>
+          <div className="flex justify-center gap-6">
+            <Button variant="primary" href="/products">View Products</Button>
+            <Button variant="ghost" href="/contact">Partner with us</Button>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

@@ -4,12 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import gsap from 'gsap';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { cn } from '../../lib/utils';
+import { DURATIONS, EASINGS } from '../../lib/motion';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -18,150 +14,186 @@ const navLinks = [
   { name: 'Contact', href: '/contact' },
 ];
 
+/**
+ * Luxury Design System - Navbar
+ * Refined, high-performance navigation with design token integration.
+ */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const navRef = useRef<HTMLElement>(null);
+
   const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+    const update = () => {
       setScrolled(window.scrollY > 50);
+      ticking = false;
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Mobile Menu Animation
   useEffect(() => {
     if (!mobileMenuRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ paused: true });
+
+      tl.to(mobileMenuRef.current, {
+        clipPath: 'circle(150% at 100% 0%)',
+        opacity: 1,
+        duration: DURATIONS.NORMAL,
+        ease: EASINGS.PREMIUM,
+      });
+
+      tl.from(
+        linkRefs.current.filter(Boolean),
+        {
+          y: 30,
+          opacity: 0,
+          stagger: 0.08,
+          duration: DURATIONS.NORMAL,
+          ease: EASINGS.OUT,
+        },
+        '-=0.25'
+      );
+
+      timelineRef.current = tl;
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const tl = timelineRef.current;
+    if (!tl) return;
+
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      const tl = gsap.timeline();
-      tl.to(mobileMenuRef.current, { 
-        clipPath: 'circle(150% at 100% 0%)',
-        opacity: 1, 
-        duration: 0.6, 
-        ease: 'power3.inOut' 
-      });
-      tl.from('.mobile-link', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.08,
-        duration: 0.5,
-        ease: 'power2.out'
-      }, '-=0.2');
+      tl.play();
     } else {
       document.body.style.overflow = '';
-      gsap.to(mobileMenuRef.current, { 
-        clipPath: 'circle(0% at 100% 0%)',
-        opacity: 0, 
-        duration: 0.5, 
-        ease: 'power3.inOut' 
-      });
+      tl.reverse();
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
-    <header 
-      ref={navRef}
-      className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-300 flex items-center justify-between",
-        scrolled ? "h-[60px] bg-[#0A0C0B]/88 border-b border-accent/30" : "h-[68px] bg-[#0A0C0B]/65 border-b border-accent/10",
-        "px-[20px] md:px-[48px] backdrop-blur-[20px] saturate-[180%]"
-      )}
-    >
-      {/* Left: Logo */}
-      <Link href="/" className="flex items-center gap-3 group" onClick={() => setIsOpen(false)}>
-        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-          <span className="text-[#0A0C0B] font-black text-lg italic">B</span>
+    <div className="fixed top-0 left-0 w-full z-50 flex justify-center pt-6 pointer-events-none">
+      <header
+        className={cn(
+          'pointer-events-auto flex items-center justify-between transition-all duration-700 ease-premium rounded-full px-6 md:px-10',
+          scrolled
+            ? 'h-[56px] w-[90%] md:w-[700px] glass-elevated border border-white/10 px-8'
+            : 'h-[64px] w-[95%] md:w-[1200px] bg-bg-primary/40 border border-white/5 backdrop-blur-md',
+          'shadow-premium'
+        )}
+      >
+      {/* LOGO */}
+      <Link
+        href="/"
+        className="magnetic flex items-center gap-3 group"
+      >
+        <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <span className="text-bg-primary font-black text-lg italic">B</span>
         </div>
-        <span className="font-body font-extrabold text-lg tracking-tight text-white group-hover:text-accent transition-colors">
+        <span className="font-body font-extrabold text-lg tracking-tight text-text-premium group-hover:text-accent-gold transition-colors">
           INDOPELTS
         </span>
       </Link>
 
-      {/* Center: Nav links */}
+      {/* DESKTOP NAV */}
       <nav className="hidden md:flex items-center gap-8">
-        {navLinks.map((link, i) => {
+        {navLinks.map((link) => {
           const isActive = pathname === link.href;
+
           return (
             <Link
               key={link.name}
               href={link.href}
               className={cn(
-                "relative font-body font-medium text-[14px] transition-colors duration-200",
-                isActive ? "text-accent" : "text-text-secondary hover:text-text-primary"
+                'relative font-body text-[11px] uppercase tracking-[0.2em] font-bold transition-colors',
+                isActive
+                  ? 'text-accent-gold'
+                  : 'text-text-muted hover:text-text-premium'
               )}
             >
               {link.name}
-              <span 
+              <span
                 className={cn(
-                  "absolute -bottom-1 left-0 h-[2px] bg-accent transition-all duration-300",
-                  isActive ? "w-full" : "w-0 hover-trigger"
-                )} 
+                  'absolute -bottom-1 left-0 h-[1px] bg-accent-gold transition-all duration-500',
+                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                )}
               />
             </Link>
           );
         })}
       </nav>
 
-      {/* Right: RFQ Button / Mobile Toggle */}
+      {/* RIGHT SIDE */}
       <div className="flex items-center gap-4">
         <Link
           href="/contact"
-          className="hidden md:flex px-6 py-[10px] rounded-full border border-accent text-accent font-body font-semibold text-[14px] transition-all duration-300 hover:bg-accent hover:text-bg"
+          className="magnetic hidden md:flex px-6 py-2 rounded-sm border border-accent-gold/40 text-accent-gold font-body font-bold uppercase tracking-[0.15em] text-[10px] transition-all duration-500 hover:bg-accent-gold hover:text-bg-primary"
         >
           RFQ Portal
         </Link>
 
-        <button 
+        {/* HAMBURGER */}
+        <button
+          onClick={() => setIsOpen((prev) => !prev)}
           className="md:hidden flex flex-col gap-1.5 w-8 h-8 items-center justify-center z-[60]"
-          onClick={() => setIsOpen(!isOpen)}
         >
-          <span className={cn("w-6 h-[2px] bg-white transition-all duration-300", isOpen && "rotate-45 translate-y-2")} />
-          <span className={cn("w-6 h-[2px] bg-white transition-all duration-300", isOpen && "opacity-0")} />
-          <span className={cn("w-6 h-[2px] bg-white transition-all duration-300", isOpen && "-rotate-45 -translate-y-2")} />
+          <span className={cn('w-6 h-[1.5px] bg-text-premium transition-all', isOpen && 'rotate-45 translate-y-2')} />
+          <span className={cn('w-6 h-[1.5px] bg-text-premium transition-all', isOpen && 'opacity-0')} />
+          <span className={cn('w-6 h-[1.5px] bg-text-premium transition-all', isOpen && '-rotate-45 -translate-y-2')} />
         </button>
       </div>
 
-      {/* Mobile Overlay */}
-      <div 
+      </header>
+
+      {/* MOBILE MENU */}
+      <div
         ref={mobileMenuRef}
-        className="fixed inset-0 bg-bg/98 z-50 opacity-0 flex flex-col items-center justify-center transition-all duration-500"
+        className="fixed inset-0 bg-bg-primary/98 z-50 opacity-0 flex flex-col items-center justify-center pointer-events-auto"
         style={{ clipPath: 'circle(0% at 100% 0%)' }}
       >
-        <div className="flex flex-col items-center gap-8">
-          {navLinks.map((link) => (
+        <div className="flex flex-col items-center gap-10">
+          {navLinks.map((link, i) => (
             <Link
               key={link.name}
               href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="mobile-link text-white text-[32px] font-display font-bold hover:text-accent transition-colors"
+              ref={(el) => {
+                linkRefs.current[i] = el;
+              }}
+              className="text-text-premium text-[32px] font-display font-bold hover:text-accent-gold transition-colors"
             >
               {link.name}
             </Link>
           ))}
+
           <Link
             href="/contact"
-            onClick={() => setIsOpen(false)}
-            className="mobile-link mt-8 px-10 py-4 rounded-full bg-accent text-bg font-bold uppercase tracking-widest"
+            className="mt-8 px-12 py-5 rounded-sm bg-accent-gold text-bg-primary font-bold uppercase tracking-[0.2em] text-[11px] font-body"
           >
             Start Inquiry
           </Link>
         </div>
       </div>
-
-      <style jsx>{`
-        .hover-trigger {
-          transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        a:hover .hover-trigger {
-          width: 100%;
-        }
-      `}</style>
-    </header>
+    </div>
   );
 }
+

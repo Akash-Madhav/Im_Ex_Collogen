@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import SplitType from 'split-type';
+import { Button } from '../shared/Button';
+import { Badge } from '../shared/Badge';
 
 export default function HeroSection() {
   const h1Ref = useRef<HTMLHeadingElement>(null);
@@ -10,123 +13,75 @@ export default function HeroSection() {
 
   useEffect(() => {
     if (!h1Ref.current) return;
-
-    // Split text animation
     const split = new SplitType(h1Ref.current, { types: 'chars' });
-    
     const tl = gsap.timeline({ delay: 0.5 });
     
-    tl.from('.hero-tag', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' })
+    tl.from('.hero-badge', { y: 20, opacity: 0, duration: 0.8, ease: 'power3.out' })
       .from(split.chars, {
-        y: 60,
+        y: 80,
         opacity: 0,
-        stagger: 0.025,
-        duration: 0.7,
-        ease: 'power3.out'
-      }, '-=0.3')
-      .from('.hero-sub', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.4')
-      .from('.hero-cta-btn', { y: 20, opacity: 0, stagger: 0.1, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-      .from('.stat-block', { y: 20, opacity: 0, stagger: 0.1, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+        stagger: 0.04,
+        duration: 1.2,
+        ease: 'power4.out'
+      }, '-=0.4')
+      .from('.hero-sub', { y: 20, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
+      .from('.hero-cta', { y: 20, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5');
 
-    return () => {
-      split.revert();
-    };
+    return () => split.revert();
   }, []);
 
   return (
     <section 
       ref={containerRef}
-      className="relative h-screen w-full flex items-center overflow-hidden bg-bg"
+      className="relative h-screen w-full flex items-center overflow-hidden bg-bg-primary"
     >
-      {/* Video Background */}
       <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          preload="metadata" 
-          poster="/hero_main_poster.png"
-          className="w-full h-full object-cover opacity-60"
-        >
-          <source src="/hero.webm" type="video/webm" />
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
-        {/* Overlay Fade */}
-        <div 
-          className="absolute inset-0 z-10"
-          style={{ 
-            background: 'linear-gradient(to right, rgba(10,12,11,0.92) 0%, rgba(10,12,11,0.7) 60%, rgba(10,12,11,0.2) 100%)' 
-          }} 
+        <Image 
+          src="/hero_main_image.png"
+          alt="Premium Buffalo Pelts Industrial Setting"
+          fill
+          className="object-cover opacity-50 grayscale-[0.1]"
+          priority
         />
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-bg-primary via-bg-primary/80 to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-20">
-        <div className="max-w-[700px]">
-          <div className="hero-tag inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/10 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-accent">
-              India Buffalo Hide Exporter
-            </span>
+      <div className="relative z-20 container-custom">
+        <div className="max-w-[750px]">
+          <div className="hero-badge mb-8">
+            <Badge variant="accent" dot>Corporate Global Supply</Badge>
           </div>
 
           <h1 
             ref={h1Ref}
-            className="text-[clamp(48px,7vw,80px)] font-display font-bold leading-[1.08] tracking-tight mb-6 text-text-primary"
+            className="text-[clamp(44px,7vw,84px)] font-display font-bold leading-[1.05] tracking-tight mb-8 text-text-premium"
           >
-            Defining the Standard of <span className="text-accent">Pelts.</span>
+            Defining the Standard of <span className="text-accent-gold italic">Refinement.</span>
           </h1>
 
-          <p className="hero-sub text-[18px] text-text-secondary leading-relaxed mb-10 max-w-[520px]">
-            High-integrity processing for global collagen extraction. Traceable, laboratory-verified, and industrially graded.
+          <p className="hero-sub text-[19px] text-text-muted leading-relaxed mb-10 max-w-[540px] font-body">
+            High-integrity processing for global collagen extraction. Traceable, laboratory-verified, and industrially graded output.
           </p>
 
-          <div className="hero-cta flex flex-wrap gap-4">
-            <button className="hero-cta-btn px-8 py-4 bg-accent text-bg font-bold uppercase tracking-wider text-sm rounded hover:bg-[#E8B84A] transition-all hover:-translate-y-1 shadow-lg hover:shadow-accent/20">
-              Explore Specs
-            </button>
-            <button className="hero-cta-btn px-8 py-4 bg-transparent border border-white/20 text-text-primary font-bold uppercase tracking-wider text-sm rounded hover:bg-white/5 transition-all hover:-translate-y-1 hover:border-white/40">
-              Industrial Catalog
-            </button>
+          <div className="hero-cta flex flex-wrap gap-5">
+            <Button href="/products">Technical Catalog</Button>
+            <Button variant="secondary" href="/contact">Supply RFQ</Button>
           </div>
-        </div>
-
-        {/* Stats Strip */}
-        <div className="hero-stats absolute bottom-12 left-6 md:left-20 flex items-end gap-12 border-t border-accent/20 pt-6">
-          <div className="stat-block">
-            <p className="text-[32px] font-mono font-bold text-accent">1,500+</p>
-            <p className="text-[11px] font-semibold text-text-tertiary tracking-widest uppercase mt-1">MT Monthly</p>
-          </div>
-          <div className="w-[1px] h-10 bg-accent/30 hidden sm:block" />
-          <div className="stat-block">
-            <p className="text-[32px] font-mono font-bold text-accent">10+</p>
-            <p className="text-[11px] font-semibold text-text-tertiary tracking-widest uppercase mt-1">Export Zones</p>
-          </div>
-          <div className="w-[1px] h-10 bg-accent/30 hidden sm:block" />
-          <div className="stat-block">
-            <p className="text-[32px] font-mono font-bold text-accent">0%</p>
-            <p className="text-[11px] font-semibold text-text-tertiary tracking-widest uppercase mt-1">Defect Rate</p>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-12 right-6 md:right-20 flex flex-col items-center gap-4">
-          <div className="w-[1px] h-12 bg-accent origin-top animate-scrollDrop" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-accent rotate-90 origin-right translate-y-8">Scroll</span>
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes scrollDrop {
-          0% { transform: scaleY(0); opacity: 0; }
-          50% { transform: scaleY(1); opacity: 1; }
-          100% { transform: scaleY(0); opacity: 0; transform-origin: bottom; }
-        }
-        .animate-scrollDrop {
-          animation: scrollDrop 1.8s ease-in-out infinite;
-        }
-      `}</style>
+      {/* Industrial Stat Strip */}
+      <div className="absolute bottom-16 right-6 md:right-12 flex items-center gap-12 border-l border-accent-gold/20 pl-16 py-4 backdrop-blur-sm bg-bg-primary/20 rounded-sm">
+        <div className="text-right">
+          <p className="text-[10px] font-bold text-text-dim uppercase tracking-[.25em] mb-1">Scale</p>
+          <p className="text-2xl font-display font-bold text-accent-gold">1,500<span className="text-xs font-mono ml-1">MT/MO</span></p>
+        </div>
+        <div className="w-[1px] h-8 bg-border-subtle" />
+        <div className="text-right">
+          <p className="text-[10px] font-bold text-text-dim uppercase tracking-[.25em] mb-1">Standard</p>
+          <p className="text-2xl font-display font-bold text-accent-gold">ISO 9001</p>
+        </div>
+      </div>
     </section>
   );
 }
