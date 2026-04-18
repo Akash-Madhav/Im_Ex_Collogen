@@ -64,7 +64,7 @@ export default function HeroSection() {
   return (
     <section 
       ref={containerRef}
-      className="relative h-screen w-full flex items-center overflow-hidden bg-bg-primary"
+      className="relative min-h-[700px] h-screen w-full flex items-center overflow-hidden bg-bg-primary"
     >
       {/* Background with Parallax Hook */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -81,32 +81,32 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-60" />
       </div>
 
-      <div className="relative z-20 container-custom">
+      <div className="relative z-20 container-custom pt-32 md:pt-0">
         <div className="max-w-[850px]">
-          <div className="hero-badge mb-8">
+          <div className="hero-badge mb-6 md:mb-8">
             <Badge variant="accent" dot>Corporate Global Supply</Badge>
           </div>
 
           <h1 
             ref={h1Ref}
-            className="text-[clamp(48px,7.5vw,92px)] font-display font-bold leading-[1.02] tracking-tighter mb-8 text-text-premium"
+            className="text-[clamp(38px,8vw,92px)] font-display font-bold leading-[1.05] md:leading-[1.02] tracking-tighter mb-8 text-text-premium"
           >
             Defining the Standard of <span className="text-accent-gold italic drop-shadow-[0_0_15px_rgba(200,146,42,0.15)]">Refinement.</span>
           </h1>
 
-          <p className="hero-sub text-[20px] text-text-muted leading-relaxed mb-12 max-w-[560px] font-body">
+          <p className="hero-sub text-[16px] md:text-[20px] text-text-muted leading-relaxed mb-10 md:mb-12 max-w-[560px] font-body opacity-90">
             High-integrity processing for global collagen extraction. Traceable, laboratory-verified, and industrially graded output.
           </p>
 
-          <div className="hero-cta flex flex-wrap gap-5">
-            <Button href="/products" size="lg">Technical Catalog</Button>
-            <Button variant="secondary" href="/contact" size="lg">Supply RFQ</Button>
+          <div className="hero-cta flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <Button href="/products" size="lg" className="w-full sm:w-auto">Technical Catalog</Button>
+            <Button variant="secondary" href="/contact" size="lg" className="w-full sm:w-auto">Supply RFQ</Button>
           </div>
         </div>
       </div>
 
-      {/* Industrial Stat Strip - Refined Entrance */}
-      <div className="absolute bottom-16 right-6 md:right-12 flex items-center gap-10 border-l border-white/5 pl-12 py-4 backdrop-blur-md bg-white/[0.02] rounded-sm border border-white/[0.03]">
+      {/* Industrial Stat Strip - Mobile Optimized */}
+      <div className="hidden sm:flex absolute bottom-12 md:bottom-16 right-6 md:right-12 items-center gap-10 border-l border-white/5 pl-12 py-4 backdrop-blur-md bg-white/[0.02] rounded-sm border border-white/[0.03]">
         <div className="hero-stat-block text-right">
           <p className="text-[10px] font-bold text-text-dim uppercase tracking-[.25em] mb-1">Scale</p>
           <p className="text-3xl font-display font-bold text-accent-gold">1,500<span className="text-xs font-mono ml-1 opacity-50">MT/MO</span></p>

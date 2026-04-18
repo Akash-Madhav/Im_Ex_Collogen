@@ -27,16 +27,68 @@ export default function AchievementsPage() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // 1. PINNING THE LEFT SIDE
+      ScrollTrigger.create({
+        trigger: '.timeline-area',
+        start: 'top 100px',
+        end: 'bottom bottom',
+        pin: '.timeline-left',
+        pinSpacing: true,
+        scrub: true,
+        invalidateOnRefresh: true,
+      });
+
+      // 2. Timeline Line Growth
+      gsap.to('.timeline-progress', {
+        height: '100%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.timeline-area',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: true,
+        }
+      });
+
+      // 2. Individual Milestone Highlight
+      const cards = gsap.utils.toArray('.milestone-card');
+      cards.forEach((card: any) => {
+        gsap.to(card.querySelector('.milestone-dot'), {
+          backgroundColor: 'var(--color-accent)',
+          borderColor: 'var(--color-accent)',
+          scale: 1.2,
+          boxShadow: '0 0 15px rgba(200, 146, 42, 0.4)',
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top center+=100',
+            toggleActions: 'play reverse play reverse'
+          }
+        });
+
+        gsap.to(card.querySelector('span'), {
+          color: 'var(--color-accent)',
+          opacity: 1,
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top center+=100',
+            toggleActions: 'play reverse play reverse'
+          }
+        });
+      });
+
+      // 3. Overall Entrance Animation
       gsap.from('.milestone-card', {
+        y: 60,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 1,
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: '.timeline-area',
           start: 'top 80%',
-        },
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out'
+        }
       });
     }, containerRef);
     return () => ctx.revert();
@@ -67,30 +119,48 @@ export default function AchievementsPage() {
       </ScrollSection>
 
       {/* SECTION 2: TIMELINE */}
-      <ScrollSection>
-        <section className="section-padding timeline-area border-b border-white/5">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-              <div className="lg:col-span-4">
-                <h3 className="text-xl font-display font-bold text-text-premium mb-6">Historical Trajectory</h3>
-                <p className="text-text-muted font-body leading-relaxed">
-                  Our legacy is built on the pursuit of zero-defect processing. From local procurement to global logistics authority.
-                </p>
-              </div>
-              <div className="lg:col-span-8 space-y-12 relative border-l border-white/10 pl-10">
+      <section className="timeline-area bg-bg-primary border-b border-white/5 overflow-visible relative">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative">
+            
+            {/* PINNED LEFT SIDE */}
+            <div className="timeline-left lg:col-span-4 h-fit py-32 lg:py-48 flex flex-col justify-start">
+              <Badge variant="outline" className="mb-6 w-fit">Historical Trajectory</Badge>
+              <h3 className="text-3xl lg:text-5xl font-display font-bold text-text-premium mb-8 leading-[1.1]">
+                A decade of <span className="italic text-accent-gold">Industrial</span> precision.
+              </h3>
+              <p className="text-text-muted font-body text-lg leading-relaxed opacity-80 max-w-sm">
+                From local procurement to global logistics authority. Our trajectory is defined by zero-defect output.
+              </p>
+            </div>
+
+            {/* SCROLLING RIGHT SIDE */}
+            <div className="lg:col-span-8 relative pl-10 md:pl-16 py-32 lg:py-48">
+              {/* Dynamic Scroll Line */}
+              <div className="absolute left-0 top-32 lg:top-48 bottom-32 lg:bottom-48 w-[1px] bg-white/5 origin-top" />
+              <div className="timeline-progress absolute left-0 top-32 lg:top-48 w-[1px] bg-accent-gold origin-top transition-shadow duration-700 shadow-[0_0_15px_rgba(200,146,42,0.5)]" style={{ height: '0%' }} />
+
+              <div className="space-y-32">
                 {milestones.map((item, i) => (
                   <div key={i} className="milestone-card relative group">
-                    <div className="absolute -left-[54px] top-2 w-4 h-4 rounded-full border-2 border-accent-gold bg-bg-primary z-10 scale-75 group-hover:scale-110 transition-transform" />
-                    <span className="text-[28px] font-display font-bold text-accent-gold/40 group-hover:text-accent-gold transition-colors block mb-2">{item.year}</span>
-                    <h4 className="text-xl font-display font-medium text-text-premium mb-3">{item.title}</h4>
-                    <p className="text-text-dim text-sm leading-relaxed max-w-xl">{item.desc}</p>
+                    {/* Bullet Indicator */}
+                    <div className="absolute -left-[45px] md:-left-[69px] top-2 w-10 md:w-12 h-[1px] bg-white/10 group-hover:bg-accent-gold/50 transition-all opacity-40 group-hover:opacity-100" />
+                    <div className="milestone-dot absolute -left-[54px] md:-left-[78px] top-2 w-4 h-4 rounded-full border border-white/20 bg-bg-primary z-10 transition-all duration-500" />
+                    
+                    <span className="text-[32px] md:text-[56px] font-display font-bold text-text-premium/5 group-hover:text-accent-gold/20 transition-all duration-700 block mb-6 leading-none">
+                      {item.year}
+                    </span>
+                    <h4 className="text-2xl md:text-3xl font-display font-bold text-text-premium mb-6 group-hover:translate-x-2 transition-transform duration-500">{item.title}</h4>
+                    <p className="text-text-dim text-lg leading-relaxed max-w-xl font-body opacity-80 group-hover:opacity-100 transition-opacity">
+                      {item.desc}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </section>
-      </ScrollSection>
+        </div>
+      </section>
 
       {/* SECTION 3: INDUSTRIAL IMPACT */}
       <ScrollSection>

@@ -105,12 +105,12 @@ export default function Navbar() {
       {/* LOGO */}
       <Link
         href="/"
-        className="magnetic flex items-center gap-3 group flex-shrink-0"
+        className="magnetic flex items-center gap-2 md:gap-3 group flex-shrink-0"
       >
-        <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-          <span className="text-bg-primary font-black text-lg italic">B</span>
+        <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <span className="text-bg-primary font-black text-base md:text-lg italic">B</span>
         </div>
-        <span className="font-body font-extrabold text-lg tracking-tight text-text-premium group-hover:text-accent-gold transition-colors whitespace-nowrap">
+        <span className="font-body font-extrabold text-base md:text-lg tracking-tight text-text-premium group-hover:text-accent-gold transition-colors whitespace-nowrap">
           INDOPELTS
         </span>
       </Link>
@@ -168,29 +168,66 @@ export default function Navbar() {
       {/* MOBILE MENU */}
       <div
         ref={mobileMenuRef}
-        className="fixed inset-0 bg-bg-primary/98 z-50 opacity-0 flex flex-col items-center justify-center pointer-events-auto"
+        className="fixed inset-0 bg-bg-primary z-[100] opacity-0 flex flex-col pointer-events-auto overflow-hidden shadow-2xl"
         style={{ clipPath: 'circle(0% at 100% 0%)' }}
       >
-        <div className="flex flex-col items-center gap-10">
-          {navLinks.map((link, i) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              ref={(el) => {
-                linkRefs.current[i] = el;
-              }}
-              className="text-text-premium text-[32px] font-display font-bold hover:text-accent-gold transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
-
-          <Link
-            href="/contact"
-            className="mt-8 px-12 py-5 rounded-sm bg-accent-gold text-bg-primary font-bold uppercase tracking-[0.2em] text-[11px] font-body"
+        {/* MOBILE MENU HEADER */}
+        <div className="flex items-center justify-between px-8 pt-6 h-[72px] border-b border-white/5">
+           <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2"
           >
-            Start Inquiry
+            <div className="w-7 h-7 rounded-full bg-accent-gold flex items-center justify-center">
+              <span className="text-bg-primary font-black text-base italic">B</span>
+            </div>
+            <span className="font-body font-extrabold text-base tracking-tight text-text-premium">
+              INDOPELTS
+            </span>
           </Link>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center border-b border-white/5 px-8 pt-10">
+          <div className="flex flex-col items-center gap-10 w-full max-w-sm">
+            {navLinks.map((link, i) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                ref={(el) => {
+                  linkRefs.current[i] = el;
+                }}
+                className={cn(
+                  "text-text-premium text-[38px] md:text-[42px] font-display font-bold leading-none tracking-tight transition-all duration-500 hover:text-accent-gold",
+                  pathname === link.href && "text-accent-gold italic"
+                )}
+              >
+                {link.name}.
+              </Link>
+            ))}
+
+            <Link
+              href="/contact"
+              className="mt-4 w-full py-5 rounded-sm bg-accent-gold text-bg-primary font-bold uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-body text-center shadow-gold transition-transform active:scale-95"
+            >
+              Request Technical RFQ
+            </Link>
+          </div>
+        </div>
+
+        {/* MOBILE FOOTER INFO */}
+        <div className="p-10 pb-16 bg-bg-secondary grid grid-cols-2 gap-8 border-t border-white/5">
+          <div className="space-y-3">
+            <h5 className="text-[9px] font-bold uppercase tracking-widest text-text-dim">Global Desk</h5>
+            <p className="text-[12px] text-text-premium leading-relaxed">Chennai Port Zone,<br />Tamil Nadu, India</p>
+          </div>
+          <div className="space-y-3">
+            <h5 className="text-[9px] font-bold uppercase tracking-widest text-text-dim">Response</h5>
+            <p className="text-[12px] text-text-premium leading-relaxed">24hr Turnaround<br />ISO:9001 Protocol</p>
+          </div>
+          <div className="col-span-2 pt-2 flex gap-6">
+            <a href="mailto:export@indopelts.com" className="text-[10px] font-medium text-accent-gold tracking-widest uppercase border-b border-accent-gold/20 pb-1">Email Inquiry</a>
+            <a href="tel:+919444012345" className="text-[10px] font-medium text-text-premium tracking-widest uppercase border-b border-white/5 pb-1">Call Procurement</a>
+          </div>
         </div>
       </div>
     </div>
