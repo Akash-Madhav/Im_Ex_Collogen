@@ -1,158 +1,135 @@
-import Image from 'next/image';
-import { Download, Package, Truck, Layers, ArrowRight } from 'lucide-react';
-import { SectionHeading } from '@/components/shared/SectionHeading';
-import { Button } from '@/components/shared/Button';
-import ApplicationsDeepDive from '@/components/products/ApplicationsDeepDive';
+'use client';
 
-const fullSpecs = [
-  { parameter: 'Moisture Content', value: '14 - 18%', notes: 'Max limit enforced.' },
-  { parameter: 'Protein Content', value: '75 - 82%', notes: 'Lab tested yield.' },
-  { parameter: 'Thickness', value: '3 - 8mm', notes: 'Uniform sorting.' },
-  { parameter: 'Dehairing', value: '> 99.9%', notes: 'Machine dehaired.' },
-  { parameter: 'Residual Lime', value: '< 1.0%', notes: 'Multi-stage wash.' },
-  { parameter: 'Trimming', value: '100%', notes: 'Zero external fat.' },
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import gsap from 'gsap';
+
+const mainSpecs = [
+  { field: 'Material Source', spec: 'Young Bubalus Bubalis (Indian Buffalo)' },
+  { field: 'Chemical Process', spec: 'Standardized Calcium Hydroxide Liming' },
+  { field: 'Dehairing Method', spec: 'Dual-Stage Mechanical Scrapers' },
+  { field: 'Fiber Integrity', spec: '98.5% Preserved Collagen Matrix' },
+  { field: 'Moisture Content', spec: '14% — 18% (Ambient Stabilized)' },
+  { field: 'Surface Condition', spec: 'Clean-Trimmed, Zero Residual Flesh' },
+];
+
+const shippingSpecs = [
+  { label: 'Standard Load', val: '26 MT', sub: 'Per 40ft High-Cube' },
+  { label: 'Packaging', val: 'Pressed Bales', sub: 'PP-Wrapped / Iron Strapped' },
+  { label: 'Bale Weight', val: '100 - 120 KG', sub: 'Variable per Batch' },
+  { label: 'Dispatch Hub', val: 'Chennai', sub: 'India (MAA Port)' },
 ];
 
 export default function ProductsPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ delay: 0.2 });
+    tl.from('.product-title', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out' })
+      .from('.product-sub', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+      .from('.product-image-container', { x: 40, opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.6')
+      .from('.spec-row', { y: 20, opacity: 0, stagger: 0.08, duration: 0.6, ease: 'power2.out' }, '-=0.4');
+  }, []);
+
   return (
-    <div className="pt-24 min-h-screen bg-brand-background">
+    <div ref={containerRef} className="min-h-screen pt-24 bg-bg">
       
-      {/* Product Hero - Optimized */}
-      <section className="section-padding border-b border-brand-primary/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-24 items-center relative z-10">
+      {/* Split Hero Section */}
+      <section className="flex flex-col lg:flex-row border-b border-border">
+        {/* Left: Product Info */}
+        <div className="lg:w-1/2 px-6 md:px-20 py-20 flex flex-col justify-center">
+          <h5 className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent mb-6">
+            Industrial Raw Material
+          </h5>
+          <h1 className="product-title text-[clamp(40px,5vw,64px)] font-display font-medium text-text-primary leading-[1.1] mb-8">
+            Buffalo Dried <br />
+            <span className="italic">Limed Pelts.</span>
+          </h1>
+          <p className="product-sub text-text-secondary text-lg leading-relaxed max-w-lg mb-12 opacity-90">
+            Engineered specifically for the high-yield extraction of Type I and Type III collagen. Our pelts undergo a proprietary liming cycle that maintains molecular chain integrity while optimizing fiber opening.
+          </p>
           
-          <div className="lg:col-span-6 relative aspect-square overflow-hidden rounded-3xl shadow-xl shadow-brand-primary/10">
-            <Image 
-              src="/product_pelts_bundles.png" 
-              alt="Buffalo Dried Limed Pelts" 
-              fill 
-              className="object-cover grayscale"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/70 via-transparent to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 p-6 glass-card-dark rounded-xl border-none">
-               <span className="text-brand-accent text-[8px] font-black tracking-widest uppercase block mb-1">Grade Spec</span>
-               <h3 className="text-white text-xl font-playfair font-black">Bulk Pelts Grade A</h3>
-            </div>
-          </div>
-
-          <div className="lg:col-span-6 space-y-10">
-            <div className="space-y-6">
-              <SectionHeading 
-                kicker="Primary Commodity"
-                title="Buffalo Dried Limed Pelts"
-              />
-              <p className="text-lg text-brand-body leading-relaxed max-w-xl font-medium opacity-80">
-                Processed via a specialized 22-day cycle to ensure fiber integrity for precision collagen and gelatin extraction protocols.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 border-y border-brand-primary/5 py-8">
-              {[
-                { label: 'Purity', val: '99.9%' }, 
-                { label: 'Traceable', val: 'Full' }, 
-                { label: 'Drying', val: 'Solar' }, 
-                { label: 'Load', val: '26 MT' }
-              ].map((item, i) => (
-                <div key={i} className="space-y-0">
-                  <p className="text-[8px] font-black uppercase text-brand-accent tracking-tighter opacity-70">{item.label}</p>
-                  <p className="text-lg font-playfair font-black text-brand-primary">{item.val}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-4">
-              <Button variant="primary" className="!px-10 !py-4 shadow-xl active:scale-95 transition-transform">
-                Request Quote
-                <ArrowRight size={18} />
-              </Button>
-            </div>
+          <div className="flex gap-4">
+            <button className="px-10 py-4 bg-accent text-bg font-bold uppercase tracking-widest text-xs rounded hover:bg-[#E8B84A] transition-all">
+              Request Technical COA
+            </button>
           </div>
         </div>
-      </section>
 
-      {/* Technical Table - Simplified Rendering */}
-      <section className="section-padding bg-white relative">
-        <div className="max-w-5xl mx-auto space-y-16 relative z-10">
-          <SectionHeading 
-            kicker="Technical Integrity"
-            title="Reference Parameters"
-            align="center"
+        {/* Right: Product Image */}
+        <div className="lg:w-1/2 h-[500px] lg:h-auto relative overflow-hidden product-image-container">
+          <Image 
+            src="/industrial_pelts_hero.png"
+            alt="Buffalo Dried Limed Pelts"
+            fill
+            className="object-cover"
           />
-          
-          <div className="overflow-hidden rounded-2xl border border-brand-primary/5 shadow-sm">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest">
-                  <th className="py-6 px-8">Parameter</th>
-                  <th className="py-6 px-8">Limit</th>
-                  <th className="py-6 px-8 hidden md:table-cell">Notes</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-brand-primary/5">
-                {fullSpecs.map((spec, index) => (
-                  <tr key={index} className="hover:bg-brand-background/30 transition-colors">
-                    <td className="py-6 px-8">
-                      <span className="text-brand-primary font-bold text-sm block">{spec.parameter}</span>
-                    </td>
-                    <td className="py-6 px-8">
-                      <span className="text-lg font-playfair font-black text-brand-accent">{spec.value}</span>
-                    </td>
-                    <td className="py-6 px-8 text-brand-body text-xs font-medium hidden md:table-cell opacity-50">
-                      {spec.notes}
-                    </td>
-                  </tr>
+          <div className="absolute inset-0 bg-accent/5 mix-blend-overlay" />
+        </div>
+      </section>
+
+      {/* Technical Specifications Table */}
+      <section className="py-24 md:py-32 px-6 md:px-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            
+            {/* Table Area */}
+            <div className="lg:col-span-7">
+              <h2 className="text-[28px] font-display font-medium text-text-primary mb-12 flex items-center gap-4">
+                Technical Blueprint
+                <div className="flex-1 h-[1px] bg-border" />
+              </h2>
+              
+              <div className="space-y-0 border-t border-border">
+                {mainSpecs.map((item, i) => (
+                  <div key={i} className="spec-row grid grid-cols-1 sm:grid-cols-2 py-6 border-b border-border group hover:bg-surface-2 transition-colors duration-200">
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-text-tertiary">
+                      {item.field}
+                    </span>
+                    <span className="text-[15px] font-body text-text-primary font-medium">
+                      {item.spec}
+                    </span>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
+
+            {/* Application Sidebar info */}
+            <div className="lg:col-span-5 bg-surface border border-border p-10 rounded-lg">
+              <h4 className="text-[18px] font-display font-bold text-accent mb-6">Critical for Collagen Extraction</h4>
+              <p className="text-sm text-text-tertiary leading-relaxed mb-8">
+                The Bloom strength and viscosity of the final gelatin/collagen product are directly proportional to the preservation of the raw pelt. Our Chennai-based facility ensures consistent nitrogen levels and residual ash monitoring to meet Tier-1 pharmaceutical spec.
+              </p>
+              <ul className="space-y-4">
+                {['Nitrogen Content > 15%', 'Ash Residue < 2%', 'Moisture Precision', 'Zero Preservative Use'].map((tag) => (
+                  <li key={tag} className="flex items-center gap-3 text-xs font-mono text-text-secondary">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* Grade Classification - Performance Optimized */}
-      <section className="section-padding max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-6">
-          {[
-            { tag: 'Grade A', title: 'Premium Spec', desc: 'Pharmaceutical collagen & edible gelatin.', bg: 'bg-white' },
-            { tag: 'Grade B', title: 'Industrial Spec', desc: 'Technical gelatin & natural pet chews.', bg: 'bg-brand-primary text-white' }
-          ].map((grade, i) => (
-            <div key={i} className={`p-12 rounded-3xl border border-brand-primary/5 shadow-sm ${grade.bg} relative overflow-hidden group hover:-translate-y-1 transition-transform`}>
-              <div className="space-y-4 relative z-10">
-                <span className="text-brand-accent text-[9px] font-black tracking-widest uppercase">{grade.tag}</span>
-                <h3 className={`text-3xl font-playfair font-black ${i === 1 ? 'text-white' : ''}`}>{grade.title}</h3>
-                <p className={`text-base font-medium opacity-70 ${i === 1 ? 'text-white/70' : ''}`}>{grade.desc}</p>
-                <div className="pt-6 border-t border-brand-primary/5 group-hover:border-white/10" />
-                <button className="text-[9px] font-black uppercase tracking-widest text-brand-accent">Specifications Summary →</button>
+      {/* Logistics Grid */}
+      <section className="bg-surface py-24 md:py-32 px-6 md:px-20">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-[28px] font-display font-medium text-text-primary text-center mb-16">Logistics & Loading Parameters</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {shippingSpecs.map((item, i) => (
+              <div key={i} className="p-8 border border-border bg-bg/50 rounded-lg text-center hover:border-accent/40 transition-all duration-300">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary mb-4">{item.label}</p>
+                <p className="text-[24px] font-mono font-bold text-accent mb-1">{item.val}</p>
+                <p className="text-[12px] text-text-tertiary italic">{item.sub}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      <ApplicationsDeepDive />
-
-      {/* Logistics Overview */}
-      <section className="bg-brand-primary section-padding text-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-16 relative z-10">
-          {[
-            { icon: Layers, title: 'Hydraulic Bales' },
-            { icon: Package, title: 'Moisture Guard' },
-            { icon: Truck, title: 'Global Export' }
-          ].map((item, i) => (
-            <div key={i} className="space-y-6">
-              <div className="border-b border-white/10 pb-4">
-                 <item.icon size={40} strokeWidth={1} className="text-brand-accent" />
-              </div>
-              <h4 className="text-2xl font-playfair font-black text-white">{item.title}</h4>
-              <p className="text-white/50 text-sm leading-relaxed font-inter">
-                Optimizing export container footprints for safe and sustainable global transit.
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

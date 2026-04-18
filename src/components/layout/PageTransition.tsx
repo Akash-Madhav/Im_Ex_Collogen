@@ -2,52 +2,59 @@
 
 import { usePathname } from 'next/navigation';
 import { ReactNode, useEffect, useRef } from 'react';
-import { useLenis } from '@studio-freight/react-lenis';
 import gsap from 'gsap';
+import { useLenis } from '@studio-freight/react-lenis';
 
 export default function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const lenis = useLenis();
-  const contentRef = useRef<HTMLDivElement>(null);
   const wipeRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to top and trigger transition
   useEffect(() => {
+    // Scroll to top instantly
     if (lenis) lenis.scrollTo(0, { immediate: true });
     else window.scrollTo(0, 0);
 
-    // Initial load / path change exit
+    const wipe = wipeRef.current;
+    const content = contentRef.current;
+    if (!wipe || !content) return;
+
+    // Horizontal wipe animation
     const tl = gsap.timeline();
     
-    // Performance: Only run full wipe if DOM is ready
-    if (wipeRef.current && contentRef.current) {
-      tl.set(wipeRef.current, { scaleY: 1, transformOrigin: 'top' })
-        .to(wipeRef.current, { 
-          scaleY: 0, 
-          duration: 0.8, 
-          ease: 'expo.inOut',
-          delay: 0.1
-        })
-        .fromTo(contentRef.current, 
-          { opacity: 0, y: 10 }, 
-          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          '-=0.4'
-        );
-    }
+    tl.set(wipe, { 
+      scaleX: 1, 
+      transformOrigin: 'left',
+      backgroundColor: 'var(--color-accent)'
+    })
+    .to(wipe, {
+      scaleX: 0,
+      transformOrigin: 'right',
+      duration: 0.4,
+      ease: 'power3.inOut',
+      delay: 0.1
+    })
+    .fromTo(content,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+      '-=0.2'
+    );
+
   }, [pathname, lenis]);
 
   return (
     <div className="relative overflow-hidden min-h-screen">
-      <div ref={contentRef} className="will-change-opacity">
-        {children}
-      </div>
-
-      {/* Simplified High-Speed Wipe */}
+      {/* Wipe Panel */}
       <div 
         ref={wipeRef}
-        className="fixed inset-0 bg-brand-primary z-[150] pointer-events-none scale-y-0"
-        style={{ willChange: 'transform' }}
+        className="fixed inset-0 z-[100] pointer-events-none scale-x-0"
       />
+      
+      {/* Content */}
+      <div ref={contentRef}>
+        {children}
+      </div>
     </div>
   );
 }

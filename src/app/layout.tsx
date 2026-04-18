@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
 import PageTransition from "@/components/layout/PageTransition";
+import CustomCursor from "@/components/layout/CustomCursor";
 import { LenisProvider } from "@/lib/lenis-context";
 
 const inter = Inter({ 
@@ -21,16 +22,23 @@ const playfair = Playfair_Display({
   preload: true,
 });
 
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: 'swap',
+  preload: true,
+});
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0d1f1a",
+  themeColor: "#0A0C0B",
 };
 
 export const metadata: Metadata = {
-  title: "Premium Buffalo Dried Limed Pelts | Top Indian Exporter",
-  description: "Bulk supply of high-spec Buffalo Dried Limed Pelts for Collagen, Gelatin, and Pet Food industries. Reliable Indian exporter serving 10+ global markets.",
+  title: "IndoPelts International | Premium Buffalo Dried Limed Pelts",
+  description: "Advanced B2B Buffalo Pelt Export for Collagen, Gelatin, and Industrial Sectors. India's trusted partner for high-spec industrial raw materials.",
 };
 
 export default function RootLayout({
@@ -39,9 +47,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
-      <body className="antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden">
-        <div className="noise-overlay" />
+    <html lang="en" className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} scroll-smooth`}>
+      <body className="antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden bg-bg">
+        <CustomCursor />
         <LenisProvider>
           <Navbar />
           <PageTransition>

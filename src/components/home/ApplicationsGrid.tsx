@@ -1,99 +1,114 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import gsap from 'gsap';
-import { Microscope, PawPrint, Droplets, Utensils } from 'lucide-react';
-import { SectionHeading } from '@/components/shared/SectionHeading';
+import { tiltCard } from '@/lib/interactions';
 
-const applications = [
+const sectors = [
   {
-    title: 'Collagen Peptides',
-    desc: 'High-purity raw material for pharmaceutical-grade collagen extraction. High nitrogen content, low mineral residue.',
-    icon: Microscope,
-    tag: 'Medical'
+    tag: 'Healthcare',
+    title: 'Precision Collagen',
+    desc: 'Pure buffalo derivations optimized for medical-grade collagen fiber extraction and biomedical research protocols.',
   },
   {
-    title: 'Pet Nutrition',
-    desc: 'The gold standard for natural dog chews. Durable, high-protein structure that provides superior dental benefits.',
-    icon: PawPrint,
-    tag: 'Pet Care'
-  },
-  {
+    tag: 'Nutrition',
     title: 'Edible Gelatin',
-    desc: 'Stable Bloom value pelts for confectionery, dairy, and dessert applications across global food markets.',
-    icon: Droplets,
-    tag: 'Food Grade'
+    desc: 'High-yield raw material for premium edible gelatin production, ensuring superior clarity and protein density.',
   },
   {
-    title: 'Traditional Markets',
-    desc: 'Processed to strict cultural standards for culinary use in traditional Asian markets (Krecek/Krupuk).',
-    icon: Utensils,
-    tag: 'Consumer'
-  }
+    tag: 'Pet Care',
+    title: 'Natural Supplements',
+    desc: 'Safe, sustainable, and traceable raw material specifically sorted for natural pet food and chew manufacturing.',
+  },
+  {
+    tag: 'Technical',
+    title: 'Industrial Gelatin',
+    desc: 'Reliable supply for technical gelatin used in photographic, matchwood, and industrial adhesive manufacturing.',
+  },
 ];
 
 export default function ApplicationsGrid() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-    
-    gsap.from('.app-card', {
+    // Reveal animation
+    gsap.from('.application-card', {
       scrollTrigger: {
-        trigger: sectionRef.current,
+        trigger: containerRef.current,
         start: 'top 80%',
       },
-      y: 60,
+      y: 40,
       opacity: 0,
-      duration: 1.5,
-      stagger: 0.2,
-      ease: 'power4.out',
+      stagger: 0.1,
+      duration: 0.8,
+      ease: 'power3.out'
     });
+
+    // Apply tilt to each card
+    const tiltCleanups: (void | (() => void))[] = cardsRef.current.map(card => {
+      if (card) return tiltCard(card);
+    });
+
+    return () => {
+      tiltCleanups.forEach(cleanup => {
+        if (typeof cleanup === 'function') cleanup();
+      });
+    };
   }, []);
 
   return (
-    <section ref={sectionRef} className="premium-gradient section-padding relative overflow-hidden">
-      {/* Decorative Blur Backgrounds - Optimized for Desktop only */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none hidden lg:block" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none hidden lg:block" />
+    <section 
+      ref={containerRef}
+      className="section-image-bg py-24 md:py-32"
+    >
+      {/* Infrastructure Texture */}
+      <style jsx>{`
+        section::before {
+          background-image: url('/infrastructure_hub.png');
+          opacity: 0.12;
+        }
+      `}</style>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="max-w-3xl mb-24">
-          <SectionHeading 
-            kicker="Industrial Versatility"
-            title="Sectors We Power With Precision Raw Materials"
-          />
-          <p className="mt-8 text-xl font-medium text-brand-primary/60 max-w-2xl leading-relaxed">
-            From medical devices to consumer goods, our pelts are the invisible foundation of the global bio-commodity supply chain.
-          </p>
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="text-center mb-16">
+          <h5 className="text-[11px] font-bold uppercase tracking-[0.14em] text-accent mb-4">
+            Industrial Reach
+          </h5>
+          <h2 className="text-[clamp(32px,4vw,48px)] font-display font-medium text-text-primary leading-tight">
+            Sectors We Power <br />
+            <span className="italic">Across the Global Curve.</span>
+          </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {applications.map((app, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {sectors.map((sector, i) => (
             <div 
-              key={index} 
-              className="app-card group glass-card p-10 hover:bg-brand-primary hover:text-white transition-all duration-500 cursor-default"
+              key={i}
+              ref={el => { cardsRef.current[i] = el; }}
+              className="application-card relative overflow-hidden p-8 md:p-12 bg-[#111510]/80 border border-border rounded-lg backdrop-blur-[12px] group transition-all duration-300 hover:border-accent/40 hover:shadow-glow-card"
             >
-              <div className="mb-10 flex justify-between items-start">
-                 <div className="w-16 h-16 rounded-2xl bg-brand-primary/5 flex items-center justify-center text-brand-primary group-hover:bg-white/10 group-hover:text-brand-accent transition-all duration-500">
-                    <app.icon size={32} strokeWidth={1.5} />
-                 </div>
-                 <span className="text-[10px] font-black uppercase tracking-widest text-brand-accent/60 group-hover:text-white/40 border border-brand-accent/20 px-3 py-1 rounded-full">
-                   {app.tag}
-                 </span>
-              </div>
+              {/* Radial glow on hover */}
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-accent/15 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
-              <h3 className="text-2xl font-playfair font-black mb-6 group-hover:text-white transition-colors">
-                {app.title}
+              <div className="sector-tag inline-block px-3 py-1 rounded-full border border-accent/30 text-[10px] font-bold uppercase tracking-[0.14em] text-accent mb-6">
+                {sector.tag}
+              </div>
+
+              <h3 className="text-2xl font-display font-bold text-text-primary mb-4">
+                {sector.title}
               </h3>
-              
-              <p className="text-sm font-medium leading-relaxed group-hover:text-white/70 transition-colors">
-                {app.desc}
+              <p className="text-text-secondary text-base leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
+                {sector.desc}
               </p>
-              
-              <div className="mt-10 pt-8 border-t border-brand-primary/5 group-hover:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                 <span className="text-[10px] font-black uppercase tracking-widest text-brand-accent">Learn More →</span>
-              </div>
+
+              <Link 
+                href="/products"
+                className="card-link mt-8 pt-6 border-t border-border flex items-center gap-2 text-accent font-bold uppercase tracking-wider text-[12px] opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
+              >
+                Learn More <span>→</span>
+              </Link>
             </div>
           ))}
         </div>

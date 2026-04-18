@@ -1,56 +1,59 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { magneticButton } from '@/lib/interactions';
 
 export default function InquiryCTA() {
-  const bgRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    if (bgRef.current) {
-      gsap.to(bgRef.current, {
-        yPercent: 20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: bgRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
+    if (btnRef.current) {
+      const cleanup = magneticButton(btnRef.current);
+      return cleanup;
     }
   }, []);
 
   return (
-    <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-      {/* Parallax Background */}
-      <div ref={bgRef} className="absolute inset-0 -top-20 -bottom-20 scale-110">
-        <Image 
-          src="/global_trade_cargo.png" 
-          alt="Global Trade Cargo" 
-          fill 
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-brand-primary/80 mix-blend-multiply" />
-      </div>
+    <section 
+      ref={containerRef}
+      className="section-image-bg py-32 md:py-48 text-center overflow-hidden relative"
+    >
+      {/* Background Texture */}
+      <style jsx>{`
+        section::before {
+          content: '';
+          position: absolute; inset: 0; z-index: -2;
+          background-image: url('/port_logistics_closeup.png');
+          background-size: cover;
+          background-position: center;
+          opacity: 0.25;
+        }
+        section::after {
+          content: '';
+          position: absolute; inset: 0; z-index: -1;
+          background: rgba(10, 12, 11, 0.82);
+        }
+      `}</style>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center space-y-8">
-        <h2 className="text-white text-4xl md:text-6xl font-playfair leading-tight">
-          Looking for a Reliable Buffalo Pelt Supplier?
+      {/* Radial Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-accent/12 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        <h2 className="text-[clamp(36px,6vw,52px)] font-display font-medium text-text-primary leading-[1.1] mb-12">
+          Looking for a Reliable <br />
+          <span className="italic">Buffalo Pelt Supplier?</span>
         </h2>
-        <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto">
-          Tell us your monthly requirement and we will respond within 24 hours with a custom 
-          quote and shipping timeline.
-        </p>
-        <div className="pt-6">
+        
+        <div className="flex justify-center">
           <Link 
+            ref={btnRef}
             href="/contact"
-            className="inline-block border-2 border-white text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-brand-primary transition-all duration-300 transform hover:scale-105"
+            className="btn-primary-large inline-flex px-12 py-5 bg-accent text-bg font-bold uppercase tracking-widest text-[15px] rounded-sm transition-all hover:bg-[#E8B84A] shadow-[0_12px_40px_rgba(200,146,42,0.35)]"
           >
-            Start an Inquiry
+            Start Supply Inquiry
           </Link>
         </div>
       </div>
