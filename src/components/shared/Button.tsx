@@ -9,6 +9,7 @@ interface ButtonProps {
   children: ReactNode;
   href?: string;
   variant?: 'primary' | 'secondary' | 'ghost' | 'glass';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
@@ -23,13 +24,20 @@ export function Button({
   children, 
   href, 
   variant = 'primary', 
+  size = 'md',
   className = '', 
   onClick, 
   type = 'button',
   disabled = false
 }: ButtonProps) {
   
-  const baseStyles = "magnetic relative inline-flex items-center justify-center gap-3 font-body font-bold uppercase tracking-[0.15em] text-[11px] transition-all duration-500 overflow-hidden group px-10 py-5 rounded-sm";
+  const baseStyles = "magnetic relative inline-flex items-center justify-center gap-3 font-body font-bold uppercase tracking-[0.15em] transition-all duration-500 overflow-hidden group rounded-sm";
+  
+  const sizeStyles = {
+    sm: "px-6 py-3 text-[9px]",
+    md: "px-10 py-5 text-[11px]",
+    lg: "px-14 py-6 text-[13px] tracking-[0.2em]"
+  };
   
   const variants = {
     // Luxury Gold (Primary)
@@ -55,7 +63,7 @@ export function Button({
     </>
   );
 
-  const finalClassName = cn(baseStyles, variants[variant], disabled && "opacity-50 cursor-not-allowed", className);
+  const finalClassName = cn(baseStyles, sizeStyles[size], variants[variant], disabled && "opacity-50 cursor-not-allowed", className);
 
   if (href) {
     return (

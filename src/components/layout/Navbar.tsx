@@ -95,22 +95,22 @@ export default function Navbar() {
     <div className="fixed top-0 left-0 w-full z-50 flex justify-center pt-6 pointer-events-none">
       <header
         className={cn(
-          'pointer-events-auto flex items-center justify-between transition-all duration-700 ease-premium rounded-full px-6 md:px-10',
+          'pointer-events-auto flex items-center justify-between transition-all duration-700 ease-premium rounded-full px-8',
           scrolled
-            ? 'h-[56px] w-[90%] md:w-[700px] glass-elevated border border-white/10 px-8'
-            : 'h-[64px] w-[95%] md:w-[1200px] bg-bg-primary/40 border border-white/5 backdrop-blur-md',
+            ? 'h-[58px] w-[95%] md:w-[940px] glass-elevated border border-white/10'
+            : 'h-[72px] w-[98%] md:w-[1240px] bg-bg-primary/40 border border-white/5 backdrop-blur-md',
           'shadow-premium'
         )}
       >
       {/* LOGO */}
       <Link
         href="/"
-        className="magnetic flex items-center gap-3 group"
+        className="magnetic flex items-center gap-3 group flex-shrink-0"
       >
         <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
           <span className="text-bg-primary font-black text-lg italic">B</span>
         </div>
-        <span className="font-body font-extrabold text-lg tracking-tight text-text-premium group-hover:text-accent-gold transition-colors">
+        <span className="font-body font-extrabold text-lg tracking-tight text-text-premium group-hover:text-accent-gold transition-colors whitespace-nowrap">
           INDOPELTS
         </span>
       </Link>
@@ -144,10 +144,10 @@ export default function Navbar() {
       </nav>
 
       {/* RIGHT SIDE */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-shrink-0">
         <Link
           href="/contact"
-          className="magnetic hidden md:flex px-6 py-2 rounded-sm border border-accent-gold/40 text-accent-gold font-body font-bold uppercase tracking-[0.15em] text-[10px] transition-all duration-500 hover:bg-accent-gold hover:text-bg-primary"
+          className="magnetic hidden md:flex px-6 py-2 rounded-sm border border-accent-gold/40 text-accent-gold font-body font-bold uppercase tracking-[0.15em] text-[10px] transition-all duration-500 hover:bg-accent-gold hover:text-bg-primary whitespace-nowrap"
         >
           RFQ Portal
         </Link>

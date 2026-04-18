@@ -2,6 +2,7 @@ import HeroSection from '@/components/home/HeroSection';
 import BrandRefinement from '@/components/home/BrandRefinement';
 import GlobalReach from '@/components/home/GlobalReach';
 import InquiryCTA from '@/components/home/InquiryCTA';
+import { ScrollSection } from '@/components/shared/ScrollSection';
 
 /**
  * IndoPelts - Home Page
@@ -11,16 +12,24 @@ export default function Home() {
   return (
     <>
       {/* SECTION 1: HERO */}
-      <HeroSection />
+      <ScrollSection delay={0.2}>
+        <HeroSection />
+      </ScrollSection>
 
       {/* SECTION 2: BRAND & QUALITY */}
-      <BrandRefinement />
+      <ScrollSection>
+        <BrandRefinement />
+      </ScrollSection>
 
       {/* SECTION 3: SECTORS & GLOBAL REACH */}
-      <GlobalReach />
+      <ScrollSection>
+        <GlobalReach />
+      </ScrollSection>
 
       {/* SECTION 4: CONVERSION */}
-      <InquiryCTA />
+      <ScrollSection>
+        <InquiryCTA />
+      </ScrollSection>
     </>
   );
 }
