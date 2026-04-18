@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import gsap from 'gsap';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { DURATIONS, EASINGS } from '../../lib/motion';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -15,222 +15,228 @@ const navLinks = [
 ];
 
 /**
- * Luxury Design System - Navbar
- * Refined, high-performance navigation with design token integration.
+ * Premium Luxury Navbar - Unified Motion Architecture
+ * Refactored using Framer Motion to match editorial brand standards.
  */
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const pathname = usePathname();
 
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-
   useEffect(() => {
-    let ticking = false;
-    const update = () => {
-      setScrolled(window.scrollY > 50);
-      ticking = false;
+    const handleScroll = () => {
+      // Transition styling after 80px for better visibility
+      setScrolled(window.scrollY > 80);
     };
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (!mobileMenuRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ paused: true });
-
-      tl.to(mobileMenuRef.current, {
-        clipPath: 'circle(150% at 100% 0%)',
-        opacity: 1,
-        duration: DURATIONS.NORMAL,
-        ease: EASINGS.PREMIUM,
-      });
-
-      tl.from(
-        linkRefs.current.filter(Boolean),
-        {
-          y: 30,
-          opacity: 0,
-          stagger: 0.08,
-          duration: DURATIONS.NORMAL,
-          ease: EASINGS.OUT,
-        },
-        '-=0.25'
-      );
-
-      timelineRef.current = tl;
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    const tl = timelineRef.current;
-    if (!tl) return;
-
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      tl.play();
-    } else {
-      document.body.style.overflow = '';
-      tl.reverse();
-    }
-  }, [isOpen]);
-
+  // Close menu on route change
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isOpen]);
+
   return (
-    <div className="fixed top-0 left-0 w-full z-50 flex justify-center pt-6 pointer-events-none">
-      <header
+    <>
+      <motion.nav
         className={cn(
-          'pointer-events-auto flex items-center justify-between transition-all duration-700 ease-premium rounded-full px-8',
+          "fixed top-4 md:top-6 left-4 right-4 md:left-8 md:right-8 mx-auto z-[100] max-w-[1400px] transition-all duration-700 rounded-full border",
           scrolled
-            ? 'h-[58px] w-[95%] md:w-[940px] glass-elevated border border-white/10'
-            : 'h-[72px] w-[98%] md:w-[1240px] bg-bg-primary/40 border border-white/5 backdrop-blur-md',
-          'shadow-premium'
+            ? "py-2 md:py-3 bg-white/40 backdrop-blur-md md:backdrop-blur-xl border-black/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]"
+            : "py-3 md:py-5 bg-white/[0.03] backdrop-blur-sm md:backdrop-blur-md border-white/10 shadow-none"
         )}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
       >
-      {/* LOGO */}
-      <Link
-        href="/"
-        className="magnetic flex items-center gap-2 md:gap-3 group flex-shrink-0"
-      >
-        <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-          <span className="text-bg-primary font-black text-base md:text-lg italic">B</span>
-        </div>
-        <span className="font-body font-extrabold text-base md:text-lg tracking-tight text-text-premium group-hover:text-accent-gold transition-colors whitespace-nowrap">
-          INDOPELTS
-        </span>
-      </Link>
-
-      {/* DESKTOP NAV */}
-      <nav className="hidden md:flex items-center gap-8">
-        {navLinks.map((link) => {
-          const isActive = pathname === link.href;
-
-          return (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={cn(
-                'relative font-body text-[11px] uppercase tracking-[0.2em] font-bold transition-colors',
-                isActive
-                  ? 'text-accent-gold'
-                  : 'text-text-muted hover:text-text-premium'
-              )}
+        <div className="w-full px-6 md:px-12">
+          <div className="flex items-center justify-between">
+            {/* LOGO */}
+            <Link 
+              href="/" 
+              className="relative z-[110] flex items-center gap-3 transition-transform duration-500 hover:scale-[1.02]"
             >
-              {link.name}
-              <span
-                className={cn(
-                  'absolute -bottom-1 left-0 h-[1px] bg-accent-gold transition-all duration-500',
-                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                )}
-              />
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg shadow-accent-gold/20">
+                <span className="text-bg-primary font-black text-base md:text-lg italic">B</span>
+              </div>
+              <span className={cn(
+                "font-body font-extrabold text-base md:text-lg tracking-tight transition-colors duration-700",
+                scrolled ? "text-[#2B2B2B]" : "text-[#FAF9F6]"
+              )}>
+                INDOPELTS
+              </span>
             </Link>
-          );
-        })}
-      </nav>
 
-      {/* RIGHT SIDE */}
-      <div className="flex items-center gap-4 flex-shrink-0">
-        <Link
-          href="/contact"
-          className="magnetic hidden md:flex px-6 py-2 rounded-sm border border-accent-gold/40 text-accent-gold font-body font-bold uppercase tracking-[0.15em] text-[10px] transition-all duration-500 hover:bg-accent-gold hover:text-bg-primary whitespace-nowrap"
-        >
-          RFQ Portal
-        </Link>
-
-        {/* HAMBURGER */}
-        <button
-          onClick={() => setIsOpen((prev) => !prev)}
-          className="md:hidden flex flex-col gap-1.5 w-8 h-8 items-center justify-center z-[60]"
-        >
-          <span className={cn('w-6 h-[1.5px] bg-text-premium transition-all', isOpen && 'rotate-45 translate-y-2')} />
-          <span className={cn('w-6 h-[1.5px] bg-text-premium transition-all', isOpen && 'opacity-0')} />
-          <span className={cn('w-6 h-[1.5px] bg-text-premium transition-all', isOpen && '-rotate-45 -translate-y-2')} />
-        </button>
-      </div>
-
-      </header>
-
-      {/* MOBILE MENU */}
-      <div
-        ref={mobileMenuRef}
-        className="fixed inset-0 bg-bg-primary z-[100] opacity-0 flex flex-col pointer-events-auto overflow-hidden shadow-2xl"
-        style={{ clipPath: 'circle(0% at 100% 0%)' }}
-      >
-        {/* MOBILE MENU HEADER */}
-        <div className="flex items-center justify-between px-8 pt-6 h-[72px] border-b border-white/5">
-           <Link
-            href="/"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2"
-          >
-            <div className="w-7 h-7 rounded-full bg-accent-gold flex items-center justify-center">
-              <span className="text-bg-primary font-black text-base italic">B</span>
+            {/* Desktop Nav Links */}
+            <div className="hidden lg:flex items-center gap-10">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="relative group py-1"
+                  >
+                    <span
+                      className={cn(
+                        "text-[11px] uppercase tracking-[0.25em] font-body font-bold transition-all duration-700",
+                        isActive
+                          ? (scrolled ? 'text-[#2B2B2B]' : 'text-accent-gold')
+                          : (scrolled ? 'text-[#2B2B2B]/40 hover:text-[#2B2B2B]' : 'text-[#FAF9F6]/50 hover:text-[#FAF9F6]')
+                      )}
+                    >
+                      {link.name}
+                    </span>
+                    <motion.div
+                      className={cn(
+                        "absolute bottom-0 left-0 w-full h-[1px] origin-left transition-colors duration-700",
+                        scrolled ? "bg-[#2B2B2B]" : "bg-accent-gold"
+                      )}
+                      initial={{ scaleX: isActive ? 1 : 0 }}
+                      animate={{ scaleX: isActive ? 1 : 0 }}
+                      transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                    />
+                  </Link>
+                );
+              })}
             </div>
-            <span className="font-body font-extrabold text-base tracking-tight text-text-premium">
-              INDOPELTS
-            </span>
-          </Link>
-        </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center border-b border-white/5 px-8 pt-10">
-          <div className="flex flex-col items-center gap-10 w-full max-w-sm">
-            {navLinks.map((link, i) => (
+            {/* CTA Button */}
+            <div className="flex items-center gap-4">
               <Link
-                key={link.name}
-                href={link.href}
-                ref={(el) => {
-                  linkRefs.current[i] = el;
-                }}
+                href="/contact"
                 className={cn(
-                  "text-text-premium text-[38px] md:text-[42px] font-display font-bold leading-none tracking-tight transition-all duration-500 hover:text-accent-gold",
-                  pathname === link.href && "text-accent-gold italic"
+                  "hidden lg:inline-flex items-center px-10 py-3 rounded-full border transition-all duration-700 group relative overflow-hidden",
+                  scrolled 
+                    ? "border-black/10 hover:border-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-[#FAF9F6]" 
+                    : "border-white/10 hover:border-[#FAF9F6] hover:bg-[#FAF9F6] hover:text-[#2B2B2B]"
                 )}
               >
-                {link.name}.
+                <span className={cn(
+                  "text-[10px] uppercase tracking-[0.3em] font-body font-bold relative z-10 transition-colors duration-700",
+                  scrolled 
+                    ? "text-[#2B2B2B] group-hover:text-[#FAF9F6]" 
+                    : "text-[#FAF9F6] group-hover:text-[#2B2B2B]"
+                )}>
+                  Request a Quote
+                </span>
               </Link>
-            ))}
 
-            <Link
-              href="/contact"
-              className="mt-4 w-full py-5 rounded-sm bg-accent-gold text-bg-primary font-bold uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-body text-center shadow-gold transition-transform active:scale-95"
-            >
-              Request Technical RFQ
-            </Link>
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={cn(
+                  "lg:hidden relative z-[110] p-2 transition-colors duration-700 outline-none",
+                  scrolled ? "text-[#2B2B2B]" : "text-[#FAF9F6]"
+                )}
+                aria-label="Toggle menu"
+              >
+                {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+              </button>
+            </div>
           </div>
         </div>
+      </motion.nav>
 
-        {/* MOBILE FOOTER INFO */}
-        <div className="p-10 pb-16 bg-bg-secondary grid grid-cols-2 gap-8 border-t border-white/5">
-          <div className="space-y-3">
-            <h5 className="text-[9px] font-bold uppercase tracking-widest text-text-dim">Global Desk</h5>
-            <p className="text-[12px] text-text-premium leading-relaxed">Chennai Port Zone,<br />Tamil Nadu, India</p>
-          </div>
-          <div className="space-y-3">
-            <h5 className="text-[9px] font-bold uppercase tracking-widest text-text-dim">Response</h5>
-            <p className="text-[12px] text-text-premium leading-relaxed">24hr Turnaround<br />ISO:9001 Protocol</p>
-          </div>
-          <div className="col-span-2 pt-2 flex gap-6">
-            <a href="mailto:export@indopelts.com" className="text-[10px] font-medium text-accent-gold tracking-widest uppercase border-b border-accent-gold/20 pb-1">Email Inquiry</a>
-            <a href="tel:+919444012345" className="text-[10px] font-medium text-text-premium tracking-widest uppercase border-b border-white/5 pb-1">Call Procurement</a>
-          </div>
-        </div>
-      </div>
-    </div>
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 z-[90] lg:hidden bg-white/70 backdrop-blur-xl md:backdrop-blur-2xl flex flex-col pt-32"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+          >
+            <div className="flex-1 flex flex-col items-center justify-center gap-8 px-6 text-center">
+              {navLinks.map((link, index) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: 0.2 + index * 0.1,
+                    duration: 1,
+                    ease: [0.19, 1, 0.22, 1],
+                  }}
+                >
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      "text-5xl md:text-6xl font-display font-medium transition-all duration-700 italic block mb-2",
+                      pathname === link.href
+                        ? "text-[#2B2B2B]"
+                        : "text-[#2B2B2B]/20 hover:text-[#2B2B2B]"
+                    )}
+                  >
+                    {link.name}.
+                  </Link>
+                </motion.div>
+              ))}
+              
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 1, ease: [0.19, 1, 0.22, 1] }}
+                className="w-full max-w-xs mt-10"
+              >
+                <Link
+                  href="/contact"
+                  className="block w-full py-5 rounded-full bg-[#2B2B2B] text-[#FAF9F6] font-body font-bold uppercase tracking-[0.25em] text-[11px] shadow-2xl"
+                >
+                  Start Inquiry
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* COLLAPSIBLE PROCUREMENT DETAILS */}
+            <div className="mt-auto border-t border-black/5 bg-[#F5F5F7]/30">
+              <button 
+                onClick={() => setIsDetailsOpen(!isDetailsOpen)}
+                className="w-full flex items-center justify-between p-8 group transition-colors hover:bg-black/[0.02]"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-[.25em] text-[#2B2B2B]/60 group-hover:text-[#2B2B2B]">
+                  Procurement Desk
+                </span>
+                <ChevronDown className={cn("text-[#2B2B2B]/40 transition-transform duration-500", isDetailsOpen && "rotate-180")} size={16} />
+              </button>
+              
+              <motion.div 
+                initial={false}
+                animate={{ height: isDetailsOpen ? 'auto' : 0, opacity: isDetailsOpen ? 1 : 0 }}
+                className="overflow-hidden"
+              >
+                <div className="p-8 pb-12 grid grid-cols-2 gap-8 border-t border-black/5">
+                    <div className="space-y-2">
+                        <h5 className="text-[9px] font-bold uppercase tracking-widest text-black/40">Global Desk</h5>
+                        <p className="text-[12px] text-[#2B2B2B] leading-relaxed">Chennai Port Zone,<br />Tamil Nadu, India</p>
+                    </div>
+                    <div className="space-y-2">
+                        <h5 className="text-[9px] font-bold uppercase tracking-widest text-black/40">Efficiency</h5>
+                        <p className="text-[12px] text-[#2B2B2B] leading-relaxed">24hr Turnaround<br />ISO:9001 Protocol</p>
+                    </div>
+                    <div className="col-span-2 pt-4 flex gap-8">
+                        <a href="mailto:export@indopelts.com" className="text-[11px] font-bold text-[#2B2B2B] tracking-widest uppercase border-b border-black/10 pb-1">Email</a>
+                        <a href="tel:+919444012345" className="text-[11px] font-bold text-[#2B2B2B] tracking-widest uppercase border-b border-black/10 pb-1">Direct Line</a>
+                    </div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
-

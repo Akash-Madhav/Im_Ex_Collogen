@@ -14,7 +14,43 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react';
  * Standardized 4-section architecture for streamlined procurement inquiries.
  */
 export default function ContactPage() {
-  const [formData, setFormData] = useState({ name: '', email: '', volume: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  async function handleSubmit(event: any) {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    const formData = new FormData(event.target);
+    // Replace with your actual Web3Forms Access Key
+    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY_HERE");
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: json
+      });
+      const result = await response.json();
+      if (result.success) {
+        setSubmitStatus('success');
+        event.target.reset();
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="bg-bg-primary pt-24">
@@ -87,16 +123,33 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="lg:col-span-7">
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-                  <Input label="Full Name" placeholder="John Doe" />
-                  <Input label="Corporate Email" placeholder="name@company.com" type="email" />
-                  <Input label="Required Volume (MT)" placeholder="e.g. 52 MT" />
-                  <Input label="Destination Port" placeholder="e.g. Rotterdam" />
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                  <Input name="name" label="Full Name" placeholder="John Doe" required />
+                  <Input name="email" label="Corporate Email" placeholder="name@company.com" type="email" required />
+                  <Input name="volume" label="Required Volume (MT)" placeholder="e.g. 52 MT" required />
+                  <Input name="port" label="Destination Port" placeholder="e.g. Rotterdam" required />
                   <div className="md:col-span-2">
-                    <Input label="Specific Requirements" placeholder="Fiber density, moisture levels, etc." />
+                    <Input name="message" label="Specific Requirements" placeholder="Fiber density, moisture levels, etc." required />
                   </div>
                   <div className="md:col-span-2 pt-6">
-                    <Button className="w-full sm:w-auto px-16">Submit RFQ Request</Button>
+                    <Button 
+                      type="submit" 
+                      className="w-full sm:w-auto px-16"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Processing RFQ...' : 'Submit RFQ Request'}
+                    </Button>
+                    
+                    {submitStatus === 'success' && (
+                        <p className="mt-4 text-accent-gold text-sm font-body animate-fade-in">
+                          Thank you. Your industrial inquiry has been successfully dispatched to our procurement desk.
+                        </p>
+                    )}
+                    {submitStatus === 'error' && (
+                        <p className="mt-4 text-red-400 text-sm font-body">
+                          Communication error. Please contact export@indopelts.com directly.
+                        </p>
+                    )}
                   </div>
                 </form>
               </div>

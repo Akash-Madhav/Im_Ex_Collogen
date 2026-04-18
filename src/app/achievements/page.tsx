@@ -27,10 +27,10 @@ export default function AchievementsPage() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. PINNING THE LEFT SIDE
+      // 1. PINNING THE LEFT SIDE (Precision release)
       ScrollTrigger.create({
         trigger: '.timeline-area',
-        start: 'top 100px',
+        start: 'top top',
         end: 'bottom bottom',
         pin: '.timeline-left',
         pinSpacing: true,
@@ -38,14 +38,14 @@ export default function AchievementsPage() {
         invalidateOnRefresh: true,
       });
 
-      // 2. Timeline Line Growth
+      // 2. Timeline Line Growth (Surgical mapping)
       gsap.to('.timeline-progress', {
         height: '100%',
         ease: 'none',
         scrollTrigger: {
           trigger: '.timeline-area',
-          start: 'top center',
-          end: 'bottom center',
+          start: 'top 20%',
+          end: 'bottom 80%',
           scrub: true,
         }
       });

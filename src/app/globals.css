@@ -107,7 +107,7 @@
     background-color: var(--color-bg);
     color: var(--color-text-secondary);
     font-family: var(--font-inter), sans-serif;
-    scroll-behavior: smooth;
+    scroll-behavior: auto !important;
   }
 
   body {

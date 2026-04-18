@@ -37,12 +37,12 @@ export const LenisProvider = ({ children }: { children: ReactNode }) => {
       ref={lenisRef}
       autoRaf={false} // We handle RAF manually via GSAP ticker for perfect sync
       options={{ 
-        duration: 1.5,
-        lerp: 0.08, // Very smooth, slightly weighted
+        duration: 1.2,
+        lerp: 0.1, // Faster response with smooth decaying tail
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        wheelMultiplier: 1.1,
-        touchMultiplier: 1.5,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 2.0, // High-impact mobile scroll
         infinite: false,
       }}
     >
