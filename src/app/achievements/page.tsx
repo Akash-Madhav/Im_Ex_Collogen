@@ -6,154 +6,167 @@ import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Card } from '@/components/shared/Card';
 import { Badge } from '@/components/shared/Badge';
 import { Button } from '@/components/shared/Button';
-import { ScrollSection } from '@/components/shared/ScrollSection';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitHeading } from '@/components/animations/SplitHeading';
+import { CardTilt } from '@/components/animations/CardTilt';
+import { MagneticButton } from '@/components/animations/MagneticButton';
+import { gsap } from '@/lib/gsap-config';
+import { useGsapReveal } from '@/hooks/useGsapReveal';
+import { useCountUp } from '@/hooks/useCountUp';
+import { useScrollSkew } from '@/hooks/useScrollSkew';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+const pipelineSteps = [
+  { id: '01', title: 'Quality Intake', desc: 'Raw material procurement with strict node validation.' },
+  { id: '02', title: 'Fiber Cleaning', desc: 'Mechanical and chemical separation of non-collagenous proteins.' },
+  { id: '03', title: 'Liming Cycle', desc: 'Surgical calcium hydroxide treatment to stabilize molecular chains.' },
+  { id: '04', title: 'Batch Grading', desc: 'Technical analysis and classification for pharmaceutical end-use.' },
+  { id: '05', title: 'Precision Baling', desc: 'Compressed stabilization for global moisture-controlled export.' },
+];
 
-const milestones = [
-  { year: '2012', title: 'Operational Debut', desc: 'Established primary collection nodes in Southern India, standardizing intake.' },
-  { year: '2014', title: 'Global Authorization', desc: 'Secured international quality certifications for EU and East Asia distribution.' },
-  { year: '2017', title: 'Capacity Scaling', desc: 'Expanded Chennai processing facility to 1,500 MT per month capacity.' },
-  { year: '2021', title: 'Zero-Waste Initiative', desc: 'Implemented closed-loop systems, repurposing organic by-products.' },
-  { year: '2024', title: 'Digital Spec Protocol', desc: 'Launched real-time chemical data portal for tier-1 pharma clients.' },
+const metrics = [
+  { val: 99.8, suffix: '%', label: 'Batch Consistency' },
+  { val: 12, suffix: '+', label: 'Global Certifications' },
+  { val: 1500, suffix: ' MT', label: 'Monthly Throughput' },
+  { val: 24, suffix: 'hr', label: 'Inquiry Response' },
 ];
 
 export default function AchievementsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const metricsRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const imagesRef = useRef<HTMLDivElement>(null);
+
+  // Metrics Count-up
+  const metric1 = useRef(null);
+  const metric2 = useRef(null);
+  const metric3 = useRef(null);
+  const metric4 = useRef(null);
+  
+  useCountUp(metric1, 99.8, '%');
+  useCountUp(metric2, 12, '+');
+  useCountUp(metric3, 1500, ' MT');
+  useCountUp(metric4, 24, 'hr');
+
+  // Apply scroll skew to infrastructure images
+  useScrollSkew('.clip-reveal', 4);
+
+  useGsapReveal(metricsRef, {
+    from: { y: 40, opacity: 0, scale: 0.96 },
+    stagger: 0.12,
+  });
+
+  useGsapReveal(tableRef, {
+    from: { x: -20, opacity: 0 },
+    stagger: 0.05,
+    duration: 0.5
+  });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. PINNING THE LEFT SIDE (Precision release)
-      ScrollTrigger.create({
-        trigger: '.timeline-area',
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: '.timeline-left',
-        pinSpacing: true,
-        scrub: true,
-        invalidateOnRefresh: true,
+      // Infrastructure Images Clip-path reveal
+      gsap.utils.toArray('.clip-reveal').forEach((el: any) => {
+        gsap.fromTo(el, 
+          { clipPath: 'inset(0 100% 0 0)' },
+          { 
+            clipPath: 'inset(0 0% 0 0)', 
+            duration: 1.1, 
+            ease: 'power4.inOut',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%'
+            }
+          }
+        );
       });
 
-      // 2. Timeline Line Growth (Surgical mapping)
-      gsap.to('.timeline-progress', {
-        height: '100%',
+      // Connecting line animation for pipeline
+      gsap.from('.pipeline-line', {
+        scaleY: 0,
+        transformOrigin: 'top',
         ease: 'none',
         scrollTrigger: {
-          trigger: '.timeline-area',
-          start: 'top 20%',
-          end: 'bottom 80%',
-          scrub: true,
-        }
-      });
-
-      // 2. Individual Milestone Highlight
-      const cards = gsap.utils.toArray('.milestone-card');
-      cards.forEach((card: any) => {
-        gsap.to(card.querySelector('.milestone-dot'), {
-          backgroundColor: 'var(--color-accent)',
-          borderColor: 'var(--color-accent)',
-          scale: 1.2,
-          boxShadow: '0 0 15px rgba(200, 146, 42, 0.4)',
-          duration: 0.4,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top center+=100',
-            toggleActions: 'play reverse play reverse'
-          }
-        });
-
-        gsap.to(card.querySelector('span'), {
-          color: 'var(--color-accent)',
-          opacity: 1,
-          duration: 0.4,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top center+=100',
-            toggleActions: 'play reverse play reverse'
-          }
-        });
-      });
-
-      // 3. Overall Entrance Animation
-      gsap.from('.milestone-card', {
-        y: 60,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.timeline-area',
-          start: 'top 80%',
+          trigger: '.pipeline-area',
+          start: 'top 30%',
+          end: 'bottom 70%',
+          scrub: 1.5
         }
       });
     }, containerRef);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-bg-primary pt-24">
+    <div ref={containerRef} className="bg-bg-primary pt-24 overflow-hidden">
       
       {/* SECTION 1: HERO */}
-      <ScrollSection>
-        <section className="relative h-[60vh] flex items-center overflow-hidden border-b border-white/5">
-          <div className="absolute inset-0 z-0">
-            <Image 
-              src="/industrial_selection.png"
-              alt="Corporate History"
-              fill
-              className="object-cover opacity-30 grayscale"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/40 to-transparent" />
-          </div>
-          <div className="container-custom relative z-10">
-            <SectionHeading 
-              kicker="Corporate Evolution"
-              title={<>A Decade of <br /><span className="italic text-accent-gold">Industrial Precision.</span></>}
-            />
-          </div>
-        </section>
-      </ScrollSection>
+      <section className="relative h-[60vh] flex items-center overflow-hidden border-b border-white/5">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/infrastructure_hub.png"
+            alt="Corporate Infrastructure"
+            fill
+            className="object-cover opacity-20 grayscale"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/40 to-transparent" />
+        </div>
+        <div className="container-custom relative z-10">
+          <SplitHeading 
+            tag="h1" 
+            text="Defining the Industrial Trajectory." 
+            animateOnScroll={true} 
+            className="text-white font-display font-bold leading-[1.1]"
+          />
+        </div>
+      </section>
 
-      {/* SECTION 2: TIMELINE */}
-      <section className="timeline-area bg-bg-primary border-b border-white/5 overflow-visible relative">
+      {/* SECTION 2: METRICS */}
+      <section className="section-padding bg-bg-secondary border-b border-white/5">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative">
-            
-            {/* PINNED LEFT SIDE */}
-            <div className="timeline-left lg:col-span-4 h-fit py-32 lg:py-48 flex flex-col justify-start">
-              <Badge variant="outline" className="mb-6 w-fit">Historical Trajectory</Badge>
-              <h3 className="text-3xl lg:text-5xl font-display font-bold text-text-premium mb-8 leading-[1.1]">
-                A decade of <span className="italic text-accent-gold">Industrial</span> precision.
-              </h3>
-              <p className="text-text-muted font-body text-lg leading-relaxed opacity-80 max-w-sm">
-                From local procurement to global logistics authority. Our trajectory is defined by zero-defect output.
+          <div ref={metricsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {metrics.map((item, i) => (
+              <CardTilt key={i} data-reveal-item>
+                <Card variant="elevated" className="text-center group">
+                  <h4 className="text-4xl font-display font-bold text-accent-gold mb-2">
+                    <span ref={i === 0 ? metric1 : i === 1 ? metric2 : i === 2 ? metric3 : metric4}>0</span>
+                  </h4>
+                  <p className="text-[10px] uppercase tracking-widest text-text-dim group-hover:text-accent-gold transition-colors">{item.label}</p>
+                </Card>
+              </CardTilt>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: PIPELINE */}
+      <section className="pipeline-area section-padding border-b border-white/5 relative">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+            <div className="lg:col-span-5">
+              <SectionHeading 
+                kicker="Operational Protocol"
+                title={<>A Five-Phase <br /><span className="italic text-accent-gold">Refinement Cycle.</span></>}
+              />
+              <p className="mt-8 text-text-muted text-lg leading-relaxed max-w-sm">
+                Each shipment undergoes a rigorous stabilization process to ensure maximum nitrogen retention and fiber integrity for pharmaceutical extraction.
               </p>
             </div>
+            
+            <div className="lg:col-span-7 relative pl-12 md:pl-20">
+              {/* Vertical Connecting Line */}
+              <div className="pipeline-line absolute left-0 md:left-4 top-4 bottom-4 w-px bg-white/10" />
+              <div className="pipeline-line absolute left-0 md:left-4 top-4 bottom-4 w-px bg-accent-gold origin-top" />
 
-            {/* SCROLLING RIGHT SIDE */}
-            <div className="lg:col-span-8 relative pl-10 md:pl-16 py-32 lg:py-48">
-              {/* Dynamic Scroll Line */}
-              <div className="absolute left-0 top-32 lg:top-48 bottom-32 lg:bottom-48 w-[1px] bg-white/5 origin-top" />
-              <div className="timeline-progress absolute left-0 top-32 lg:top-48 w-[1px] bg-accent-gold origin-top transition-shadow duration-700 shadow-[0_0_15px_rgba(200,146,42,0.5)]" style={{ height: '0%' }} />
-
-              <div className="space-y-32">
-                {milestones.map((item, i) => (
-                  <div key={i} className="milestone-card relative group">
-                    {/* Bullet Indicator */}
-                    <div className="absolute -left-[45px] md:-left-[69px] top-2 w-10 md:w-12 h-[1px] bg-white/10 group-hover:bg-accent-gold/50 transition-all opacity-40 group-hover:opacity-100" />
-                    <div className="milestone-dot absolute -left-[54px] md:-left-[78px] top-2 w-4 h-4 rounded-full border border-white/20 bg-bg-primary z-10 transition-all duration-500" />
+              <div className="space-y-16">
+                {pipelineSteps.map((step, i) => (
+                  <div key={i} className="relative group">
+                    <div className="absolute -left-[54px] md:-left-[86px] top-2 w-10 md:w-16 h-px bg-white/10 group-hover:bg-accent-gold transition-colors" />
+                    <div className="absolute -left-[64px] md:-left-[96px] top-1 w-6 h-6 rounded-full bg-bg-primary border border-white/10 flex items-center justify-center z-10 group-hover:border-accent-gold transition-colors">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent-gold/40 group-hover:bg-accent-gold scale-0 group-hover:scale-100 transition-transform" />
+                    </div>
                     
-                    <span className="text-[32px] md:text-[56px] font-display font-bold text-text-premium/5 group-hover:text-accent-gold/20 transition-all duration-700 block mb-6 leading-none">
-                      {item.year}
-                    </span>
-                    <h4 className="text-2xl md:text-3xl font-display font-bold text-text-premium mb-6 group-hover:translate-x-2 transition-transform duration-500">{item.title}</h4>
-                    <p className="text-text-dim text-lg leading-relaxed max-w-xl font-body opacity-80 group-hover:opacity-100 transition-opacity">
-                      {item.desc}
-                    </p>
+                    <span className="text-xs font-mono text-accent-gold mb-3 block">{step.id}</span>
+                    <h4 className="text-2xl font-display font-bold text-text-premium mb-4">{step.title}</h4>
+                    <p className="text-text-dim text-lg leading-relaxed max-w-xl">{step.desc}</p>
                   </div>
                 ))}
               </div>
@@ -162,43 +175,48 @@ export default function AchievementsPage() {
         </div>
       </section>
 
-      {/* SECTION 3: INDUSTRIAL IMPACT */}
-      <ScrollSection>
-        <section className="section-padding bg-bg-secondary border-b border-white/5">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card variant="elevated" className="text-center">
-                <h4 className="text-3xl font-display font-bold text-accent-gold mb-2">99.8%</h4>
-                <p className="text-[10px] uppercase tracking-widest text-text-dim">Batch Consistency</p>
-              </Card>
-              <Card variant="elevated" className="text-center">
-                <h4 className="text-3xl font-display font-bold text-accent-gold mb-2">10+</h4>
-                <p className="text-[10px] uppercase tracking-widest text-text-dim">Global Compliance Awards</p>
-              </Card>
-              <Card variant="elevated" className="text-center">
-                <h4 className="text-3xl font-display font-bold text-accent-gold mb-2">Tier-1</h4>
-                <p className="text-[10px] uppercase tracking-widest text-text-dim">Pharma Grade Preferred</p>
-              </Card>
+      {/* SECTION 4: INFRASTRUCTURE REVEAL */}
+      <section className="section-padding bg-bg-secondary overflow-hidden">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="clip-reveal rounded-sm overflow-hidden aspect-[16/10] bg-surface-2 group">
+              <Image 
+                src="/industrial_selection.png" 
+                alt="Procurement Detail" 
+                fill 
+                className="object-cover grayscale transition-transform duration-700 group-hover:scale-105 group-hover:grayscale-0" 
+              />
+            </div>
+            <div className="clip-reveal rounded-sm overflow-hidden aspect-[16/10] bg-surface-2 group" style={{ transitionDelay: '0.2s' }}>
+              <Image 
+                src="/port_logistics_closeup.png" 
+                alt="Logistics Detail" 
+                fill 
+                className="object-cover grayscale transition-transform duration-700 group-hover:scale-105 group-hover:grayscale-0" 
+              />
             </div>
           </div>
-        </section>
-      </ScrollSection>
+        </div>
+      </section>
 
-      {/* SECTION 4: NEXT STEP CTA */}
-      <ScrollSection>
-        <section className="section-padding text-center">
-          <div className="container-custom">
-            <Badge variant="outline" className="mb-8">Looking Forward</Badge>
-            <h2 className="text-4xl font-display font-bold text-text-premium mb-12">Building the Future of <span className="italic text-accent-gold">Global Collagen.</span></h2>
-            <div className="flex justify-center gap-6">
-              <Button variant="primary" href="/products">View Products</Button>
-              <Button variant="ghost" href="/contact">Partner with us</Button>
-            </div>
+      {/* SECTION 5: CTA */}
+      <section className="section-padding text-center">
+        <div className="container-custom">
+          <SplitHeading 
+            tag="h2" 
+            text="Driving the Future of Biopolymers." 
+            className="text-4xl font-display font-bold text-text-premium mb-12"
+          />
+          <div className="flex justify-center gap-6">
+            <MagneticButton>
+              <Button size="lg" href="/products">View Technical Specs</Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button variant="ghost" size="lg" href="/contact">Inquiry Portal</Button>
+            </MagneticButton>
           </div>
-        </section>
-      </ScrollSection>
-
-
+        </div>
+      </section>
     </div>
   );
 }

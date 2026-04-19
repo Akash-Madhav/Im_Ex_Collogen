@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
 import PageTransition from "@/components/layout/PageTransition";
 import CustomCursor from "@/components/layout/CustomCursor";
-import { LenisProvider } from "@/lib/lenis-context";
+import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvider";
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -50,14 +50,14 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${jetbrains.variable}`}>
       <body className="antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden bg-bg">
         <CustomCursor />
-        <LenisProvider>
+        <SmoothScrollProvider>
           <Navbar />
           <PageTransition>
             <main id="main-content" className="relative z-10">{children}</main>
           </PageTransition>
           <Footer />
           <WhatsAppWidget />
-        </LenisProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

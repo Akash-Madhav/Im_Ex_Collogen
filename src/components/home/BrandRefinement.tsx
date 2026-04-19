@@ -1,99 +1,82 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { SectionHeading } from '../shared/SectionHeading';
+import React, { useRef } from 'react';
+import Image from 'next/image';
 import { Card } from '../shared/Card';
 import { Badge } from '../shared/Badge';
-import { Button } from '../shared/Button';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SectionHeading } from '../shared/SectionHeading';
+import { CardTilt } from '../animations/CardTilt';
+import { useGsapReveal } from '@/hooks/useGsapReveal';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const stats = [
-  { number: '12', unit: 'YR', label: 'Export Authority' },
-  { number: '300', unit: '+', label: 'Annual Shipments' },
-  { number: '100', unit: '%', label: 'Process Audit' },
-];
-
-const pillars = [
-  { title: 'Selection', desc: 'Automated weight grading and visual fiber inspection.' },
-  { title: 'Controlled Liming', desc: 'Calibrated pH cycles for protein retention.' },
-  { title: 'Precision Mechanicals', desc: 'Dual-stage Scraper dehairing for surface integrity.' },
-  { title: 'Hygienic Drying', desc: 'Ambient cycles achieving 14-18% moisture equilibrium.' },
+const applications = [
+  { title: 'Pharmaceutical', desc: 'Type I Collagen extraction with zero-chemical residue.', img: '/industrial_selection.png' },
+  { title: 'Edible Gelatin', desc: 'Food-grade compliant processing for global confectionary.', img: '/product_pelts_bundles.png' },
+  { title: 'Cosmeceuticals', desc: 'Hydrolyzed protein sourcing for premium skincare.', img: '/industrial_pelts_hero.png' },
+  { title: 'Technical Industry', desc: 'Standardized raw input for high-tensile binding.', img: '/infrastructure_hub.png' },
 ];
 
 export default function BrandRefinement() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const pillarsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.refinement-card', {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        },
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out'
-      });
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
+  useGsapReveal(gridRef, {
+    from: { y: 40, opacity: 0, scale: 0.97 },
+    stagger: 0.12,
+    duration: 0.7,
+    ease: 'power3.out',
+    start: 'top 84%'
+  });
+
+  useGsapReveal(pillarsRef, {
+    from: { y: 30, opacity: 0 },
+    stagger: 0.1,
+    duration: 0.6
+  });
 
   return (
-    <section ref={containerRef} className="section-padding bg-bg-primary overflow-hidden border-b border-border-subtle">
+    <section className="section-padding bg-bg-secondary border-y border-white/5">
       <div className="container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
-          
-          <div className="lg:col-span-12">
-            <SectionHeading 
-              kicker="Quality Architecture"
-              title={<>Refined Processing. <span className="italic">Unmatched Consistency.</span></>}
-            />
-          </div>
+        <div className="mb-20">
+          <SectionHeading 
+            kicker="The Standard of Refinement"
+            title={<>Industrial Grade. <br /><span className="italic text-accent-gold">Laboratory Precision.</span></>}
+          />
+        </div>
 
-          {/* Stats & Context */}
-          <div className="lg:col-span-5 space-y-12">
-            <p className="text-text-muted text-lg leading-relaxed font-body">
-              IndoPelts International specializes in the rigorous processing of buffalo dried limed pelts, bridging the gap between raw industrial availability and high-spec global manufacturing standards.
-            </p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {stats.map((stat, i) => (
-                <div key={i} className="refinement-card group">
-                  <div className="text-[32px] font-display font-bold text-accent-gold leading-none mb-1">
-                    {stat.number}<span className="text-sm font-mono text-text-dim">{stat.unit}</span>
-                  </div>
-                  <div className="text-[10px] font-body font-bold uppercase tracking-[0.1em] text-text-dim">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+        {/* Quality Pillars */}
+        <div ref={pillarsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-32">
+          {[
+            { label: 'Integrity', val: 'Fiber chain preservation focused processing.' },
+            { label: 'Traceability', val: 'Digital batch logging from source to port.' },
+            { label: 'Consistency', val: 'Standardized liming cycles for batch parity.' },
+            { label: 'Compliance', val: 'Aligned with global pharmaceutical protocols.' },
+          ].map((item, i) => (
+            <div key={i} data-reveal-item className="space-y-4">
+              <Badge variant="outline" className="text-[10px]">{item.label}</Badge>
+              <p className="text-text-premium font-display font-medium leading-relaxed">{item.val}</p>
             </div>
+          ))}
+        </div>
 
-            <Button variant="secondary" href="/achievements">
-              Operational Roadmap
-            </Button>
-          </div>
-
-          {/* Pillars Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {pillars.map((pillar, i) => (
-              <Card key={i} variant="glass" padding="md" className="refinement-card group cursor-default">
-                <Badge variant="accent" className="mb-6">0{i+1}</Badge>
-                <h4 className="text-lg font-display font-bold text-text-premium mb-3">{pillar.title}</h4>
-                <p className="text-sm text-text-dim font-body leading-relaxed group-hover:text-text-muted transition-colors">
-                  {pillar.desc}
-                </p>
+        {/* Application Grid */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {applications.map((app, i) => (
+            <CardTilt key={i} data-reveal-item>
+              <Card variant="glass" className="h-full group overflow-hidden">
+                <div className="relative h-48 mb-6 overflow-hidden rounded-sm">
+                  <Image 
+                    src={app.img} 
+                    alt={app.title} 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-bg-primary/20 group-hover:bg-transparent transition-colors" />
+                </div>
+                <h4 className="text-lg font-display font-bold text-text-premium mb-3">{app.title}</h4>
+                <p className="text-sm text-text-muted leading-relaxed">{app.desc}</p>
               </Card>
-            ))}
-          </div>
-
+            </CardTilt>
+          ))}
         </div>
       </div>
     </section>

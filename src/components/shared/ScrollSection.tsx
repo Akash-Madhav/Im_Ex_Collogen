@@ -1,51 +1,36 @@
 'use client';
 
-import { ReactNode, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import React, { useRef } from 'react';
+import { useGsapReveal } from '@/hooks/useGsapReveal';
 
 interface ScrollSectionProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   delay?: number;
 }
 
 /**
- * ScrollSection - Automates a smooth reveal animation when entering the viewport.
- * Provides the "screen optimised" feel by ensuring content isn't static.
+ * ScrollSection - High-performance replacement for Framer Motion reveals.
+ * Uses GSAP ScrollTrigger for hardware-accelerated entrance.
  */
-export function ScrollSection({ children, className = '', delay = 0 }: ScrollSectionProps) {
+export const ScrollSection: React.FC<ScrollSectionProps> = ({ 
+  children, 
+  className = "", 
+  delay = 0 
+}) => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      gsap.from(section, {
-        opacity: 0,
-        y: 60,
-        duration: 1.2,
-        ease: 'power3.out',
-        delay,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 85%',
-          toggleActions: 'play none none none', // Just play once for premium feel
-        }
-      });
-    }, section);
-
-    return () => ctx.revert();
-  }, [delay]);
+  useGsapReveal(sectionRef, {
+    from: { y: 40, opacity: 0 },
+    delay,
+    duration: 0.8,
+    ease: 'power3.out',
+    start: 'top 85%'
+  });
 
   return (
     <div ref={sectionRef} className={className}>
       {children}
     </div>
   );
-}
+};

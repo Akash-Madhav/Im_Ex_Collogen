@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { MagneticButton } from '../animations/MagneticButton';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -64,20 +65,22 @@ export default function Navbar() {
         <div className="w-full px-6 md:px-12">
           <div className="flex items-center justify-between">
             {/* LOGO */}
-            <Link 
-              href="/" 
-              className="relative z-[110] flex items-center gap-3 transition-transform duration-500 hover:scale-[1.02]"
-            >
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg shadow-accent-gold/20">
-                <span className="text-bg-primary font-black text-base md:text-lg italic">B</span>
-              </div>
-              <span className={cn(
-                "font-body font-extrabold text-base md:text-lg tracking-tight transition-colors duration-700",
-                scrolled ? "text-[#2B2B2B]" : "text-[#FAF9F6]"
-              )}>
-                INDOPELTS
-              </span>
-            </Link>
+            <MagneticButton className="w-auto h-auto">
+              <Link 
+                href="/" 
+                className="relative z-[110] flex items-center gap-3 transition-transform duration-500 hover:scale-[1.02]"
+              >
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-accent-gold flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg shadow-accent-gold/20">
+                  <span className="text-bg-primary font-black text-base md:text-lg italic">B</span>
+                </div>
+                <span className={cn(
+                  "font-body font-extrabold text-base md:text-lg tracking-tight transition-colors duration-700",
+                  scrolled ? "text-[#2B2B2B]" : "text-[#FAF9F6]"
+                )}>
+                  INDOPELTS
+                </span>
+              </Link>
+            </MagneticButton>
 
             {/* Desktop Nav Links */}
             <div className="hidden lg:flex items-center gap-10">
@@ -115,24 +118,26 @@ export default function Navbar() {
 
             {/* CTA Button */}
             <div className="flex items-center gap-4">
-              <Link
-                href="/contact"
-                className={cn(
-                  "hidden lg:inline-flex items-center px-10 py-3 rounded-full border transition-all duration-700 group relative overflow-hidden",
-                  scrolled 
-                    ? "border-black/10 hover:border-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-[#FAF9F6]" 
-                    : "border-white/10 hover:border-[#FAF9F6] hover:bg-[#FAF9F6] hover:text-[#2B2B2B]"
-                )}
-              >
-                <span className={cn(
-                  "text-[10px] uppercase tracking-[0.3em] font-body font-bold relative z-10 transition-colors duration-700",
-                  scrolled 
-                    ? "text-[#2B2B2B] group-hover:text-[#FAF9F6]" 
-                    : "text-[#FAF9F6] group-hover:text-[#2B2B2B]"
-                )}>
-                  Request a Quote
-                </span>
-              </Link>
+              <MagneticButton className="w-auto h-auto">
+                <Link
+                  href="/contact"
+                  className={cn(
+                    "hidden lg:inline-flex items-center px-10 py-3 rounded-full border transition-all duration-700 group relative overflow-hidden",
+                    scrolled 
+                      ? "border-black/10 hover:border-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-[#FAF9F6]" 
+                      : "border-white/10 hover:border-[#FAF9F6] hover:bg-[#FAF9F6] hover:text-[#2B2B2B]"
+                  )}
+                >
+                  <span className={cn(
+                    "text-[10px] uppercase tracking-[0.3em] font-body font-bold relative z-10 transition-colors duration-700",
+                    scrolled 
+                      ? "text-[#2B2B2B] group-hover:text-[#FAF9F6]" 
+                      : "text-[#FAF9F6] group-hover:text-[#2B2B2B]"
+                  )}>
+                    Request a Quote
+                  </span>
+                </Link>
+              </MagneticButton>
 
               {/* Mobile Menu Button */}
               <button
