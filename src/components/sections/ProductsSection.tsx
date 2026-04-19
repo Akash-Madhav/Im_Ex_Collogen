@@ -91,7 +91,7 @@ export default function ProductsSection() {
 
   return (
     <section ref={containerRef} className="bg-white flex flex-col justify-center py-16 pt-28 md:pt-32 overflow-hidden relative">
-      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col">
+      <div className="w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col">
         <div className="text-center max-w-3xl mx-auto mb-12 shrink-0">
           <div className="text-[11px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-4">
             Technical Catalog
@@ -101,7 +101,7 @@ export default function ProductsSection() {
           </h2>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-4 w-full h-[750px] xl:h-[850px]">
+        <div className="flex flex-col lg:flex-row gap-4 w-full h-[600px] xl:h-[700px]">
           {products.map((prod, idx) => (
             <div
               key={prod.title}
