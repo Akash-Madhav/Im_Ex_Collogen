@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /certificates/
 
 Sitemap: https://indopelts.com/sitemap.xml

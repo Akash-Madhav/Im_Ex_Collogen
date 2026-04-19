@@ -4,7 +4,6 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
-import MobileStickyBar from "@/components/layout/MobileStickyBar";
 import PageTransition from "@/components/layout/PageTransition";
 import CustomCursor from "@/components/layout/CustomCursor";
 import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvider";
@@ -45,7 +44,6 @@ export default function RootLayout({
           </PageTransition>
           <Footer />
           <WhatsAppWidget />
-          <MobileStickyBar />
         </SmoothScrollProvider>
       </body>
     </html>

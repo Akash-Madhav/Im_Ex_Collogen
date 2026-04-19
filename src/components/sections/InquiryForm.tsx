@@ -101,6 +101,7 @@ export default function InquiryForm() {
                 <DownloadLink label="Product Specification Sheet (PDF)" href="/downloads/product-specs.pdf" />
                 <DownloadLink label="Company Compliance Profile" href="/downloads/company-profile.pdf" />
                 <DownloadLink label="APEDA Registration Certificate" href="/certificates/apeda.pdf" />
+                <DownloadLink label="CAPEXIL Member Certificate" href="/certificates/capexil.pdf" />
               </div>
             </div>
           </div>

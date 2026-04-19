@@ -15,7 +15,6 @@ const navLinks = [
   { name: 'Products', href: '/products' },
   { name: 'Quality', href: '/quality' },
   { name: 'Export', href: '/export' },
-  { name: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
@@ -23,6 +22,10 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  const isHome = pathname === '/';
+  // Internal pages have dark heroes, so we want light text initially
+  const shouldBeLight = !scrolled && !isHome;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,39 +80,46 @@ export default function Navbar() {
       >
         <div 
           className={cn(
-            "max-w-7xl mx-auto flex items-center justify-between relative transition-all duration-500 border border-white/20 px-4 md:px-8",
+            "max-w-7xl mx-auto flex items-center justify-between relative transition-all duration-500 border px-4 md:px-8",
             scrolled 
-              ? "py-2.5 bg-white/75 backdrop-blur-xl shadow-[0_12px_40px_rgba(31,93,58,0.15)] rounded-full" 
-              : "py-4 bg-white/40 backdrop-blur-md shadow-none rounded-2xl"
+              ? "py-2 bg-white/80 backdrop-blur-xl shadow-card rounded-full border-white/20" 
+              : "py-5 bg-white/5 backdrop-blur-sm rounded-2xl border-white/10",
+            shouldBeLight && !scrolled ? "bg-black/10 border-white/10" : ""
           )}
         >
-          {/* LOGO - Left aligned */}
+          {/* LOGO */}
           <div className="flex-shrink-0 z-20">
             <MagneticButton className="w-auto h-auto">
-              <Link href="/" className="flex items-center gap-2 md:gap-4 group">
-                <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:scale-110">
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="relative w-10 h-10 transition-transform group-hover:scale-110">
                    <Image 
                      src="/images/logo.svg" 
                      alt="Logo" 
                      fill 
-                     className="object-contain"
+                     className={cn("object-contain transition-all", shouldBeLight && "brightness-0 invert")}
                      priority
                    />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-heading font-extrabold text-[12px] md:text-[14px] lg:text-[16px] xl:text-[18px] tracking-tight text-[var(--c-primary)] leading-[0.85] uppercase whitespace-nowrap">
+                  <span className={cn(
+                    "font-heading font-black text-sm tracking-tight leading-[0.9] uppercase whitespace-nowrap transition-colors",
+                    shouldBeLight ? "text-white" : "text-[var(--c-primary)]"
+                  )}>
                     Aroon Blossom
                   </span>
-                  <span className="font-heading font-extrabold text-[12px] md:text-[14px] lg:text-[16px] xl:text-[18px] tracking-tight text-[var(--c-primary)] leading-[0.85] uppercase whitespace-nowrap">
-                    Impex
+                  <span className={cn(
+                    "font-heading font-medium text-[10px] tracking-[0.2em] leading-none uppercase whitespace-nowrap opacity-70 transition-colors",
+                    shouldBeLight ? "text-white/80" : "text-[var(--c-text-primary)]"
+                  )}>
+                    Impex · Global
                   </span>
                 </div>
               </Link>
             </MagneticButton>
           </div>
 
-          {/* Desktop Nav Links - Centered space with auto-layout */}
-          <div className="hidden lg:flex flex-1 justify-center items-center gap-4 xl:gap-8 mx-6">
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex flex-1 justify-center items-center gap-6 xl:gap-10 mx-6">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -117,13 +127,18 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "text-[9px] xl:text-[11px] font-bold tracking-[0.2em] uppercase transition-colors relative py-1 hover:text-[var(--c-primary)] whitespace-nowrap",
-                    isActive ? "text-[var(--c-primary)]" : "text-[var(--c-text-primary)]"
+                    "text-[12px] xl:text-[13px] font-bold tracking-[0.15em] uppercase transition-all relative py-1 whitespace-nowrap hover:opacity-100",
+                    shouldBeLight ? "text-white/80 hover:text-white" : "text-[var(--c-text-primary)] hover:text-[var(--c-primary)]",
+                    isActive && !shouldBeLight && "text-[var(--c-primary)]",
+                    isActive && shouldBeLight && "text-white"
                   )}
                 >
                   {link.name}
                   {isActive && (
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[var(--c-primary)] shadow-[0_0_10px_rgba(31,93,58,0.5)]" />
+                    <div className={cn(
+                      "absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full",
+                      shouldBeLight ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" : "bg-[var(--c-primary)]"
+                    )} />
                   )}
                 </Link>
               );
@@ -131,19 +146,24 @@ export default function Navbar() {
           </div>
 
           {/* Right CTAs */}
-          <div className="flex items-center gap-3 z-20">
+          <div className="flex items-center gap-4 z-20">
             <div className="hidden sm:block">
               <MagneticButton className="w-auto h-auto">
-                <Link href="/contact" className="btn-primary py-2.5 px-6 text-[10px] md:text-[11px] font-extrabold uppercase tracking-[0.2em] rounded-full whitespace-nowrap">
-                  Contact
+                <Link href="/contact" className={cn(
+                  "btn-primary py-2.5 px-6 text-[11px] font-bold uppercase tracking-[0.15em] rounded-full whitespace-nowrap",
+                  shouldBeLight && "bg-white text-[var(--c-primary)] hover:bg-white/90"
+                )}>
+                  Request Quote
                 </Link>
               </MagneticButton>
             </div>
 
-            {/* Mobile Menu Button - Visible on all small screens */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center bg-[var(--c-primary)] text-white rounded-full hover:bg-[var(--c-primary-dark)] transition-colors"
+              className={cn(
+                "lg:hidden w-10 h-10 flex items-center justify-center rounded-full transition-all",
+                shouldBeLight ? "bg-white text-[var(--c-primary)]" : "bg-[var(--c-primary)] text-white"
+              )}
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -158,7 +178,7 @@ export default function Navbar() {
         className="fixed inset-0 z-[110] lg:hidden bg-white flex flex-col pt-32 translate-x-full opacity-0"
       >
         <div className="flex flex-col items-center gap-8 px-6 text-center">
-          {navLinks.map((link, index) => (
+          {navLinks.map((link) => (
             <div key={link.href} className="mobile-nav-item">
               <Link
                 href={link.href}
@@ -173,10 +193,10 @@ export default function Navbar() {
           ))}
           <div className="mt-8 flex flex-col gap-4 w-full max-w-[280px] mobile-nav-item">
             <Link href="/contact" className="btn-primary text-center py-4 text-xs font-bold uppercase tracking-widest">
-              Request Quote
+              Contact Us
             </Link>
             <Link href="https://wa.me/91XXXXXXXXXX" className="btn-whatsapp justify-center py-4 text-xs font-bold uppercase tracking-widest">
-              WhatsApp Now
+              WhatsApp Desk
             </Link>
           </div>
         </div>
@@ -184,3 +204,4 @@ export default function Navbar() {
     </>
   );
 }
+
