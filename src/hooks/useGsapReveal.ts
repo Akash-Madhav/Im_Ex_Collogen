@@ -21,13 +21,13 @@ export const useGsapReveal = (
   config: RevealConfig = {}
 ) => {
   const {
-    from = { y: 30, opacity: 0 },
+    from = { y: 20, opacity: 0 },
     to = { y: 0, opacity: 1 },
     start = 'top 85%',
     delay = 0,
     stagger = 0,
-    duration = 0.8,
-    ease = 'power3.out',
+    duration = 0.35,
+    ease = 'cubic-bezier(0.22, 1, 0.36, 1)',
     scrub = false
   } = config;
 

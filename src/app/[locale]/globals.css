@@ -42,7 +42,19 @@
   --shadow-cert: 0 4px 24px rgba(0,0,0,0.12);
 
   /* Anims */
-  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* View Transitions for Shared Layout Feel */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: var(--ease-premium);
+}
+
+/* Shared image transitions */
+[data-vt-image] {
+  view-transition-name: product-image;
 }
 
 :root {

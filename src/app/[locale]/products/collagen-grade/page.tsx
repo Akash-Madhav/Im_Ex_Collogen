@@ -56,6 +56,7 @@ export default function CollagenGradePage() {
                      alt="Collagen Grade Pelt Quality" 
                      fill 
                      className="object-cover"
+                     style={{ viewTransitionName: 'product-image-collagen' } as any}
                    />
                 </div>
                 
@@ -81,7 +82,7 @@ export default function CollagenGradePage() {
                <h3 className="text-2xl font-bold mb-2">Ready to source Collagen Grade?</h3>
                <p className="text-[var(--c-text-secondary)]">Request a technical spec sheet or a container quote today.</p>
             </div>
-            <a href="#inquiry-form" className="btn-primary">Request Bulk Quote</a>
+            <a href="#request-quote" className="btn-primary">Request Bulk Quote</a>
          </div>
       </section>
 

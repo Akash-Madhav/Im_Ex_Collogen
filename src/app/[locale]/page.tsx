@@ -14,7 +14,6 @@ export default function Home() {
       <HomeHero />
       <AboutSnapshot />
       <HomeProductsPreview />
-
     </div>
   );
 }

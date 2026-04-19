@@ -56,6 +56,7 @@ export default function PetFoodGradePage() {
                      alt="Pet Food Grade Pelt Quality" 
                      fill 
                      className="object-cover"
+                     style={{ viewTransitionName: 'product-image-petfood' } as any}
                    />
                 </div>
                 
@@ -81,7 +82,7 @@ export default function PetFoodGradePage() {
                <h3 className="text-2xl font-bold mb-2 text-[#B45309]">Ready to source Pet Food Grade?</h3>
                <p className="text-[var(--c-text-secondary)]">Connect with our export desk for bulk FCL availability.</p>
             </div>
-            <a href="#inquiry-form" className="btn-primary" style={{ backgroundColor: '#B45309' }}>Request Bulk Quote</a>
+            <a href="#request-quote" className="btn-primary" style={{ backgroundColor: '#B45309' }}>Request Bulk Quote</a>
          </div>
       </section>
 

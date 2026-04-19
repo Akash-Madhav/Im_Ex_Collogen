@@ -46,14 +46,14 @@ export default function InquiryForm() {
   };
 
   return (
-    <section id="inquiry-form" ref={containerRef} className="snap-section h-screen bg-[var(--c-surface)] flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
+    <section id="request-quote" ref={containerRef} className="bg-[var(--c-surface)] flex flex-col justify-center overflow-auto lg:overflow-hidden py-16 lg:py-24">
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 xl:gap-24 items-center">
           
           {/* Left Column: Form */}
           <div className="bg-white p-10 xl:p-14 rounded-[48px] shadow-2xl border border-black/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--c-primary)]/5 rounded-bl-full" />
-            <h2 className="text-3xl xl:text-4xl font-black text-[var(--c-text-primary)] mb-10 tracking-tighter uppercase">Send Export <br /><span className="text-[var(--c-primary)]">Inquiry</span></h2>
+            <h2 className="text-3xl xl:text-4xl font-black text-[var(--c-text-primary)] mb-10 tracking-tighter uppercase">Request A <br /><span className="text-[var(--c-primary)]">Quote</span></h2>
             
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">

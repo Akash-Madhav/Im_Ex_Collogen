@@ -8,23 +8,27 @@ import SectionWrapper from '@/components/layout/SectionWrapper';
 import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 
+import { useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
+
 // Encapsulating the card in its own component makes GSAP hover timelines much cleaner to manage per-item
 function ProductCard({ item, index }: { item: any, index: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!panelRef.current || !textContentRef.current) return;
 
     // Initial state: Panel is shifted down, text is hidden and shifted down
     gsap.set(panelRef.current, { yPercent: 20, opacity: 0 });
-    gsap.set(textContentRef.current, { y: 30, opacity: 0 });
+    gsap.set(textContentRef.current, { y: 20, opacity: 0 });
 
     const ctx = gsap.context(() => {
       // Create a paused timeline for the hover effect
-      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out', duration: 0.6 } })
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'cubic-bezier(0.22, 1, 0.36, 1)', duration: 0.4 } })
         .to(panelRef.current, { yPercent: 0, opacity: 1 }, 0)
         .to(textContentRef.current, { y: 0, opacity: 1 }, 0.1); // slight stagger for the text
       
@@ -38,18 +42,34 @@ function ProductCard({ item, index }: { item: any, index: number }) {
   const handleMouseEnter = () => tweenRef.current?.play();
   const handleMouseLeave = () => tweenRef.current?.reverse();
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (!item.href) return;
+    
+    // Check if View Transitions API is supported
+    if (document.startViewTransition) {
+      e.preventDefault();
+      document.startViewTransition(() => {
+        router.push(item.href);
+      });
+    }
+  };
+
   return (
-    <div 
+    <Link 
+      href={item.href || '#'}
+      onClick={handleClick}
       ref={containerRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`group relative aspect-[4/5] md:aspect-[4/3] lg:aspect-[5/4] rounded-[40px] overflow-hidden shadow-lg border border-black/5 bg-neutral-900 transition-all duration-700 ease-out hover:shadow-2xl ${index === 2 ? 'lg:col-span-2 lg:aspect-[21/9]' : ''}`}
+      className={`group relative aspect-[4/5] md:aspect-[4/3] lg:aspect-[5/4] rounded-[40px] overflow-hidden shadow-lg border border-black/5 bg-neutral-900 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-2xl ${index === 2 ? 'lg:col-span-2 lg:aspect-[21/9]' : ''}`}
     >
       <Image 
         src={item.image} 
         alt={item.title} 
         fill 
+        data-vt-image={item.tag.toLowerCase()}
         className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000 ease-out group-hover:scale-105"
+        style={{ viewTransitionName: `product-image-${item.tag.toLowerCase()}` } as any}
       />
       
       {/* Bottom Content Panel animated by GSAP */}
@@ -73,7 +93,7 @@ function ProductCard({ item, index }: { item: any, index: number }) {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -82,6 +102,7 @@ export default function HomeProductsPreview() {
   useGsapReveal(ref, { from: { opacity: 0, y: 20 } });
   
   const t = useTranslations('Products');
+  const locale = useLocale();
 
   const previews = [
     {
@@ -89,18 +110,21 @@ export default function HomeProductsPreview() {
       desc: t('buffaloDesc'),
       image: '/images/grading_process.png',
       tag: 'Collagen',
+      href: `/${locale}/products/collagen-grade`
     },
     {
       title: t('petFoodTitle'),
       desc: t('petFoodDesc'),
       image: '/images/warehouse_stock.png',
-      tag: 'Pet Food',
+      tag: 'PetFood',
+      href: `/${locale}/products/pet-food-grade`
     },
     {
       title: t('customTitle'),
       desc: t('customDesc'),
       image: '/images/liming_pits.png',
       tag: 'Custom',
+      href: `/${locale}/products`
     }
   ];
 
@@ -120,7 +144,7 @@ export default function HomeProductsPreview() {
               Industrial standard and lab-verified materials engineered for high-yield extraction and premium manufacturing processes.
             </p>
           </div>
-          <Link href="/products" className="btn-secondary py-3.5 px-8 text-xs font-bold uppercase tracking-widest whitespace-nowrap self-start md:self-end rounded-full shadow-lg hover:shadow-xl transition-all">
+          <Link href={`/${locale}/products`} className="btn-secondary py-3.5 px-8 text-xs font-bold uppercase tracking-widest whitespace-nowrap self-start md:self-end rounded-full shadow-lg hover:shadow-xl transition-all">
             {t('cta')}
           </Link>
         </div>

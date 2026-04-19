@@ -10,9 +10,10 @@ interface PageHeroProps {
   subtitle: string;
   image: string;
   label?: string;
+  vtName?: string;
 }
 
-export default function PageHero({ title, subtitle, image, label }: PageHeroProps) {
+export default function PageHero({ title, subtitle, image, label, vtName }: PageHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   useGsapReveal(containerRef, { from: { opacity: 0, scale: 0.98 } });
 
@@ -25,6 +26,7 @@ export default function PageHero({ title, subtitle, image, label }: PageHeroProp
           alt={title} 
           fill 
           className="object-cover brightness-[0.2] contrast-125 grayscale"
+          style={{ viewTransitionName: vtName ? `product-image-${vtName}` : 'none' } as any}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--c-dark)] via-transparent to-transparent opacity-60" />

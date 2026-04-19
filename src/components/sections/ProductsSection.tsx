@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { gsap } from '@/lib/gsap-config';
 
 export default function ProductsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-
   const [activeIndex, setActiveIndex] = useState(0);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const products = [
     {
@@ -59,6 +60,35 @@ export default function ProductsSection() {
     }
   ];
 
+  // GSAP Animation Logic for Accordion
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      products.forEach((_, i) => {
+        const item = itemsRef.current[i];
+        if (!item) return;
+
+        const content = item.querySelector('.accordion-content');
+        const text = item.querySelector('.accordion-text');
+        const grid = item.querySelector('.accordion-grid');
+
+        if (activeIndex === i) {
+          // Expand
+          gsap.to(item, { flex: 4, duration: 0.5, ease: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+          gsap.timeline()
+            .to(content, { opacity: 1, display: 'block', duration: 0.3 }, 0)
+            .fromTo(text, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.1)
+            .fromTo(grid, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.2);
+        } else {
+          // Collapse
+          gsap.to(item, { flex: 1, duration: 0.5, ease: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+          gsap.to(content, { opacity: 0, display: 'none', duration: 0.2 });
+        }
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [activeIndex]);
+
   return (
     <section ref={containerRef} className="bg-white flex flex-col justify-center py-16 pt-28 md:pt-32 overflow-hidden relative">
       <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col">
@@ -75,8 +105,8 @@ export default function ProductsSection() {
           {products.map((prod, idx) => (
             <div
               key={prod.title}
-              className={`group relative rounded-2xl overflow-hidden cursor-pointer border border-[var(--c-border)] shadow-lg transition-all duration-700 ease-out`}
-              style={{ flex: activeIndex === idx ? 4 : 1 }}
+              ref={el => { itemsRef.current[idx] = el; }}
+              className="group relative rounded-2xl overflow-hidden cursor-pointer border border-[var(--c-border)] shadow-lg transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
               onClick={() => setActiveIndex(idx)}
               onMouseEnter={() => setActiveIndex(idx)}
             >
@@ -99,17 +129,13 @@ export default function ProductsSection() {
                 <h3 className="text-xl md:text-3xl font-bold mb-2 whitespace-nowrap">
                   {prod.title}
                 </h3>
-
-                <div 
-                  className={`overflow-hidden transition-all duration-500 ease-out ${
-                    activeIndex === idx ? 'max-h-48 opacity-100 mt-2' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <p className="text-white/80 text-sm md:text-base mb-4 max-w-md">
+                
+                <div className="accordion-content opacity-0 hidden">
+                  <p className="accordion-text text-white/80 text-sm md:text-base mb-4 max-w-md">
                     {prod.desc}
                   </p>
                   
-                  <div className="pt-4 border-t border-white/20 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="accordion-grid pt-4 border-t border-white/20 grid grid-cols-1 md:grid-cols-3 gap-4">
                     {prod.specs.map((spec, i) => (
                       <div key={i}>
                         <div className="text-[10px] text-white/50 uppercase tracking-widest mb-1">{spec.label}</div>
