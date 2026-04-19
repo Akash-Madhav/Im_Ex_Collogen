@@ -66,21 +66,21 @@ export default function HomeProductsPreview() {
               />
               
               {/* Bottom Content Panel matching the reference image */}
-              <div className="absolute inset-x-[10%] bottom-0 top-[25%] md:top-[30%] bg-[#2a2a2a]/95 rounded-t-[40px] p-8 md:p-12 flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.3)] transition-all duration-500 group-hover:bg-[#333333]/95">
+              <div className="absolute inset-x-[6%] md:inset-x-[8%] bottom-0 top-[20%] md:top-[25%] bg-[#2a2a2a]/95 rounded-t-[32px] md:rounded-t-[40px] p-6 md:p-8 lg:p-10 flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.3)] transition-all duration-500 group-hover:bg-[#333333]/95">
                 
                 {/* Floating Pill on top edge */}
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-max">
-                  <span className="inline-block px-8 py-3 rounded-full bg-white text-[#0a4b3d] text-sm md:text-base font-black uppercase tracking-widest shadow-xl border border-black/5">
+                <div className="absolute -top-5 md:-top-6 left-1/2 -translate-x-1/2 w-max">
+                  <span className="inline-block px-6 md:px-8 py-2 md:py-3 rounded-full bg-white text-[#0a4b3d] text-xs md:text-sm font-black uppercase tracking-widest shadow-xl border border-black/5">
                     {item.tag}
                   </span>
                 </div>
 
-                <div className="mt-6 md:mt-8 flex flex-col h-full justify-center">
-                  <h3 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-[1.05] tracking-tight whitespace-pre-line">
-                    {item.title.split(' ').join('\n')}
+                <div className="mt-4 md:mt-8 flex flex-col h-full justify-center">
+                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-3 leading-[1.1] tracking-tight pr-4">
+                    {item.title}
                   </h3>
                   {/* Optional description hidden for purer bold look */}
-                  <p className="text-sm md:text-base text-white/70 font-medium leading-relaxed max-w-sm hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <p className="text-xs md:text-sm text-white/70 font-medium leading-relaxed max-w-sm hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     {item.desc}
                   </p>
                 </div>
