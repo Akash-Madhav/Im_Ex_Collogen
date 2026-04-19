@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
+import MobileStickyBar from "@/components/layout/MobileStickyBar";
 import PageTransition from "@/components/layout/PageTransition";
 import CustomCursor from "@/components/layout/CustomCursor";
 import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvider";
@@ -15,30 +16,17 @@ const inter = Inter({
   preload: true,
 });
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
-  variable: "--font-playfair",
-  display: 'swap',
-  preload: true,
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: 'swap',
-  preload: true,
-});
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0A0C0B",
+  themeColor: "#1F5D3A",
 };
 
 export const metadata: Metadata = {
-  title: "IndoPelts International | Premium Buffalo Dried Limed Pelts",
-  description: "Advanced B2B Buffalo Pelt Export for Collagen, Gelatin, and Industrial Sectors. India's trusted partner for high-spec industrial raw materials.",
+  title: "Aroon Blossom Impex | Premium Buffalo Limed Pelts Exporter",
+  description: "Global B2B exporter of Buffalo Limed Pelts for Collagen and Pet Food industries. APEDA certified, 800+ tons/month capacity. Quality-assured industrial raw materials from India.",
+  keywords: "buffalo limed pelts supplier India, raw hides for collagen export, pet food raw material hides supplier, APEDA certified hide exporter, collagen raw material India bulk supply",
 };
 
 export default function RootLayout({
@@ -47,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} ${jetbrains.variable}`}>
-      <body className="antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden bg-bg">
+    <html lang="en" className={`${inter.variable}`}>
+      <body className="antialiased selection:bg-[var(--c-primary)] selection:text-white overflow-x-hidden bg-[var(--c-bg)]">
         <CustomCursor />
         <SmoothScrollProvider>
           <Navbar />
@@ -57,6 +45,7 @@ export default function RootLayout({
           </PageTransition>
           <Footer />
           <WhatsAppWidget />
+          <MobileStickyBar />
         </SmoothScrollProvider>
       </body>
     </html>

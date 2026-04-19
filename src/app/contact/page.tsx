@@ -1,171 +1,62 @@
-'use client';
+import React from 'react';
+import InquiryForm from '@/components/sections/InquiryForm';
+import PageHeader from '@/components/layout/PageHeader';
+import type { Metadata } from 'next';
 
-import { useState, useRef } from 'react';
-import { SectionHeading } from '@/components/shared/SectionHeading';
-import { Card } from '@/components/shared/Card';
-import { Badge } from '@/components/shared/Badge';
-import { Button } from '@/components/shared/Button';
-import { Input } from '@/components/shared/Input';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-import { SplitHeading } from '@/components/animations/SplitHeading';
-import { MagneticButton } from '@/components/animations/MagneticButton';
-import { CardTilt } from '@/components/animations/CardTilt';
-import { useGsapReveal } from '@/hooks/useGsapReveal';
+export const metadata: Metadata = {
+  title: "Contact Aroon Blossom Impex — Inquiry for Buffalo Limed Pelts Export",
+  description: "Get in touch with our export desk for bulk buffalo limed pelt inquiries. Request technical specifications, logistics quotes, or sampling batches for collagen and pet food manufacturing.",
+};
+
+const faqs = [
+  { q: "What is your monthly supply capacity?", a: "We currently handle and export up to 800+ Metric Tons per month from our facility in India." },
+  { q: "Do you provide lab analysis reports?", a: "Yes, we provide batch-wise laboratory reports for protein, ash, and moisture content on request before each shipment." },
+  { q: "What are your standard payment terms?", a: "We typically work with L/C (Letter of Credit) or T/T (Telegraphic Transfer). Specific terms can be negotiated for long-term supply contracts." },
+  { q: "Can you provide custom specifications?", a: "Absolutely. We can adjust the liming duration, thickness grading, and moisture levels to meet your factory's specific requirement." },
+  { q: "Which ports do you ship from?", a: "Our primary export hub is Chennai Port (India), which offers direct global connectivity to major hubs in SE Asia and Europe." }
+];
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  
-  const formRef = useRef<HTMLDivElement>(null);
-  const infoRef = useRef<HTMLDivElement>(null);
-
-  useGsapReveal(formRef, {
-    from: { y: 40, opacity: 0 },
-    duration: 0.8,
-    start: 'top 85%'
-  });
-
-  useGsapReveal(infoRef, {
-    from: { x: 40, opacity: 0 },
-    duration: 0.7,
-    start: 'top 85%'
-  });
-
-  async function handleSubmit(event: any) {
-    event.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
-    const formData = new FormData(event.target);
-    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY_HERE");
-
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: json
-      });
-      const result = await response.json();
-      if (result.success) {
-        setSubmitStatus('success');
-        event.target.reset();
-      } else {
-        setSubmitStatus('error');
-      }
-    } catch (error) {
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
-    <div className="bg-bg-primary pt-24">
-      
-      {/* SECTION 1: HERO */}
-      <section className="border-b border-white/5 py-20">
+    <div className="pt-24 lg:pt-32">
+      <PageHeader 
+        title="Contact Our Export Desk"
+        description="Connect directly with our procurement team to discuss bulk requirements, logistics, and technical specifications for buffalo limed pelts."
+      />
+
+      <InquiryForm />
+
+      {/* FAQ Section */}
+      <section className="section-padding bg-white">
         <div className="container-custom">
-          <SplitHeading 
-            tag="h1" 
-            text="Initiate your Global Supply Cycle." 
-            animateOnScroll={true} 
-            className="text-[clamp(40px,7vw,72px)] font-display font-bold leading-tight text-text-premium"
-          />
+           <div className="mb-12">
+              <h2 className="text-3xl font-bold mb-4">Common Procurement Questions</h2>
+              <p className="text-[var(--c-text-secondary)]">Quick answers for international industrial buyers.</p>
+           </div>
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {faqs.map((faq, i) => (
+                <div key={i} className="p-8 bg-[var(--c-surface)] rounded-2xl border border-[var(--c-border)]">
+                   <h4 className="text-lg font-bold mb-3 text-[var(--c-text-primary)]">{faq.q}</h4>
+                   <p className="text-sm text-[var(--c-text-secondary)] leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+           </div>
         </div>
       </section>
 
-      {/* SECTION 2: ACCESS GRID */}
-      <section className="section-padding bg-bg-secondary border-b border-white/5 overflow-hidden">
-        <div className="container-custom">
-          <div ref={infoRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: MapPin, title: 'Headquarters', content: 'Chennai Port Zone, Tamil Nadu, India' },
-              { icon: Mail, title: 'Inquiries', content: 'export@indopelts.com procure@indopelts.com' },
-              { icon: Phone, title: 'Direct Line', content: '+91 94440 12345 +91 9888 123456' },
-              { icon: Clock, title: 'Response Cycle', content: '24 Business Hours Standard Lead Time' },
-            ].map((item, i) => (
-              <div key={i} data-reveal-item className="space-y-4">
-                <div className="w-10 h-10 bg-accent-gold/10 flex items-center justify-center rounded-sm">
-                  <item.icon className="text-accent-gold" size={20} />
-                </div>
-                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-text-dim">{item.title}</h4>
-                <p className="text-sm text-text-premium leading-relaxed whitespace-pre-line">{item.content}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Map Placeholder or direct office info */}
+      <section className="h-[400px] w-full bg-[var(--c-surface)] relative border-t border-[var(--c-border)]">
+         <div className="absolute inset-0 flex items-center justify-center text-[var(--c-text-muted)] font-bold uppercase tracking-widest text-xs">
+            [ Interactive Logistics Map Embed ]
+         </div>
+         <div className="container-custom relative h-full pointer-events-none">
+            <div className="absolute top-10 left-10 p-6 bg-white rounded-xl shadow-2xl border border-[var(--c-border)] max-w-xs pointer-events-auto">
+               <h4 className="font-bold text-[var(--c-primary)] mb-2 uppercase text-[10px] tracking-wider">Registered Office</h4>
+               <p className="text-sm text-[var(--c-text-primary)] font-bold mb-1">Aroon Blossom Impex</p>
+               <p className="text-xs text-[var(--c-text-secondary)] leading-relaxed">Chennai Port Zone, Tamil Nadu, India. Serving global procurement since 2012.</p>
+            </div>
+         </div>
       </section>
-
-      {/* SECTION 3: INQUIRY FORM */}
-      <section ref={formRef} className="section-padding border-b border-white/5">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-            <div className="lg:col-span-12 mb-12">
-               <Badge variant="accent" className="mb-6">Industrial RFQ Portal</Badge>
-               <h3 className="text-4xl font-display font-bold text-text-premium max-w-xl">Technical Requirement Submission.</h3>
-            </div>
-            
-            <div className="lg:col-span-7">
-              <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-                <div className="reveal-field"><Input name="name" label="Full Name" placeholder="John Doe" required /></div>
-                <div className="reveal-field"><Input name="email" label="Corporate Email" placeholder="name@company.com" type="email" required /></div>
-                <div className="reveal-field"><Input name="volume" label="Required Volume (MT)" placeholder="e.g. 52 MT" required /></div>
-                <div className="reveal-field"><Input name="port" label="Destination Port" placeholder="e.g. Rotterdam" required /></div>
-                <div className="md:col-span-2 reveal-field">
-                  <Input name="message" label="Technical Requirements" placeholder="Fiber density, moisture levels, etc." required />
-                </div>
-                <div className="md:col-span-2 pt-6">
-                  <MagneticButton className="w-full sm:w-auto">
-                    <Button 
-                      type="submit" 
-                      className="w-full sm:px-16"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Processing RFQ...' : 'Submit RFQ Request'}
-                    </Button>
-                  </MagneticButton>
-                  
-                  {submitStatus === 'success' && (
-                      <p className="mt-4 text-accent-gold text-sm font-body animate-fade-in">
-                        Thank you. Your industrial inquiry has been successfully dispatched to our procurement desk.
-                      </p>
-                  )}
-                  {submitStatus === 'error' && (
-                      <p className="mt-4 text-red-400 text-sm font-body">
-                        Communication error. Please contact export@indopelts.com directly.
-                      </p>
-                  )}
-                </div>
-              </form>
-            </div>
-
-            <div className="lg:col-span-5">
-               <CardTilt>
-                  <Card variant="glass" padding="lg" className="border-accent-gold/20">
-                    <h4 className="text-xl font-display font-bold text-accent-gold mb-6 italic">Procurement Notice</h4>
-                    <p className="text-text-muted text-sm leading-relaxed mb-8 font-body">
-                      All industrial grades are laboratory-verified. Tier-1 pharmaceutical clients are prioritized for express technical documentation and sample dispatch.
-                    </p>
-                    <div className="pt-8 border-t border-white/5 space-y-4">
-                       <div className="flex items-center gap-3 text-xs text-text-dim">
-                          <div className="w-1 h-1 rounded-full bg-accent-gold" />
-                          <span>Standard Escrow Protocols</span>
-                       </div>
-                       <div className="flex items-center gap-3 text-xs text-text-dim">
-                          <div className="w-1 h-1 rounded-full bg-accent-gold" />
-                          <span>LC Payment Facilities Available</span>
-                       </div>
-                    </div>
-                  </Card>
-               </CardTilt>
-            </div>
-          </div>
-        </div>
-      </section>
-
     </div>
   );
 }
