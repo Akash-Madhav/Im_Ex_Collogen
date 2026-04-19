@@ -118,14 +118,15 @@ export default function ProductsSection() {
               />
               
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+              {/* Tag - Positioned at top for visibility when narrow */}
+              <div className="absolute top-6 left-6 right-6">
+                 <span className={`inline-block px-3 py-1 rounded-full ${prod.tagColor} text-[9px] font-black uppercase tracking-wider whitespace-nowrap shadow-lg`}>
+                    {prod.tag}
+                 </span>
+              </div>
               
               <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end text-white">
-                <div className="flex items-center space-x-3 mb-2">
-                  <span className={`px-3 py-1 rounded-full ${prod.tagColor} text-[10px] font-black uppercase tracking-wider whitespace-nowrap`}>
-                    {prod.tag}
-                  </span>
-                </div>
-                
                 <h3 className="text-xl md:text-3xl font-bold mb-2 whitespace-nowrap">
                   {prod.title}
                 </h3>
