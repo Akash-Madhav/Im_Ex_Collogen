@@ -60,9 +60,6 @@ export default function Hero() {
                 <div className="w-10 h-1 bg-[var(--c-primary-light)]" />
                 <h3 className="text-sm xl:text-base font-bold text-white">Advanced Industrial <br/>Processing</h3>
                 <p className="text-[10px] xl:text-[11px] text-white/60 leading-relaxed">Our facilities ensure strictly controlled pH levels and uniform liming protocols for premium grade output.</p>
-                <Link href="/quality" className="inline-flex items-center gap-2 text-[var(--c-primary-light)] font-bold text-[9px] xl:text-[10px] uppercase tracking-[0.2em] hover:gap-4 transition-all">
-                  Quality Protocol →
-                </Link>
               </div>
             </div>
           </div>

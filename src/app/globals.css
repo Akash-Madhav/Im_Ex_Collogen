@@ -55,11 +55,11 @@
   --c-surface: #F5F5F5;
   --c-surface-2: #EFEFEF;
   --c-border: #E0E0E0;
-  --c-dark: #1A1A1A;
+  --c-dark: #022c22;
 
-  --c-text-primary: #1A1A1A;
-  --c-text-secondary: #555555;
-  --c-text-muted: #888888;
+  --c-text-primary: #022c22;
+  --c-text-secondary: #0f766e;
+  --c-text-muted: #14b8a6;
   --c-text-white: #FFFFFF;
 
   --c-gold: #C8922A;
@@ -85,6 +85,7 @@
     color: var(--c-text-secondary);
     font-family: var(--font-body), sans-serif;
     scroll-behavior: auto !important;
+    scroll-padding-top: 120px;
   }
 
   body {
@@ -167,12 +168,10 @@
 
   /* Shared Section fit */
   .shared-section-fit {
-    @apply h-screen w-full flex flex-col justify-center relative overflow-hidden;
+    @apply min-h-screen w-full flex flex-col justify-center relative overflow-x-hidden;
   }
   .shared-section-content {
-    @apply h-full flex flex-col justify-center overflow-y-auto pr-2 py-[8vh] lg:overflow-visible;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    @apply w-full flex-1 flex flex-col justify-center py-[8vh];
   }
   .shared-section-content::-webkit-scrollbar {
     display: none; /* Chrome/Safari/Webkit */

@@ -1,7 +1,7 @@
 import HomeHero from '@/components/sections/HomeHero';
 import AboutSnapshot from '@/components/sections/AboutSnapshot';
 import HomeProductsPreview from '@/components/sections/HomeProductsPreview';
-import HomeExportSnapshot from '@/components/sections/HomeExportSnapshot';
+
 
 
 /**
@@ -14,7 +14,7 @@ export default function Home() {
       <HomeHero />
       <AboutSnapshot />
       <HomeProductsPreview />
-      <HomeExportSnapshot />
+
     </div>
   );
 }

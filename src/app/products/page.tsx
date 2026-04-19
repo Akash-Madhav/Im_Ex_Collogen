@@ -1,7 +1,7 @@
 import PageHero from '@/components/sections/PageHero';
 import ProductsSection from '@/components/sections/ProductsSection';
 import SpecificationsMatrix from '@/components/sections/SpecificationsMatrix';
-import QualityControlStandards from '@/components/sections/QualityControlStandards';
+
 
 export default function ProductsPage() {
   return (
@@ -14,7 +14,7 @@ export default function ProductsPage() {
       />
       <ProductsSection />
       <SpecificationsMatrix />
-      <QualityControlStandards />
+
     </div>
   );
 }

@@ -1,16 +1,49 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
-import { useRef } from 'react';
 
 export default function InquiryForm() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'idle' | 'success' | 'error', message: string }>({ type: 'idle', message: '' });
 
   useGsapReveal(containerRef, {
     from: { y: 30, opacity: 0 },
     stagger: 0.1
   });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: 'idle', message: '' });
+
+    const formData = new FormData(e.currentTarget);
+    // Append Web3Forms access key
+    formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
+    formData.append("subject", "New B2B Export Inquiry from Aroon Blossom Impex");
+    formData.append("from_name", "Aroon Blossom Impex Website");
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const responseData = await res.json();
+
+      if (responseData.success) {
+        setSubmitStatus({ type: 'success', message: 'Inquiry sent successfully! Our export desk will contact you soon.' });
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setSubmitStatus({ type: 'error', message: responseData.message || 'Failed to send inquiry.' });
+      }
+    } catch (err) {
+      setSubmitStatus({ type: 'error', message: 'Unexpected error occurred. Please try again or contact us directly.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="inquiry-form" ref={containerRef} className="snap-section h-screen bg-[var(--c-surface)] flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
@@ -22,20 +55,20 @@ export default function InquiryForm() {
             <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--c-primary)]/5 rounded-bl-full" />
             <h2 className="text-3xl xl:text-4xl font-black text-[var(--c-text-primary)] mb-10 tracking-tighter uppercase">Send Export <br /><span className="text-[var(--c-primary)]">Inquiry</span></h2>
             
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Full Name</label>
-                <input type="text" placeholder="John Doe" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
+                <input name="name" type="text" placeholder="John Doe" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Company Name</label>
-                <input type="text" placeholder="Global Collagen Ltd" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
+                <input name="company" type="text" placeholder="Global Collagen Ltd" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Country</label>
-                <select className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm appearance-none" required>
+                <select name="country" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm appearance-none" required>
                   <option value="">Select Country</option>
                   <option value="ID">Indonesia</option>
                   <option value="VN">Vietnam</option>
@@ -48,17 +81,17 @@ export default function InquiryForm() {
 
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Email Address</label>
-                <input type="email" placeholder="procurement@company.com" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
+                <input name="email" type="email" placeholder="procurement@company.com" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Requirement</label>
-                <input type="text" placeholder="e.g. 50 Tons" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
+                <input name="requirement" type="text" placeholder="e.g. 50 Tons" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Application</label>
-                <select className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm appearance-none" required>
+                <select name="application" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm appearance-none" required>
                   <option value="">Select Application</option>
                   <option value="collagen">Collagen Manufacturing</option>
                   <option value="gelatin">Gelatin Production</option>
@@ -69,14 +102,20 @@ export default function InquiryForm() {
 
               <div className="flex flex-col gap-2 md:col-span-2">
                 <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Requirements Detail</label>
-                <textarea placeholder="e.g. Grade, Protein %, Ash content limits..." className="w-full px-5 py-5 bg-[var(--c-surface)]/50 border border-black/5 rounded-3xl focus:border-[var(--c-primary)] outline-none min-h-[140px] transition-all font-medium text-sm resize-none" />
+                <textarea name="message" placeholder="e.g. Grade, Protein %, Ash content limits..." className="w-full px-5 py-5 bg-[var(--c-surface)]/50 border border-black/5 rounded-3xl focus:border-[var(--c-primary)] outline-none min-h-[140px] transition-all font-medium text-sm resize-none" />
               </div>
 
               <div className="md:col-span-2 pt-6">
-                <button type="submit" className="btn-primary w-full py-5 text-[11px] font-black uppercase tracking-[0.3em] rounded-full shadow-xl">
-                  Initialize Export Request
+                <button type="submit" disabled={isSubmitting} className="btn-primary w-full py-5 text-[11px] font-black uppercase tracking-[0.3em] rounded-full shadow-xl disabled:opacity-50 transition-opacity">
+                  {isSubmitting ? 'Sending Request...' : 'Initialize Export Request'}
                 </button>
               </div>
+              
+              {submitStatus.message && (
+                <div className={`md:col-span-2 text-center text-xs font-bold p-4 rounded-xl ${submitStatus.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  {submitStatus.message}
+                </div>
+              )}
 
 
               <p className="md:col-span-2 text-center text-[10px] font-bold text-[var(--c-text-muted)] uppercase tracking-widest opacity-60">

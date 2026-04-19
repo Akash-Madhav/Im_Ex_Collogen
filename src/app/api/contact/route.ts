@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { company, country, email, phone, product, quantity, application, message } = body;
+    const { name, company, country, email, requirement, application, message } = body;
 
     // Validation (Simple check since client side already validated)
     if (!email || !company) {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: Number(process.env.SMTP_PORT) || 587,
-      secure: false,
+      secure: process.env.SMTP_PORT === '465' ? true : false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -24,20 +24,19 @@ export async function POST(req: NextRequest) {
 
     const mailOptions = {
       from: `"Website Inquiry" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_EMAIL || 'export@indopelts.com',
+      to: process.env.CONTACT_EMAIL || 'export@aroonblossom.com',
       subject: `New B2B Inquiry from ${company} (${country})`,
       text: `
         Business Inquiry Details:
         -------------------------
+        Name: ${name}
         Company: ${company}
         Country: ${country}
         Email: ${email}
-        Phone: ${phone}
         
         Requirements:
         -------------------------
-        Product Grade: ${product}
-        Quantity: ${quantity}
+        Requirement/Quantity: ${requirement}
         Application: ${application}
         
         Message:

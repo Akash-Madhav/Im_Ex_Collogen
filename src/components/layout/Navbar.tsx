@@ -12,8 +12,6 @@ const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
   { name: 'Products', href: '/products' },
-  { name: 'Quality', href: '/quality' },
-  { name: 'Export', href: '/export' },
 ];
 
 export default function Navbar() {
@@ -49,9 +47,11 @@ export default function Navbar() {
       <nav
         className={cn(
           "fixed top-3 md:top-6 left-3 right-3 md:left-8 md:right-8 mx-auto z-[150] max-w-[1400px] transition-all duration-700 rounded-[20px] border",
-          scrolled
-            ? 'py-2.5 md:py-2.5 bg-white/40 backdrop-blur-md md:backdrop-blur-xl border-black/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]'
-            : 'py-4 md:py-4 bg-black/5 backdrop-blur-sm md:backdrop-blur-md border-white/10 shadow-none'
+          isOpen 
+            ? 'py-4 md:py-4 bg-transparent border-transparent shadow-none backdrop-blur-none'
+            : scrolled
+              ? 'py-2.5 md:py-2.5 bg-white/40 backdrop-blur-md md:backdrop-blur-xl border-black/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]'
+              : 'py-4 md:py-4 bg-black/5 backdrop-blur-sm md:backdrop-blur-md border-white/10 shadow-none'
         )}
       >
         <div className="w-full px-5 md:px-10">
@@ -79,7 +79,7 @@ export default function Navbar() {
                   </span>
                   <span className={cn(
                     "font-bold tracking-[0.2em] md:tracking-[0.3em] leading-none uppercase opacity-60 transition-colors duration-700",
-                    scrolled ? "text-[6px] md:text-[9px] text-[#2B2B2B]" : "text-[7px] md:text-[11px] text-[#FAF9F6]"
+                    scrolled ? "text-[6px] md:text-[9px] text-[var(--c-dark)]" : "text-[7px] md:text-[11px] text-[#FAF9F6]"
                   )}>
                     Impex · Global
                   </span>
@@ -106,8 +106,8 @@ export default function Navbar() {
                     className={cn(
                       "text-[10px] xl:text-[11px] font-black uppercase tracking-[0.25em] transition-all duration-700",
                       isActive
-                        ? (scrolled ? 'text-[#2B2B2B]' : 'text-[#FAF9F6]')
-                        : (scrolled ? 'text-[#2B2B2B]/40 hover:text-[#2B2B2B]' : 'text-[#FAF9F6]/50 hover:text-[#FAF9F6]')
+                        ? (scrolled ? 'text-[var(--c-dark)]' : 'text-[#FAF9F6]')
+                        : (scrolled ? 'text-[var(--c-dark)]/40 hover:text-[var(--c-dark)]' : 'text-[#FAF9F6]/50 hover:text-[#FAF9F6]')
                     )}
                   >
                     {link.name}
@@ -115,7 +115,7 @@ export default function Navbar() {
                   {isActive && (
                     <div className={cn(
                       "absolute -bottom-1 left-0 w-full h-[1px] transition-colors duration-700",
-                      scrolled ? 'bg-[#2B2B2B]' : 'bg-[#FAF9F6]'
+                      scrolled ? 'bg-[var(--c-dark)]' : 'bg-[#FAF9F6]'
                     )} />
                   )}
                 </Link>
@@ -132,15 +132,15 @@ export default function Navbar() {
                 className={cn(
                   "inline-flex items-center px-8 md:px-10 py-2.5 rounded-full border transition-all duration-700 group relative overflow-hidden",
                   scrolled 
-                    ? 'border-black/10 hover:border-[#2B2B2B] hover:bg-[#2B2B2B]' 
+                    ? 'border-black/10 hover:border-[var(--c-dark)] hover:bg-[var(--c-dark)]' 
                     : 'border-white/10 hover:border-[#FAF9F6] hover:bg-[#FAF9F6]'
                 )}
               >
                 <span className={cn(
                   "text-[10px] uppercase tracking-[0.3em] font-black relative z-10 transition-colors duration-700",
                   scrolled 
-                    ? 'text-[#2B2B2B] group-hover:text-white' 
-                    : 'text-[#FAF9F6] group-hover:text-[#2B2B2B]'
+                    ? 'text-[var(--c-dark)] group-hover:text-white' 
+                    : 'text-[#FAF9F6] group-hover:text-[var(--c-dark)]'
                 )}>
                   Request Quote
                 </span>
@@ -151,7 +151,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className={cn(
                 "lg:hidden flex items-center justify-center rounded-full transition-all duration-700",
-                scrolled ? "text-[#2B2B2B]" : "text-[#FAF9F6]"
+                isOpen ? "text-[#FAF9F6]" : (scrolled ? "text-[var(--c-dark)]" : "text-[#FAF9F6]")
               )}
               aria-label="Toggle menu"
             >

@@ -39,7 +39,6 @@ export default function Footer() {
               {[
                 { name: 'Global Hub', href: '/' },
                 { name: 'Corporate History', href: '/about' },
-                { name: 'Technical Indices', href: '/quality' },
                 { name: 'Strategic Inquiry', href: '/contact' },
               ].map((link) => (
                 <li key={link.name}>

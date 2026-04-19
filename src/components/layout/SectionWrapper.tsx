@@ -23,7 +23,7 @@ export default function SectionWrapper({
   return (
     <section 
       id={id} 
-      className={`shared-section-fit ${className}`}
+      className={`shared-section-fit pt-28 md:pt-32 ${className}`}
     >
       <div className={`container-custom shared-section-content ${containerClassName}`}>
         {children}

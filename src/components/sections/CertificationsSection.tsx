@@ -98,13 +98,13 @@ export default function CertificationsSection() {
 
 function TrustPoint({ title, desc }: any) {
   return (
-    <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-md text-[var(--c-primary)] text-xs font-bold">
+    <div className="flex items-center gap-6">
+      <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-lg text-[var(--c-primary)] text-sm font-bold">
         ★
       </div>
-      <div>
-        <h4 className="text-xs font-black text-[var(--c-text-primary)] uppercase tracking-widest leading-none mb-1">{title}</h4>
-        <p className="text-[10px] text-[var(--c-text-muted)] font-medium leading-tight">{desc}</p>
+      <div className="flex flex-col justify-center">
+        <h4 className="text-sm font-black text-[var(--c-text-primary)] uppercase tracking-widest leading-none mb-1.5">{title}</h4>
+        <p className="text-xs text-[var(--c-primary)] font-medium leading-tight">{desc}</p>
       </div>
     </div>
   );
