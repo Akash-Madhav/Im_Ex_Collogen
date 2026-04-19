@@ -119,19 +119,23 @@ export default function ProductsSection() {
               
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-              {/* Tag - Positioned at top for visibility when narrow */}
-              <div className="absolute top-6 left-6 right-6">
-                 <span className={`inline-block px-3 py-1 rounded-full ${prod.tagColor} text-[9px] font-black uppercase tracking-wider whitespace-nowrap shadow-lg`}>
+              {/* Tag - Centered for better safe-area handling when narrow */}
+              <div className="absolute top-6 left-0 right-0 flex justify-center px-2 pointer-events-none">
+                 <span className={`inline-block px-3 py-1 rounded-full ${prod.tagColor} text-[8px] md:text-[9px] font-black uppercase tracking-wider whitespace-nowrap shadow-lg opacity-80 group-hover:opacity-100 transition-opacity`}>
                     {prod.tag}
                  </span>
               </div>
               
-              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end text-white">
-                <h3 className="text-xl md:text-3xl font-bold mb-2 whitespace-nowrap">
+              <div className={`absolute bottom-0 left-0 right-0 p-4 md:p-6 flex flex-col items-start transition-all duration-500 ${activeIndex === idx ? 'justify-end' : 'h-full justify-center items-center'}`}>
+                <h3 className={`font-bold transition-all duration-500 whitespace-nowrap text-white ${
+                  activeIndex === idx 
+                    ? 'text-xl md:text-3xl mb-2' 
+                    : 'text-lg md:text-xl vertical-rl rotate-180 opacity-30 group-hover:opacity-60'
+                }`}>
                   {prod.title}
                 </h3>
                 
-                <div className="accordion-content opacity-0 hidden">
+                <div className="accordion-content opacity-0 hidden w-full">
                   <p className="accordion-text text-white/80 text-sm md:text-base mb-4 max-w-md">
                     {prod.desc}
                   </p>

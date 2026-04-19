@@ -188,6 +188,11 @@
   .shared-section-content::-webkit-scrollbar {
     display: none; /* Chrome/Safari/Webkit */
   }
+
+  /* Vertical Text Utilities */
+  .vertical-rl {
+    writing-mode: vertical-rl;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
