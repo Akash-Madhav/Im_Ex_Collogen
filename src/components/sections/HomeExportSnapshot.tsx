@@ -17,128 +17,80 @@ const markets = [
 export default function HomeExportSnapshot() {
   const [index, setIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const bgRef1 = useRef<HTMLDivElement>(null);
-  const bgRef2 = useRef<HTMLDivElement>(null);
-  const [isFirstBg, setIsFirstBg] = useState(true);
-
   useGsapReveal(containerRef, { from: { opacity: 0, y: 30 } });
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % markets.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    // Cross-fade background images
-    const activeBg = isFirstBg ? bgRef2 : bgRef1;
-    const inactiveBg = isFirstBg ? bgRef1 : bgRef2;
-
-    gsap.to(activeBg.current, { opacity: 1, duration: 1.5, ease: 'power2.inOut' });
-    gsap.to(inactiveBg.current, { opacity: 0, duration: 1.5, ease: 'power2.inOut' });
-    
-    setIsFirstBg(!isFirstBg);
-  }, [index]);
-
   return (
-    <section ref={containerRef} className="snap-section relative bg-[var(--c-dark)] overflow-hidden min-h-screen flex items-center">
-      {/* Dynamic Backgrounds */}
+    <section ref={containerRef} className="relative bg-[var(--c-dark)] overflow-hidden h-screen flex flex-col justify-center">
+
+      {/* Background */}
       <div className="absolute inset-0 z-0">
-        <div ref={bgRef1} className="absolute inset-0 opacity-100 transition-none">
-          <Image 
-            src={markets[index].image} 
-            alt="Market Background" 
-            fill 
-            className="object-cover brightness-50 grayscale-[0.3]"
-          />
-        </div>
-        <div ref={bgRef2} className="absolute inset-0 opacity-0 transition-none">
-          <Image 
-            src={markets[(index + 1) % markets.length].image} 
-            alt="Market Background Next" 
-            fill 
-            className="object-cover brightness-50 grayscale-[0.3]"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--c-dark)] via-[var(--c-dark)]/80 to-transparent" />
+        <Image 
+          src={markets[index].image} 
+          alt="Market Background" 
+          fill 
+          className="object-cover brightness-[0.3] contrast-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
       </div>
 
       <div className="container-custom relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-widest backdrop-blur-md">
-              <Globe size={14} className="text-[var(--c-primary-light)]" /> Global Reach
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16 xl:gap-24 items-center">
+          <div className="space-y-10">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] backdrop-blur-xl shadow-2xl">
+              <Globe size={16} className="text-[var(--c-primary-light)]" /> Global Supply Matrix
             </div>
             
-            <div className="overflow-hidden h-[120px] md:h-[160px]">
-              <h2 key={index} className="text-h2 font-bold text-white leading-tight animate-fade-up">
-                Leading Exporter to <br />
-                <span className="text-[var(--c-primary-light)] underline decoration-[var(--c-primary)] decoration-4 underline-offset-8">
+            <div className="min-h-[160px] xl:min-h-[220px]">
+              <h2 key={index} className="text-4xl md:text-5xl xl:text-7xl font-black text-white leading-[1.05] tracking-tighter italic">
+                Strategic <br />
+                Exporter to <br />
+                <span className="text-[var(--c-primary-light)]">
                   {markets[index].name}
                 </span>
               </h2>
             </div>
 
-            <p className="text-xl text-white/70 max-w-lg leading-relaxed h-[60px]">
-              {markets[index].desc} Consistent bulk supply with certified compliance.
+            <p className="text-lg xl:text-xl text-white/50 max-w-lg leading-relaxed font-medium min-h-[60px]">
+              {markets[index].desc} Consistent bulk supply with certified compliance for global industrial giants.
             </p>
 
-            <div className="flex gap-4 pt-4">
-              <Link href="/export" className="btn-primary bg-white text-[var(--c-dark)] hover:bg-white/90">
-                Explore Markets
+            <div className="flex gap-4 pt-6">
+              <Link href="/export" className="btn-primary bg-white text-[var(--c-dark)] hover:bg-white/90 py-5 px-12 text-[11px] font-black uppercase tracking-[0.3em] rounded-full shadow-2xl">
+                Distribution Network
               </Link>
             </div>
           </div>
           
           {/* Market Selection Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 xl:gap-6">
             {markets.map((m, i) => (
               <button 
                 key={m.name} 
                 onClick={() => setIndex(i)}
-                className={`p-10 rounded-2xl border transition-all duration-500 text-left relative overflow-hidden group ${
+                className={`p-10 xl:p-14 rounded-[40px] border text-left relative overflow-hidden backdrop-blur-md group ${
                   index === i 
-                    ? 'bg-white border-white scale-105 shadow-2xl' 
-                    : 'bg-white/5 border-white/10 text-white/40 hover:border-white/30'
+                    ? 'bg-white border-white' 
+                    : 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20'
                 }`}
               >
-                <span className={`text-2xl font-black block mb-2 transition-colors ${
+                <span className={`text-2xl xl:text-3xl font-black block mb-3 tracking-tighter transition-colors ${
                   index === i ? 'text-[var(--c-primary)]' : 'text-white'
                 }`}>
                   {m.name}
                 </span>
-                <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                  index === i ? 'text-[var(--c-text-secondary)]' : 'text-white/20'
+                <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+                  index === i ? 'text-[var(--c-text-secondary)] opacity-100' : 'text-white/20 opacity-60'
                 }`}>
-                  {index === i ? 'Active Market' : 'Tap to View'}
+                  {index === i ? 'Priority Market' : 'Tap to Survey'}
                 </span>
-                {index === i && (
-                  <div className="absolute bottom-0 left-0 h-1 bg-[var(--c-primary)] animate-progress-line" />
-                )}
               </button>
             ))}
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes progress-line {
-          from { width: 0; }
-          to { width: 100%; }
-        }
-        .animate-progress-line {
-          animation: progress-line 5s linear forwards;
-        }
-        @keyframes fade-up {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        .animate-fade-up {
-          animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}</style>
     </section>
   );
 }
+
+
 

@@ -2,7 +2,7 @@ import HomeHero from '@/components/sections/HomeHero';
 import AboutSnapshot from '@/components/sections/AboutSnapshot';
 import HomeProductsPreview from '@/components/sections/HomeProductsPreview';
 import HomeExportSnapshot from '@/components/sections/HomeExportSnapshot';
-import SectionSnapper from '@/components/animations/SectionSnapper';
+
 
 /**
  * Aroon Blossom Impex - Homepage
@@ -10,8 +10,7 @@ import SectionSnapper from '@/components/animations/SectionSnapper';
  */
 export default function Home() {
   return (
-    <div className="snap-container">
-      <SectionSnapper />
+    <div className="flex flex-col">
       <HomeHero />
       <AboutSnapshot />
       <HomeProductsPreview />
@@ -19,3 +18,4 @@ export default function Home() {
     </div>
   );
 }
+

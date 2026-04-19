@@ -44,33 +44,36 @@ export default function ExportCapability() {
 
   useGsapReveal(containerRef, {
     from: { y: 30, opacity: 0 },
-    stagger: 0.2
+    stagger: 0.1
   });
 
   return (
-    <section ref={containerRef} className="snap-section bg-[var(--c-surface)] relative overflow-hidden">
+    <section ref={containerRef} className="snap-section h-screen bg-[var(--c-surface)] relative flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
       <div className="container-custom">
-        <div className="text-center max-w-3xl mx-auto mb-16 px-4">
-          <div className="text-[12px] font-bold tracking-[0.12em] uppercase text-[var(--c-primary)] mb-4">
-            EXPORT
+        <div className="flex flex-col lg:flex-row justify-between items-end mb-16 xl:mb-24 gap-8">
+          <div className="max-w-2xl">
+            <div className="text-[11px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-6">
+              Global Supply Chain
+            </div>
+            <h2 className="text-4xl xl:text-5xl font-black text-[var(--c-text-primary)] leading-[1.1] tracking-tighter">
+              Bulk Supply. <br />
+              <span className="text-[var(--c-primary)]">Global Reach.</span>
+            </h2>
           </div>
-          <h2 className="text-h2 font-bold text-[var(--c-text-primary)] mb-6">
-            Bulk Supply. Global Reach.
-          </h2>
-          <p className="text-lg text-[var(--c-text-secondary)]">
+          <p className="text-lg text-[var(--c-text-secondary)] max-w-sm italic font-medium">
             Reliable container supply from India to collagen and pet food manufacturers worldwide. Full logistics management.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 lg:px-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-8">
           {caps.map((cap, index) => (
-            <div key={index} className="bg-white border border-[var(--c-border)] rounded-2xl p-10 shadow-card hover:shadow-hover hover:-translate-y-2 transition-all duration-500 group">
-              <div className="w-[64px] h-[64px] bg-[var(--c-primary-light)] rounded-xl flex items-center justify-center text-[var(--c-primary)] mb-20 group-hover:scale-110 transition-transform">
+            <div key={index} className="group bg-white p-12 xl:p-14 rounded-[40px] border border-black/5 shadow-2xl hover:border-[var(--c-primary)]/20 transition-all duration-1000 flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-2xl bg-[var(--c-primary-light)] flex items-center justify-center text-[var(--c-primary)] mb-12 group-hover:scale-110 group-hover:rotate-6 transition-transform">
                 {cap.icon}
               </div>
-              <h4 className="text-[20px] font-bold text-[var(--c-text-primary)] mb-4">{cap.title}</h4>
-              <p className="text-[14px] text-[var(--c-text-secondary)] leading-relaxed mb-10 min-h-[60px]">{cap.desc}</p>
-              <div className="inline-block px-4 py-1.5 bg-[var(--c-primary-light)] border border-[var(--c-primary)]/10 text-[var(--c-primary)] font-bold text-[12px] rounded-full uppercase tracking-wide">
+              <h4 className="text-2xl font-black text-[var(--c-text-primary)] mb-4 tracking-tight uppercase leading-none">{cap.title}</h4>
+              <p className="text-sm xl:text-[15px] text-[var(--c-text-secondary)] leading-relaxed font-medium opacity-70 group-hover:opacity-100 transition-opacity mb-8 min-h-[60px]">{cap.desc}</p>
+              <div className="mt-auto px-6 py-2 bg-[var(--c-surface)] border border-[var(--c-border)] text-[var(--c-primary)] font-black text-[10px] rounded-full uppercase tracking-widest group-hover:bg-[var(--c-primary)] group-hover:text-white transition-all">
                 {cap.detail}
               </div>
             </div>
@@ -80,3 +83,4 @@ export default function ExportCapability() {
     </section>
   );
 }
+

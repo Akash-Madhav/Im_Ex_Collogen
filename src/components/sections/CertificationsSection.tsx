@@ -25,80 +25,90 @@ export default function CertificationsSection() {
 
   useGsapReveal(containerRef, {
     from: { y: 40, opacity: 0 },
-    stagger: 0.2
+    stagger: 0.1
   });
 
   return (
-    <section ref={containerRef} className="snap-section bg-[var(--c-surface)] relative overflow-hidden flex flex-col justify-center">
-      <div className="container-custom py-20">
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-[var(--c-primary-light)] text-[var(--c-primary)] text-[11px] font-bold uppercase tracking-[0.2em] mb-6">
-            Global Compliance
-          </div>
-          <h2 className="text-h2 font-bold text-[var(--c-text-primary)] leading-tight">
-            Government Registered & <br />
-            <span className="text-[var(--c-primary)] text-5xl italic font-serif">Certified Exporter</span>
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
-          {certs.map((cert, index) => (
-            <div 
-              key={index} 
-              className="group relative bg-white rounded-3xl p-8 lg:p-12 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-transparent hover:border-[var(--c-primary)]/20 transition-all duration-700 flex flex-col items-center text-center overflow-hidden"
-            >
-              {/* Background Decor */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--c-primary-light)] rounded-bl-full -z-10 transition-transform duration-700 group-hover:scale-150 group-hover:rotate-12" />
-              
-              <div className="relative w-32 h-32 lg:w-44 lg:h-44 mb-8 transition-transform duration-700 group-hover:scale-110">
-                <Image 
-                  src={cert.image} 
-                  alt={cert.title} 
-                  fill 
-                  className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700"
-                />
+    <section ref={containerRef} className="snap-section h-screen bg-[var(--c-surface)] relative overflow-auto lg:overflow-hidden flex flex-col justify-center py-24">
+      <div className="container-custom">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-16 xl:gap-24 items-center">
+          
+          <div className="space-y-10">
+            <div>
+              <div className="inline-block px-4 py-1.5 rounded-full bg-[var(--c-primary-light)] text-[var(--c-primary)] text-[10px] xl:text-[11px] font-black uppercase tracking-[0.3em] mb-6">
+                Institutional Trust
               </div>
-
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-[var(--c-text-primary)] uppercase tracking-tight">
-                  {cert.title}
-                </h3>
-                <p className="text-[15px] text-[var(--c-text-secondary)] leading-relaxed max-w-[280px]">
-                  {cert.desc}
-                </p>
-              </div>
-
-              <div className="mt-10">
-                <a 
-                  href={cert.link} 
-                  target="_blank"
-                  className="inline-flex items-center gap-2 text-[12px] font-bold text-[var(--c-primary)] uppercase tracking-widest border-b-2 border-[var(--c-primary)]/10 hover:border-[var(--c-primary)] transition-all pb-1 group/btn"
-                >
-                  View Certificate
-                  <span className="transition-transform group-hover/btn:translate-x-1">→</span>
-                </a>
-              </div>
-
-              {/* Verified Badge */}
-              <div className="absolute top-6 left-6 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <span className="w-2 h-2 rounded-full bg-[var(--c-primary)] animate-pulse" />
-                <span className="text-[10px] font-bold text-[var(--c-primary)] uppercase tracking-wider">Verified State</span>
-              </div>
+              <h2 className="text-4xl xl:text-5xl font-bold text-[var(--c-text-primary)] leading-[1.05] tracking-tight mb-8">
+                Globally Validated <br />
+                <span className="text-[var(--c-primary)] text-6xl xl:text-7xl block mt-2">Compliance</span>
+              </h2>
+              <p className="text-lg text-[var(--c-text-secondary)] leading-relaxed max-w-md">
+                Our operations are governed by India's apex export authorities, ensuring every ton of limed pelt meets the rigorous standards of international procurement.
+              </p>
             </div>
-          ))}
-        </div>
 
-        <div className="mt-20 text-center">
-          <p className="text-[13px] text-[var(--c-text-muted)] font-medium max-w-md mx-auto">
-            Our facility and processes are strictly audited for compliance with Indian export standards and buyer-specific quality protocols.
-          </p>
-        </div>
-      </div>
+            <div className="flex flex-col gap-6">
+              <TrustPoint title="800+ Tons Monthly" desc="High-volume capability with government export clearance." />
+              <TrustPoint title="Batch-Wise Analysis" desc="Third-party lab reports for every consignment." />
+            </div>
+          </div>
 
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
-        <div className="absolute top-10 right-10 w-96 h-96 border-[40px] border-[var(--c-primary)] rounded-full" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
+            {certs.map((cert, index) => (
+              <div 
+                key={index} 
+                className="group relative bg-white rounded-[40px] p-10 xl:p-12 shadow-2xl border border-transparent hover:border-[var(--c-primary)]/20 flex flex-col items-center text-center overflow-hidden"
+              >
+                <div className="relative w-32 h-32 xl:w-40 xl:h-40 mb-10">
+                  <Image 
+                    src={cert.image} 
+                    alt={cert.title} 
+                    fill 
+                    className="object-contain filter grayscale group-hover:grayscale-0"
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="text-xl xl:text-2xl font-black text-[var(--c-text-primary)] uppercase tracking-tight">
+                    {cert.title}
+                  </h3>
+                  <p className="text-[13px] xl:text-sm text-[var(--c-text-secondary)] leading-relaxed opacity-60 group-hover:opacity-100">
+                    {cert.desc}
+                  </p>
+                </div>
+
+                <div className="mt-8">
+                  <a 
+                    href={cert.link} 
+                    target="_blank"
+                    className="btn-primary py-3 px-6 text-[10px] font-bold uppercase tracking-widest rounded-full"
+                  >
+                    View Credential
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+
+
+        </div>
       </div>
     </section>
   );
 }
+
+function TrustPoint({ title, desc }: any) {
+  return (
+    <div className="flex items-start gap-4">
+      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-lg text-[var(--c-primary)] font-bold italic">
+        ★
+      </div>
+      <div>
+        <h4 className="text-sm font-black text-[var(--c-text-primary)] uppercase tracking-widest mb-1">{title}</h4>
+        <p className="text-xs text-[var(--c-text-muted)] font-medium leading-relaxed">{desc}</p>
+      </div>
+    </div>
+  );
+}
+

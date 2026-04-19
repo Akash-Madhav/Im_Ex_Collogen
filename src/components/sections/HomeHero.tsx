@@ -4,9 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
-import { MagneticButton } from '@/components/animations/MagneticButton';
 import { useRef } from 'react';
-import { useCountUp } from '@/hooks/useCountUp';
+
 
 const metrics = [
   { value: 800, suffix: '+ Tons', label: 'Monthly Supply' },
@@ -19,12 +18,13 @@ export default function Hero() {
 
   useGsapReveal(containerRef, {
     from: { y: 30, opacity: 0 },
-    stagger: 0.2,
-    duration: 1.2
+    stagger: 0.1,
+    duration: 1
   });
 
   return (
-    <section ref={containerRef} className="snap-section h-screen relative flex flex-col justify-between overflow-hidden bg-[var(--c-dark)]">
+    <section ref={containerRef} className="h-screen relative flex flex-col justify-between overflow-hidden bg-[var(--c-dark)]">
+
       {/* Aesthetic Background Image */}
       <div className="absolute inset-0 z-0">
         <Image 
@@ -43,7 +43,7 @@ export default function Hero() {
           {/* Left Column: Text Content */}
           <div className="z-10">
             <div className="flex items-center gap-2 text-[11px] xl:text-[12px] font-bold tracking-[0.08em] uppercase text-[var(--c-primary-light)] mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--c-primary-light)] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--c-primary-light)]" />
               Buffalo Limed Pelts Exporter · India
             </div>
 
@@ -58,20 +58,13 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-4 lg:mb-8">
-              <MagneticButton className="w-auto h-auto">
-                <Link href="/contact" className="btn-primary bg-white text-[var(--c-dark)] hover:bg-white/90 border-none shadow-xl py-2.5 xl:py-3 px-8 xl:px-10 text-[11px] xl:text-xs">
-                  Request Quote
-                </Link>
-              </MagneticButton>
-              <MagneticButton className="w-auto h-auto">
-                <a 
-                  href="https://wa.me/91XXXXXXXXXX" 
-                  target="_blank" 
-                  className="btn-whatsapp bg-transparent border-2 border-white/20 hover:bg-white/10 py-2.5 xl:py-3 px-8 xl:px-10 text-[11px] xl:text-xs"
-                >
-                  WhatsApp Expert
-                </a>
-              </MagneticButton>
+              <a 
+                href="https://wa.me/91XXXXXXXXXX" 
+                target="_blank" 
+                className="btn-whatsapp bg-white text-[var(--c-dark)] hover:bg-white/90 py-2.5 xl:py-3 px-8 xl:px-10 text-[11px] xl:text-xs rounded-full"
+              >
+                WhatsApp Expert
+              </a>
             </div>
           </div>
 
@@ -102,13 +95,10 @@ export default function Hero() {
 }
 
 function MetricSmall({ metric }: { metric: any }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  useCountUp(ref, metric.value);
-
   return (
     <div className="text-center">
       <span className="block text-3xl md:text-4xl font-black text-white">
-        <span ref={ref}>{metric.value}</span>{metric.suffix}
+        {metric.value}{metric.suffix}
       </span>
       <span className="block text-[10px] md:text-[11px] font-bold text-white/40 uppercase tracking-[0.2em] mt-2">
         {metric.label}
@@ -116,4 +106,5 @@ function MetricSmall({ metric }: { metric: any }) {
     </div>
   );
 }
+
 

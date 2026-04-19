@@ -4,9 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
-import PageTransition from "@/components/layout/PageTransition";
-import CustomCursor from "@/components/layout/CustomCursor";
 import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvider";
+
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -35,13 +34,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <body className="antialiased selection:bg-[var(--c-primary)] selection:text-white overflow-x-hidden bg-[var(--c-bg)]">
-        <CustomCursor />
+      <body className="antialiased selection:bg-[var(--c-primary)] selection:text-white bg-[var(--c-bg)] overflow-x-hidden">
         <SmoothScrollProvider>
           <Navbar />
-          <PageTransition>
-            <main id="main-content" className="relative z-10">{children}</main>
-          </PageTransition>
+          <main id="main-content" className="relative z-10">{children}</main>
           <Footer />
           <WhatsAppWidget />
         </SmoothScrollProvider>
@@ -49,3 +45,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

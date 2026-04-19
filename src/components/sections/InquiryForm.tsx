@@ -13,28 +13,29 @@ export default function InquiryForm() {
   });
 
   return (
-    <section id="inquiry-form" ref={containerRef} className="snap-section bg-[var(--c-surface)] overflow-hidden">
+    <section id="inquiry-form" ref={containerRef} className="snap-section h-screen bg-[var(--c-surface)] flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
       <div className="container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 xl:gap-24 items-center">
           
           {/* Left Column: Form */}
-          <div className="bg-white p-8 lg:p-12 rounded-2xl shadow-card border border-[var(--c-border)]">
-            <h2 className="text-3xl font-bold text-[var(--c-text-primary)] mb-8">Send Export Inquiry</h2>
+          <div className="bg-white p-10 xl:p-14 rounded-[48px] shadow-2xl border border-black/5 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--c-primary)]/5 rounded-bl-full" />
+            <h2 className="text-3xl xl:text-4xl font-black text-[var(--c-text-primary)] mb-10 tracking-tighter uppercase">Send Export <br /><span className="text-[var(--c-primary)]">Inquiry</span></h2>
             
             <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Full Name</label>
-                <input type="text" placeholder="John Doe" className="w-full px-4 py-3 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none transition-colors" required />
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Full Name</label>
+                <input type="text" placeholder="John Doe" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Company Name</label>
-                <input type="text" placeholder="Global Collagen Ltd" className="w-full px-4 py-3 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none transition-colors" required />
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Company Name</label>
+                <input type="text" placeholder="Global Collagen Ltd" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Country</label>
-                <select className="w-full px-4 py-3 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none bg-white transition-colors" required>
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Country</label>
+                <select className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm appearance-none" required>
                   <option value="">Select Country</option>
                   <option value="ID">Indonesia</option>
                   <option value="VN">Vietnam</option>
@@ -46,18 +47,18 @@ export default function InquiryForm() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Email Address</label>
-                <input type="email" placeholder="procurement@company.com" className="w-full px-4 py-3 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none transition-colors" required />
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Email Address</label>
+                <input type="email" placeholder="procurement@company.com" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Monthly Requirement</label>
-                <input type="text" placeholder="e.g. 50 Tons" className="w-full px-4 py-3 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none transition-colors" required />
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Requirement</label>
+                <input type="text" placeholder="e.g. 50 Tons" className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm" required />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Application</label>
-                <select className="w-full px-4 py-3 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none bg-white transition-colors" required>
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Application</label>
+                <select className="w-full px-5 py-4 bg-[var(--c-surface)]/50 border border-black/5 rounded-2xl focus:border-[var(--c-primary)] outline-none transition-all font-medium text-sm appearance-none" required>
                   <option value="">Select Application</option>
                   <option value="collagen">Collagen Manufacturing</option>
                   <option value="gelatin">Gelatin Production</option>
@@ -67,41 +68,44 @@ export default function InquiryForm() {
               </div>
 
               <div className="flex flex-col gap-2 md:col-span-2">
-                <label className="text-[11px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider">Specific Requirements</label>
-                <textarea placeholder="e.g. Protein %, moisture level, grade..." className="w-full px-4 py-4 border border-[var(--c-border)] rounded-lg focus:border-[var(--c-primary)] outline-none min-h-[120px] transition-colors" />
+                <label className="text-[10px] font-black text-[var(--c-text-muted)] uppercase tracking-widest">Requirements Detail</label>
+                <textarea placeholder="e.g. Grade, Protein %, Ash content limits..." className="w-full px-5 py-5 bg-[var(--c-surface)]/50 border border-black/5 rounded-3xl focus:border-[var(--c-primary)] outline-none min-h-[140px] transition-all font-medium text-sm resize-none" />
               </div>
 
-              <div className="md:col-span-2 pt-4">
-                <button type="submit" className="btn-primary w-full py-4 text-base tracking-wide">
-                  Send Export Inquiry
+              <div className="md:col-span-2 pt-6">
+                <button type="submit" className="btn-primary w-full py-5 text-[11px] font-black uppercase tracking-[0.3em] rounded-full shadow-xl">
+                  Initialize Export Request
                 </button>
               </div>
 
-              <p className="md:col-span-2 text-center text-xs text-[var(--c-text-muted)]">
-                By submitting, you agree to receive technical specification reports and quotations.
+
+              <p className="md:col-span-2 text-center text-[10px] font-bold text-[var(--c-text-muted)] uppercase tracking-widest opacity-60">
+                Official B2B Inquiry Channel — Secured SSL Link
               </p>
             </form>
           </div>
 
           {/* Right Column: Contact Info */}
-          <div className="lg:pt-10 space-y-12">
+          <div className="space-y-12 xl:pl-10">
             <div>
-              <h3 className="text-2xl font-bold text-[var(--c-text-primary)] mb-6">Direct Contact</h3>
-              <div className="space-y-6">
-                <ContactDetail label="WhatsApp (Fastest)" value="+91 94440 12345" isLink={`https://wa.me/919444012345`} isWhatsApp />
-                <ContactDetail label="Direct Email" value="export@aroonblossom.com" isLink="mailto:export@aroonblossom.com" />
-                <ContactDetail label="Global Desk" value="Chennai Port Zone, Tamil Nadu, India" />
-                <ContactDetail label="Response Time" value="Within 24 business hours" />
+               <div className="text-[11px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-6">
+                Direct Channels
+              </div>
+              <h3 className="text-4xl xl:text-5xl font-black text-[var(--c-text-primary)] mb-10 tracking-tighter">Global <br /> <span className="text-[var(--c-primary)]">Export Desk</span></h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8">
+                <ContactDetail label="WhatsApp (Recommended)" value="+91 94440 12345" isLink={`https://wa.me/919444012345`} isWhatsApp />
+                <ContactDetail label="Registry Email" value="export@aroonblossom.com" isLink="mailto:export@aroonblossom.com" />
+                <ContactDetail label="Global HQ" value="Chennai Port Zone, India" />
+                <ContactDetail label="SLA Response" value="Within 24 Business Hours" />
               </div>
             </div>
 
-            <div className="pt-10 border-t border-[var(--c-border)]">
-              <h4 className="text-[12px] font-bold text-[var(--c-text-muted)] uppercase tracking-wider mb-6">Resource Center</h4>
-              <div className="space-y-4">
-                <DownloadLink label="Product Specification Sheet (PDF)" href="/downloads/product-specs.pdf" />
-                <DownloadLink label="Company Compliance Profile" href="/downloads/company-profile.pdf" />
-                <DownloadLink label="APEDA Registration Certificate" href="/certificates/apeda.pdf" />
-                <DownloadLink label="CAPEXIL Member Certificate" href="/certificates/capexil.pdf" />
+            <div className="pt-12 border-t border-black/5">
+              <h4 className="text-[11px] font-black text-[var(--c-text-muted)] uppercase tracking-[0.3em] mb-8">Verification Resources</h4>
+              <div className="grid grid-cols-1 gap-4">
+                <DownloadLink label="Technical Specification Matrix" href="/downloads/product-specs.pdf" />
+                <DownloadLink label="Institution Compliance Profile" href="/downloads/company-profile.pdf" />
+                <DownloadLink label="Government Export Licenses" href="/certificates/apeda.pdf" />
               </div>
             </div>
           </div>
@@ -111,6 +115,7 @@ export default function InquiryForm() {
     </section>
   );
 }
+
 
 function ContactDetail({ label, value, isLink, isWhatsApp }: { label: string, value: string, isLink?: string, isWhatsApp?: boolean }) {
   const content = (

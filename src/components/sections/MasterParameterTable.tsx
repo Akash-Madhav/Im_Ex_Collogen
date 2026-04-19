@@ -16,30 +16,35 @@ export default function MasterParameterTable() {
   useGsapReveal(ref, { from: { opacity: 0, y: 20 } });
 
   return (
-    <section ref={ref} className="section-padding bg-white">
+    <section ref={ref} className="snap-section h-screen bg-white flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
       <div className="container-custom">
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">Master Parameter Table</h2>
-          <p className="text-[var(--c-text-secondary)]">Standard reference values for our buffalo limed pelts export cargo.</p>
+        <div className="mb-12 xl:mb-16">
+          <div className="text-[11px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-6">
+            Technical Standards
+          </div>
+          <h2 className="text-4xl xl:text-5xl font-black text-[var(--c-text-primary)] leading-tight tracking-tighter">
+            Master <br />
+            <span className="text-[var(--c-primary)]">Parameter Reference</span>
+          </h2>
         </div>
 
-        <div className="overflow-x-auto border border-[var(--c-border)] rounded-2xl shadow-sm">
-          <table className="w-full text-left border-collapse min-w-[800px]">
+        <div className="overflow-x-auto border border-black/5 rounded-[40px] shadow-2xl bg-[var(--c-surface)]/50 backdrop-blur-md">
+          <table className="w-full text-left border-collapse min-w-[900px]">
             <thead>
-              <tr className="bg-[var(--c-surface)]">
-                <th className="p-6 text-sm font-bold uppercase tracking-wider text-[var(--c-text-primary)] border-b border-[var(--c-border)]">Parameter</th>
-                <th className="p-6 text-sm font-bold uppercase tracking-wider text-[var(--c-text-primary)] border-b border-[var(--c-border)]">Acceptable</th>
-                <th className="p-6 text-sm font-bold uppercase tracking-wider text-[var(--c-text-primary)] border-b border-[var(--c-border)]">Preferred</th>
-                <th className="p-6 text-sm font-bold uppercase tracking-wider text-[var(--c-text-primary)] border-b border-[var(--c-border)]">Impact</th>
+              <tr className="bg-[var(--c-primary)] text-white">
+                <th className="p-8 text-xs font-black uppercase tracking-[0.2em] border-b border-white/10">Parameter</th>
+                <th className="p-8 text-xs font-black uppercase tracking-[0.2em] border-b border-white/10">Working Range</th>
+                <th className="p-8 text-xs font-black uppercase tracking-[0.2em] border-b border-white/10 text-[var(--c-primary-light)]">Preferred Spec</th>
+                <th className="p-8 text-xs font-black uppercase tracking-[0.2em] border-b border-white/10 opacity-70">Extraction Impact</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-black/5">
               {fullSpecs.map((spec, i) => (
-                <tr key={i} className="hover:bg-[var(--c-surface)]/50 transition-colors">
-                  <td className="p-6 text-sm font-bold border-b border-[var(--c-border)]">{spec.param}</td>
-                  <td className="p-6 text-sm border-b border-[var(--c-border)] font-mono">{spec.range}</td>
-                  <td className="p-6 text-sm border-b border-[var(--c-border)] font-mono font-bold text-[var(--c-primary)]">{spec.preferred}</td>
-                  <td className="p-6 text-sm border-b border-[var(--c-border)] text-[var(--c-text-secondary)]">{spec.impact}</td>
+                <tr key={i} className="hover:bg-white transition-all duration-500 group">
+                  <td className="p-8 text-sm font-black text-[var(--c-text-primary)] group-hover:text-[var(--c-primary)]">{spec.param}</td>
+                  <td className="p-8 text-sm font-black font-mono opacity-60 group-hover:opacity-100">{spec.range}</td>
+                  <td className="p-8 text-sm font-black font-mono text-[var(--c-primary)]">{spec.preferred}</td>
+                  <td className="p-8 text-[13px] text-[var(--c-text-secondary)] font-medium italic group-hover:text-black">{spec.impact}</td>
                 </tr>
               ))}
             </tbody>
@@ -49,3 +54,4 @@ export default function MasterParameterTable() {
     </section>
   );
 }
+

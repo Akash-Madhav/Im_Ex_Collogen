@@ -5,11 +5,14 @@ import { useGsapReveal } from '@/hooks/useGsapReveal';
 import { CheckCircle } from 'lucide-react';
 
 export default function QualityControlStandards() {
+
   const ref = useRef<HTMLDivElement>(null);
   useGsapReveal(ref, { from: { opacity: 0, scale: 0.98 } });
 
   return (
     <section ref={ref} className="section-padding bg-[var(--c-surface)]">
+
+
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>

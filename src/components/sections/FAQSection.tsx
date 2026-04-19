@@ -15,17 +15,22 @@ export default function FAQSection() {
   useGsapReveal(ref, { from: { opacity: 0, scale: 0.95 } });
 
   return (
-    <section ref={ref} className="section-padding bg-white">
+    <section ref={ref} className="snap-section h-screen bg-white flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
       <div className="container-custom">
-         <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-4">Common Procurement Questions</h2>
-            <p className="text-[var(--c-text-secondary)]">Quick answers for international industrial buyers.</p>
+         <div className="mb-12 xl:mb-20">
+            <div className="text-[11px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-6">
+              Procurement Support
+            </div>
+            <h2 className="text-4xl xl:text-6xl font-black text-[var(--c-text-primary)] leading-tight tracking-tighter italic">
+              Knowledge <br />
+              <span className="text-[var(--c-primary)]">Repository</span>
+            </h2>
          </div>
-         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
             {faqs.map((faq, i) => (
-              <div key={i} className="p-8 bg-[var(--c-surface)] rounded-2xl border border-[var(--c-border)]">
-                 <h4 className="text-lg font-bold mb-3 text-[var(--c-text-primary)]">{faq.q}</h4>
-                 <p className="text-sm text-[var(--c-text-secondary)] leading-relaxed">{faq.a}</p>
+              <div key={i} className="group p-10 xl:p-12 bg-[var(--c-surface)] rounded-[40px] border border-black/5 hover:border-[var(--c-primary)]/20 transition-all duration-700 shadow-xl">
+                 <h4 className="text-xl xl:text-2xl font-black mb-4 text-[var(--c-text-primary)] leading-none tracking-tight group-hover:text-[var(--c-primary)] transition-colors">{faq.q}</h4>
+                 <p className="text-[14px] xl:text-[15px] text-[var(--c-text-secondary)] leading-relaxed font-medium opacity-70 group-hover:opacity-100 transition-opacity">{faq.a}</p>
               </div>
             ))}
          </div>
@@ -33,3 +38,4 @@ export default function FAQSection() {
     </section>
   );
 }
+

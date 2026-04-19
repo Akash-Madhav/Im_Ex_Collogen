@@ -4,11 +4,14 @@ import React, { useRef } from 'react';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
 
 export default function SpecificationsMatrix() {
+
   const ref = useRef<HTMLDivElement>(null);
   useGsapReveal(ref, { from: { opacity: 0, y: 30 } });
 
   return (
     <section ref={ref} className="bg-white pb-20">
+
+
       <div className="container-custom">
         <div className="p-8 lg:p-16 bg-[var(--c-surface)] rounded-2xl border border-[var(--c-border)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

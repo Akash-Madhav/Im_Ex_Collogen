@@ -7,55 +7,59 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#111111] text-[rgba(255,255,255,0.75)] pt-16 pb-8">
+    <footer className="bg-[#111111] text-[rgba(255,255,255,0.7)] pt-24 pb-12 border-t border-white/5">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
-          {/* Column 1: Brand */}
-          <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="relative w-12 h-12 grayscale brightness-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 xl:gap-24 mb-20">
+          {/* Column 1: Brand Architecture */}
+          <div className="space-y-8">
+            <Link href="/" className="flex items-center gap-5 group">
+              <div className="relative w-14 h-14 brightness-0 invert opacity-80 transition-all duration-700 group-hover:opacity-100 group-hover:scale-110">
                  <Image 
                    src="/images/logo.svg" 
-                   alt="Aroon Blossom Impex Logo" 
+                   alt="Institutional Logo" 
                    fill 
                    className="object-contain"
                  />
               </div>
-              <span className="text-xl font-extrabold text-white tracking-[0.1em] leading-[0.85] uppercase">
-                AROON <br /> BLOSSOM <br /> IMPEX
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xl xl:text-2xl font-black text-white tracking-tighter leading-none uppercase italic">
+                  Aroon Blossom
+                </span>
+                <span className="text-[10px] xl:text-[11px] font-black text-[var(--c-primary)] tracking-[0.4em] uppercase mt-1">
+                  Impex · Global
+                </span>
+              </div>
             </Link>
-            <p className="text-[10px] text-[rgba(255,255,255,0.4)] uppercase tracking-[0.2em] font-bold">
-              Premium Hides & Pelts Exporter
+            
+            <p className="text-[14px] leading-relaxed font-medium">
+              Strategically supplying the global collagen and pet food manufacturing tiers with hand-graded buffalo limed pelts since 2012. Engineered for consistency, certified for trust.
             </p>
-            <p className="text-sm leading-relaxed">
-              Supplying global collagen and pet food manufacturers with consistent quality and reliable bulk supply since 2012.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[rgba(31,93,58,0.3)] text-white/80 border border-[rgba(31,93,58,0.5)]">
+            
+            <div className="flex flex-wrap gap-3 pt-4">
+              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/60">
                 APEDA Certified
-              </span>
-              <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[rgba(31,93,58,0.3)] text-white/80 border border-[rgba(31,93,58,0.5)]">
-                CAPEXIL Registered
-              </span>
+              </div>
+              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/60">
+                CAPEXIL Registry
+              </div>
             </div>
           </div>
 
-          {/* Column 2: Company Links */}
+          {/* Column 2: Strategic Links */}
           <div>
-            <h5 className="text-xs font-bold text-[rgba(255,255,255,0.5)] uppercase tracking-widest mb-6">Company</h5>
-            <ul className="space-y-3">
+            <h5 className="text-[11px] font-black text-white uppercase tracking-[0.3em] mb-10 opacity-40">System Map</h5>
+            <ul className="space-y-4">
               {[
-                { name: 'Home', href: '/' },
-                { name: 'About Us', href: '/about' },
-                { name: 'Quality & Specs', href: '/quality' },
-                { name: 'Export Capability', href: '/export' },
-                { name: 'Contact', href: '/contact' },
+                { name: 'Global Hub', href: '/' },
+                { name: 'Corporate History', href: '/about' },
+                { name: 'Technical Indices', href: '/quality' },
+                { name: 'Distribution Matrix', href: '/export' },
+                { name: 'Strategic Inquiry', href: '/contact' },
               ].map((link) => (
                 <li key={link.name}>
                   <Link 
                     href={link.href} 
-                    className="text-sm hover:text-white transition-all hover:pl-2"
+                    className="text-[13px] font-bold uppercase tracking-wider hover:text-[var(--c-primary)] transition-all hover:translate-x-2 block"
                   >
                     {link.name}
                   </Link>
@@ -64,20 +68,21 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Product Links */}
+          {/* Column 3: Material Streams */}
           <div>
-            <h5 className="text-xs font-bold text-[rgba(255,255,255,0.5)] uppercase tracking-widest mb-6">Products</h5>
-            <ul className="space-y-3">
+            <h5 className="text-[11px] font-black text-white uppercase tracking-[0.3em] mb-10 opacity-40">Output Streams</h5>
+            <ul className="space-y-4">
               {[
-                { name: 'Collagen Grade Pelts', href: '/products/collagen-grade' },
-                { name: 'Pet Food Grade Pelts', href: '/products/pet-food-grade' },
-                { name: 'Technical Spec Sheet', href: '/downloads/product-specs.pdf' },
-                { name: 'Company Profile', href: '/downloads/company-profile.pdf' },
+                { name: 'Collagen Tier Pelts', href: '/products' },
+                { name: 'Pet Food Tier Pelts', href: '/products' },
+                { name: 'Gelatin Tier Pelts', href: '/products' },
+                { name: 'Tannery Tier Pelts', href: '/products' },
+                { name: 'Technical Data (PDF)', href: '/certificates/company-profile.pdf' },
               ].map((link) => (
                 <li key={link.name}>
                   <Link 
                     href={link.href} 
-                    className="text-sm hover:text-white transition-all hover:pl-2"
+                    className="text-[13px] font-bold uppercase tracking-wider hover:text-[var(--c-primary)] transition-all hover:translate-x-2 block"
                   >
                     {link.name}
                   </Link>
@@ -86,38 +91,47 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Contact Info */}
+          {/* Column 4: Contact Registry */}
           <div>
-            <h5 className="text-xs font-bold text-[rgba(255,255,255,0.5)] uppercase tracking-widest mb-6">Contact</h5>
-            <div className="space-y-4 text-sm">
-              <p>Chennai, Tamil Nadu, India</p>
-              <a href="tel:+91XXXXXXXXXX" className="block hover:text-white">+91 XXXXXXXXXX</a>
-              <a href="mailto:export@aroonblossom.com" className="block hover:text-white">export@aroonblossom.com</a>
-              <a 
-                href="https://wa.me/91XXXXXXXXXX" 
-                target="_blank" 
-                className="block font-bold text-[#25D366] hover:brightness-110"
-              >
-                WhatsApp Message
-              </a>
-              <div className="pt-4 border-t border-white/10 mt-4 space-y-1 text-[11px] text-[rgba(255,255,255,0.4)]">
-                <div>APEDA Reg: RCMC/APEDA/27578/2025-2026</div>
-                <div>Valid Till: 16 March 2031</div>
+            <h5 className="text-[11px] font-black text-white uppercase tracking-[0.3em] mb-10 opacity-40">Global Registry</h5>
+            <div className="space-y-6 text-[14px]">
+              <div className="space-y-2">
+                <span className="block text-[10px] font-black uppercase tracking-widest text-white/30">Hq Location</span>
+                <p className="font-bold">Chennai, Tamil Nadu, India</p>
+              </div>
+              
+              <div className="space-y-2">
+                <span className="block text-[10px] font-black uppercase tracking-widest text-white/30">Direct Line</span>
+                <a href="tel:+91XXXXXXXXXX" className="block text-xl font-black italic hover:text-[var(--c-primary)] transition-colors">+91 XXXXXXXXXX</a>
+              </div>
+
+              <div className="space-y-2">
+                <span className="block text-[10px] font-black uppercase tracking-widest text-white/30">Network Support</span>
+                <a 
+                  href="https://wa.me/91XXXXXXXXXX" 
+                  target="_blank" 
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--c-primary)]/10 border border-[var(--c-primary)]/20 text-[var(--c-primary)] font-black text-[10px] uppercase tracking-widest hover:bg-[var(--c-primary)] hover:text-white transition-all"
+                >
+                  WhatsApp Expert
+                </a>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:row items-center justify-between gap-4 text-xs text-[rgba(255,255,255,0.4)]">
-          <p>© {currentYear} Aroon Blossom Impex. All Rights Reserved.</p>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+        {/* Global Footer Bottom */}
+        <div className="pt-12 border-t border-white/5 flex flex-col lg:flex-row items-center justify-between gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/20">
+          <p>© {currentYear} Aroon Blossom Impex. Institutional Operations.</p>
+          <div className="flex gap-10">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Rights</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Operational Terms</Link>
           </div>
-          <p>Made in India 🇮🇳</p>
+          <p className="flex items-center gap-2">
+            Engineered In India <span className="text-sm">🇮🇳</span>
+          </p>
         </div>
       </div>
     </footer>
   );
 }
+
