@@ -4,17 +4,18 @@ import React from 'react';
 import Image from 'next/image';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
 import { useRef } from 'react';
+import SectionWrapper from '@/components/layout/SectionWrapper';
 
 const certs = [
   {
     title: 'APEDA certified',
-    desc: 'Agricultural and Processed Food Products Export Development Authority.',
+    desc: 'Agricultural and Processed Food Export Development Authority.',
     image: '/images/apeda_logo.png',
     link: '/certificates/apeda.pdf'
   },
   {
     title: 'CAPEXIL Member',
-    desc: 'Chemical and Allied Products Export Promotion Council registered exporter.',
+    desc: 'Chemical and Allied Products Export Promotion Council.',
     image: '/images/capexil_logo.png',
     link: '/certificates/capexil.pdf'
   }
@@ -24,91 +25,87 @@ export default function CertificationsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGsapReveal(containerRef, {
-    from: { y: 40, opacity: 0 },
+    from: { y: 20, opacity: 0 },
     stagger: 0.1
   });
 
   return (
-    <section ref={containerRef} className="snap-section h-screen bg-[var(--c-surface)] relative overflow-auto lg:overflow-hidden flex flex-col justify-center py-24">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-16 xl:gap-24 items-center">
+    <SectionWrapper id="certifications" className="bg-[var(--c-surface)]">
+      <div ref={containerRef} className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-12 items-center">
           
-          <div className="space-y-10">
+          <div className="space-y-6">
             <div>
-              <div className="inline-block px-4 py-1.5 rounded-full bg-[var(--c-primary-light)] text-[var(--c-primary)] text-[10px] xl:text-[11px] font-black uppercase tracking-[0.3em] mb-6">
+              <div className="inline-block px-3 py-1 rounded-full bg-[var(--c-primary-light)] text-[var(--c-primary)] text-[8px] font-black uppercase tracking-[0.3em] mb-4">
                 Institutional Trust
               </div>
-              <h2 className="text-4xl xl:text-5xl font-bold text-[var(--c-text-primary)] leading-[1.05] tracking-tight mb-8">
-                Globally Validated <br />
-                <span className="text-[var(--c-primary)] text-6xl xl:text-7xl block mt-2">Compliance</span>
+              <h2 className="text-2xl lg:text-3xl font-black text-[var(--c-text-primary)] leading-[1.1] tracking-tighter mb-4 italic">
+                Validated <br />
+                <span className="text-[var(--c-primary)] NOT-italic">Compliance</span>
               </h2>
-              <p className="text-lg text-[var(--c-text-secondary)] leading-relaxed max-w-md">
-                Our operations are governed by India's apex export authorities, ensuring every ton of limed pelt meets the rigorous standards of international procurement.
+              <p className="text-sm lg:text-[15px] text-[var(--c-text-secondary)] leading-relaxed font-medium opacity-80 max-w-sm">
+                Governed by India's apex export authorities, ensuring every ton meets the most rigorous standards.
               </p>
             </div>
 
-            <div className="flex flex-col gap-6">
-              <TrustPoint title="800+ Tons Monthly" desc="High-volume capability with government export clearance." />
-              <TrustPoint title="Batch-Wise Analysis" desc="Third-party lab reports for every consignment." />
+            <div className="flex flex-col gap-3 lg:gap-4 pt-2">
+              <TrustPoint title="800+ Tons Monthly" desc="High-volume govt. clearance." />
+              <TrustPoint title="Lab Verified" desc="Consignment reports standard." />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
             {certs.map((cert, index) => (
               <div 
                 key={index} 
-                className="group relative bg-white rounded-[40px] p-10 xl:p-12 shadow-2xl border border-transparent hover:border-[var(--c-primary)]/20 flex flex-col items-center text-center overflow-hidden"
+                className="group relative bg-white rounded-[24px] p-6 lg:p-10 shadow-lg border border-[var(--c-border)]/20 hover:border-[var(--c-primary)]/30 transition-all duration-500 flex flex-col items-center text-center"
               >
-                <div className="relative w-32 h-32 xl:w-40 xl:h-40 mb-10">
+                <div className="relative w-14 h-14 lg:w-16 lg:h-16 mb-4 lg:mb-6 shrink-0">
                   <Image 
                     src={cert.image} 
                     alt={cert.title} 
                     fill 
-                    className="object-contain filter grayscale group-hover:grayscale-0"
+                    className="object-contain grayscale group-hover:grayscale-0 transition-all duration-700"
                   />
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="text-xl xl:text-2xl font-black text-[var(--c-text-primary)] uppercase tracking-tight">
+                <div className="space-y-2">
+                  <h3 className="text-xs lg:text-[13px] font-black text-[var(--c-text-primary)] uppercase tracking-tight leading-none">
                     {cert.title}
                   </h3>
-                  <p className="text-[13px] xl:text-sm text-[var(--c-text-secondary)] leading-relaxed opacity-60 group-hover:opacity-100">
+                  <p className="text-[10px] text-[var(--c-text-secondary)] leading-tight opacity-60">
                     {cert.desc}
                   </p>
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-4 lg:mt-6">
                   <a 
                     href={cert.link} 
                     target="_blank"
-                    className="btn-primary py-3 px-6 text-[10px] font-bold uppercase tracking-widest rounded-full"
+                    className="inline-flex items-center justify-center px-6 py-2 bg-[var(--c-surface)] text-[var(--c-primary)] text-[8px] font-black uppercase tracking-widest rounded-full border border-[var(--c-border)] hover:bg-[var(--c-primary)] hover:text-white transition-all shadow-sm"
                   >
-                    View Credential
+                    View cert →
                   </a>
                 </div>
               </div>
             ))}
           </div>
-
-
-
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }
 
 function TrustPoint({ title, desc }: any) {
   return (
     <div className="flex items-start gap-4">
-      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-lg text-[var(--c-primary)] font-bold italic">
+      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-md text-[var(--c-primary)] text-xs font-bold">
         ★
       </div>
       <div>
-        <h4 className="text-sm font-black text-[var(--c-text-primary)] uppercase tracking-widest mb-1">{title}</h4>
-        <p className="text-xs text-[var(--c-text-muted)] font-medium leading-relaxed">{desc}</p>
+        <h4 className="text-xs font-black text-[var(--c-text-primary)] uppercase tracking-widest leading-none mb-1">{title}</h4>
+        <p className="text-[10px] text-[var(--c-text-muted)] font-medium leading-tight">{desc}</p>
       </div>
     </div>
   );
 }
-

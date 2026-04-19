@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
+import SectionWrapper from '@/components/layout/SectionWrapper';
 
 interface PageHeroProps {
   title: string;
@@ -13,50 +14,46 @@ interface PageHeroProps {
 
 export default function PageHero({ title, subtitle, image, label }: PageHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  useGsapReveal(containerRef, { from: { opacity: 0, y: 30 } });
+  useGsapReveal(containerRef, { from: { opacity: 0, scale: 0.98 } });
 
   return (
-    <section ref={containerRef} className="relative h-screen flex flex-col justify-center pt-20 overflow-hidden bg-[var(--c-dark)]">
+    <SectionWrapper id="page-hero" className="bg-[var(--c-dark)]">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image 
           src={image} 
           alt={title} 
           fill 
-          className="object-cover brightness-[0.25] contrast-125 grayscale"
+          className="object-cover brightness-[0.2] contrast-125 grayscale"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--c-dark)] via-transparent to-transparent opacity-60" />
-        <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-black to-transparent" />
       </div>
 
-      <div className="container-custom relative z-10">
+      <div ref={containerRef} className="relative z-10 w-full">
         <div className="max-w-4xl">
           {label && (
-            <div className="flex items-center gap-3 text-[10px] xl:text-[11px] font-black tracking-[0.4em] uppercase text-[var(--c-primary-light)] mb-10">
-              <span className="w-12 h-[1px] bg-[var(--c-primary-light)]" />
+            <div className="flex items-center gap-2 text-[9px] font-black tracking-[0.4em] uppercase text-[var(--c-primary-light)] mb-6">
+              <span className="w-10 h-[1px] bg-[var(--c-primary-light)]" />
               {label}
             </div>
           )}
-          <h1 className="text-6xl xl:text-9xl font-black text-white mb-10 leading-[0.95] tracking-tighter italic">
+          <h1 className="text-4xl lg:text-6xl xl:text-7xl font-black text-white mb-6 leading-[1] tracking-tighter italic">
             {title}
           </h1>
-          <p className="text-xl xl:text-2xl text-white/50 leading-relaxed max-w-2xl font-medium">
+          <p className="text-base lg:text-lg xl:text-xl text-white/50 leading-relaxed max-w-2xl font-medium">
             {subtitle}
           </p>
         </div>
       </div>
 
       {/* Industrial Accents */}
-      <div className="absolute right-0 bottom-0 p-12 xl:p-20 hidden lg:block z-20">
-        <div className="flex items-center gap-6">
-          <div className="w-[1px] h-32 bg-white/10" />
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] vertical-rl rotate-180">Institution Matrix</span>
-          </div>
+      <div className="absolute right-0 bottom-0 p-8 hidden lg:block z-20">
+        <div className="flex items-center gap-4 opacity-30">
+          <div className="w-[1px] h-20 bg-white" />
+          <span className="text-[9px] font-black text-white uppercase tracking-[0.3em] vertical-rl rotate-180">Institution Matrix</span>
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }
-

@@ -3,24 +3,25 @@
 import React from 'react';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
 import { useRef } from 'react';
+import SectionWrapper from '@/components/layout/SectionWrapper';
 
 const initiatives = [
   {
     icon: '♻',
-    title: 'Trimmings → Collagen',
-    desc: 'Pelt trimmings and off-cuts are processed into collagen meal, maximizing protein extraction yield for zero-waste production.',
+    title: 'Collagen Tier',
+    desc: 'Trimmings processed into high-yield collagen meal.',
     theme: 'green'
   },
   {
     icon: '⚡',
-    title: 'Fat → Industrial Use',
-    desc: 'Animal fat recovered during processing is directed to industrial tallow and biofuel applications, powering other industries.',
+    title: 'Energy Tier',
+    desc: 'Recovered fat directed to biofuel & tallow.',
     theme: 'amber'
   },
   {
     icon: '🐾',
-    title: 'Waste → Pet Chews',
-    desc: 'Lower-grade material is processed into natural pet chew raw material — ensuring 100% hide utilization without landfill impact.',
+    title: 'Nutrient Tier',
+    desc: 'Lower-grade material for natural pet chews.',
     theme: 'blue'
   }
 ];
@@ -29,41 +30,79 @@ export default function SustainabilitySection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGsapReveal(containerRef, {
-    from: { y: 20, opacity: 0 },
-    stagger: 0.15
+    from: { opacity: 0, scale: 0.98 },
+    stagger: 0.1
   });
 
   return (
-    <section ref={containerRef} className="h-screen bg-[var(--c-surface)] relative flex flex-col justify-center overflow-auto lg:overflow-hidden py-24">
-
-      <div className="container-custom">
-        <div className="text-center max-w-4xl mx-auto mb-16 xl:mb-24 px-4">
-          <div className="text-[11px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-6">
+    <SectionWrapper id="sustainability" className="bg-[var(--c-surface)]">
+      <div ref={containerRef} className="h-full flex flex-col justify-center">
+        
+        {/* Section Title */}
+        <div className="text-center mb-8 lg:mb-12">
+          <div className="text-[9px] font-black tracking-[0.3em] uppercase text-[var(--c-primary)] mb-2">
             Industrial Stewardship
           </div>
-          <h2 className="text-4xl xl:text-6xl font-black text-[var(--c-text-primary)] leading-tight tracking-tighter mb-8">
-            The Circular Economy of <br />
-            <span className="text-[var(--c-primary)] underline decoration-[var(--c-primary-light)] underline-offset-8">Raw Material Utilization</span>
+          <h2 className="text-2xl lg:text-3xl font-black text-[var(--c-text-primary)] leading-tight tracking-tighter italic">
+            Circular <span className="text-[var(--c-primary)] NOT-italic">Economy</span>
           </h2>
-          <p className="text-xl text-[var(--c-text-secondary)] leading-relaxed max-w-2xl mx-auto italic font-medium">
-            Zero waste. Maximum yield. We extract value from every fiber, ensuring our industrial footprint remains as clean as our products.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-10">
-          {initiatives.map((item, index) => (
-            <div key={index} className="bg-white/80 backdrop-blur-xl border border-[var(--c-border)] rounded-[40px] p-10 xl:p-14 shadow-2xl group hover:border-[var(--c-primary)] flex flex-col items-center text-center">
-               <div className={`w-20 h-20 xl:w-24 xl:h-24 rounded-full flex items-center justify-center text-4xl mb-10 shadow-lg ${
-                 item.theme === 'green' ? 'bg-[#E8F5EE] text-[#1F5D3A]' : item.theme === 'amber' ? 'bg-[#FFF3E0] text-[#B45309]' : 'bg-[#E3F2FD] text-[#0D47A1]'
-               }`}>
-                 {item.icon}
-               </div>
-               <h4 className="text-2xl font-black text-[var(--c-text-primary)] mb-6 tracking-tight uppercase leading-none">{item.title}</h4>
-               <p className="text-[14px] xl:text-[15px] text-[var(--c-text-secondary)] leading-relaxed font-medium opacity-70">{item.desc}</p>
+        {/* Centerpiece Grid */}
+        <div className="w-full max-w-6xl mx-auto flex flex-col lg:grid lg:grid-cols-3 items-center gap-6 lg:gap-12">
+          
+          {/* Card 1: Left */}
+          <div className="order-2 lg:order-1 flex justify-center lg:justify-end">
+             <FactorCard item={initiatives[0]} />
+          </div>
+
+          {/* Central Hub & Card 3 Column */}
+          <div className="order-1 lg:order-2 flex flex-col items-center gap-8 lg:gap-12">
+            {/* Hub */}
+            <div className="w-40 h-40 lg:w-56 lg:h-56 rounded-full bg-white shadow-xl border-2 border-[var(--c-primary-light)] flex flex-col items-center justify-center p-6 text-center relative group hover:scale-105 transition-all duration-700">
+              <div className="absolute inset-0 rounded-full bg-[var(--c-primary)] opacity-5 animate-pulse" />
+              <h3 className="text-base lg:text-xl font-black text-[var(--c-text-primary)] leading-tight tracking-tighter uppercase italic">
+                Strategic <br />
+                <span className="text-[var(--c-primary)] NOT-italic">Solutions</span>
+              </h3>
+              <div className="mt-2 w-8 h-1 bg-[var(--c-primary)] rounded-full" />
             </div>
-          ))}
+
+            {/* Card 3: Bottom (Desktop) */}
+            <div className="hidden lg:flex justify-center">
+               <FactorCard item={initiatives[2]} />
+            </div>
+          </div>
+
+          {/* Card 2: Right */}
+          <div className="order-3 lg:order-3 flex justify-center lg:justify-start">
+             <FactorCard item={initiatives[1]} />
+          </div>
+
+          {/* Card 3: Mobile Flow */}
+          <div className="lg:hidden order-4 flex justify-center">
+             <FactorCard item={initiatives[2]} />
+          </div>
+
         </div>
+
       </div>
-    </section>
+    </SectionWrapper>
+  );
+}
+
+function FactorCard({ item }: { item: any }) {
+  return (
+    <div className="bg-white border border-[var(--c-border)]/20 rounded-[20px] p-4 lg:p-6 shadow-lg w-full max-w-[260px] hover:border-[var(--c-primary)] transition-all group backdrop-blur-sm text-center">
+       <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center text-lg lg:text-xl mb-3 shadow-sm group-hover:scale-110 transition-transform mx-auto ${
+         item.theme === 'green' ? 'bg-[#E8F5EE] text-[#1F5D3A]' : item.theme === 'amber' ? 'bg-[#FFF3E0] text-[#B45309]' : 'bg-[#E3F2FD] text-[#0D47A1]'
+       }`}>
+         {item.icon}
+       </div>
+       <h4 className="text-[13px] lg:text-[14px] font-black text-[var(--c-text-primary)] mb-1 tracking-tight uppercase leading-none">{item.title}</h4>
+       <p className="text-[10px] lg:text-[11px] text-[var(--c-text-secondary)] leading-tight font-medium opacity-70 group-hover:opacity-100 transition-opacity">
+         {item.desc}
+       </p>
+    </div>
   );
 }

@@ -23,8 +23,7 @@ export default function Hero() {
   });
 
   return (
-    <section ref={containerRef} className="h-screen relative flex flex-col justify-between overflow-hidden bg-[var(--c-dark)]">
-
+    <section ref={containerRef} className="shared-section-fit bg-[var(--c-dark)]">
       {/* Aesthetic Background Image */}
       <div className="absolute inset-0 z-0">
         <Image 
@@ -37,57 +36,45 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[var(--c-dark)]" />
       </div>
 
-      <div className="container-custom flex-1 flex flex-col justify-center relative z-10 pt-16 lg:pt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-16 items-center">
-          
-          {/* Left Column: Text Content */}
-          <div className="z-10">
-            <div className="flex items-center gap-2 text-[11px] xl:text-[12px] font-bold tracking-[0.08em] uppercase text-[var(--c-primary-light)] mb-3 lg:mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--c-primary-light)]" />
-              Buffalo Limed Pelts Exporter · India
+      <div className="container-custom h-full flex flex-col justify-between relative z-10 pt-20 lg:pt-32 pb-4 lg:pb-8 overflow-hidden">
+        {/* Main Content Space */}
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-12 items-center">
+            
+            {/* Left Column: Text Content */}
+            <div className="z-10">
+              <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.05] mb-4 lg:mb-6 tracking-tight">
+                Export-Quality <br />
+                <span className="text-[var(--c-primary-light)]">Buffalo Limed Pelts</span> <br />
+                Precision Industrial Supply
+              </h1>
+
+              <p className="text-sm lg:text-base xl:text-lg text-white/70 leading-relaxed max-w-[550px] mb-6 lg:mb-8 font-medium">
+                <span className="text-white font-bold">Aroon Blossom Impex</span> supplies high-quality buffalo limed pelts to leading <span className="text-[var(--c-primary-light)] font-bold italic">collagen and pet food manufacturers</span> across Asia and Europe.
+              </p>
             </div>
 
-            <h1 className="text-hero font-bold text-white leading-[1] mb-3 lg:mb-5">
-              Export-Quality <br />
-              <span className="text-[var(--c-primary-light)]">Buffalo Limed Pelts</span> <br />
-              Precision Industrial Supply
-            </h1>
-
-            <p className="text-base xl:text-lg text-white/70 leading-relaxed max-w-[550px] mb-6 lg:mb-8">
-              Specialized source for high-purity collagen raw materials and pet food grade pelts. Delivering industrial excellence across 15+ global markets with 800+ ton monthly capacity.
-            </p>
-
-            <div className="flex flex-wrap gap-4 mb-4 lg:mb-8">
-              <a 
-                href="https://wa.me/91XXXXXXXXXX" 
-                target="_blank" 
-                className="btn-whatsapp bg-white text-[var(--c-dark)] hover:bg-white/90 py-2.5 xl:py-3 px-8 xl:px-10 text-[11px] xl:text-xs rounded-full"
-              >
-                WhatsApp Expert
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column Visual Overlay */}
-          <div className="hidden lg:block relative p-8 xl:p-10 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl skew-x-[-2deg] rotate-[-2deg]">
-            <div className="space-y-4 xl:space-y-5">
-              <div className="w-12 h-1 bg-[var(--c-primary-light)]" />
-              <h3 className="text-lg xl:text-xl font-bold text-white">Advanced Industrial <br/>Processing</h3>
-              <p className="text-xs xl:text-sm text-white/60">Our facilities ensure strictly controlled pH levels and uniform liming protocols for premium grade output.</p>
-              <Link href="/quality" className="inline-flex items-center gap-2 text-[var(--c-primary-light)] font-bold text-[9px] xl:text-[10px] uppercase tracking-[0.2em] hover:gap-4 transition-all">
-                Quality Protocol →
-              </Link>
+            {/* Right Column Visual Overlay */}
+            <div className="hidden lg:block relative p-6 xl:p-8 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl">
+              <div className="space-y-3 xl:space-y-4">
+                <div className="w-10 h-1 bg-[var(--c-primary-light)]" />
+                <h3 className="text-sm xl:text-base font-bold text-white">Advanced Industrial <br/>Processing</h3>
+                <p className="text-[10px] xl:text-[11px] text-white/60 leading-relaxed">Our facilities ensure strictly controlled pH levels and uniform liming protocols for premium grade output.</p>
+                <Link href="/quality" className="inline-flex items-center gap-2 text-[var(--c-primary-light)] font-bold text-[9px] xl:text-[10px] uppercase tracking-[0.2em] hover:gap-4 transition-all">
+                  Quality Protocol →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Hero Footer Metrics */}
-      <div className="container-custom py-4 xl:py-6 relative z-10">
-        <div className="grid grid-cols-3 gap-8 py-4 xl:py-6 border-t border-white/10">
-          {metrics.map((metric, i) => (
-            <MetricSmall key={i} metric={metric} />
-          ))}
+        {/* Hero Footer Metrics */}
+        <div className="py-2 xl:py-4 border-t border-white/10 mt-auto">
+          <div className="grid grid-cols-3 gap-8 py-2 xl:py-4">
+            {metrics.map((metric, i) => (
+              <MetricSmall key={i} metric={metric} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
