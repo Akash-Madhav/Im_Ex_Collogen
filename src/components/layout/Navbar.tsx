@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { Menu, X, Globe } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 
@@ -18,9 +19,17 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const currentLocale = useLocale();
 
-  const isHome = pathname === '/';
+  const isHome = pathname === `/${currentLocale}`;
   const shouldBeLight = !scrolled;
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextLocale = e.target.value;
+    const newPath = pathname.replace(`/${currentLocale}`, `/${nextLocale}`);
+    router.push(newPath);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,13 +69,13 @@ export default function Navbar() {
 
           {/* LOGO SECTION */}
           <div className={cn("flex-shrink-0 z-[160] transition-opacity duration-300", isOpen && "opacity-0 invisible")}>
-            <Link href="/" className="flex items-center gap-4 group scale-[1.1] md:scale-[1.2] origin-left transition-transform duration-500">
-              <div className="relative w-6 h-6 md:w-10 md:h-10">
+            <Link href={`/${currentLocale}`} className="flex items-center gap-3 lg:gap-4 group origin-left transition-transform duration-500 hover:opacity-80">
+              <div className="relative w-8 h-8 md:w-12 md:h-12 bg-white rounded-lg p-1 md:p-1.5 shadow-sm">
                  <Image 
                    src="/images/logo.svg" 
                    alt="Aroon Blossom Impex" 
                    fill 
-                   className="object-contain"
+                   className="object-contain p-[2px]"
                    priority
                  />
               </div>
@@ -91,15 +100,16 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className={cn(
-            "hidden lg:flex items-center gap-10 xl:gap-12 transition-opacity duration-300",
+            "hidden lg:flex items-center gap-6 xl:gap-10 transition-opacity duration-300",
             isOpen && "opacity-0 invisible"
           )}>
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const localizedHref = `/${currentLocale}${link.href === '/' ? '' : link.href}`;
+              const isActive = pathname === localizedHref;
               return (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={localizedHref}
                   className="relative group py-1"
                 >
                   <span
@@ -125,12 +135,32 @@ export default function Navbar() {
 
 
           {/* Interaction Elements */}
-          <div className="flex items-center gap-6 z-[160]">
-            <div className={cn("hidden sm:block transition-opacity duration-300", isOpen && "opacity-0 invisible")}>
+          <div className="flex items-center gap-3 md:gap-5 z-[160] flex-shrink-0">
+            
+            {/* Language Switcher */}
+            <div className={cn(
+              "relative flex items-center bg-black/5 hover:bg-black/10 transition-colors duration-300 rounded-full px-2 py-1 md:py-1.5 md:px-3 text-[10px] md:text-xs font-semibold overflow-hidden border",
+              scrolled ? "border-black/5 text-[var(--c-dark)]" : "border-white/10 text-[#FAF9F6] bg-white/5 hover:bg-white/10"
+            )}>
+              <Globe size={12} className="opacity-70 mr-1 flex-shrink-0" />
+              <select 
+                value={currentLocale} 
+                onChange={handleLanguageChange}
+                className="appearance-none bg-transparent outline-none cursor-pointer pl-1 pr-2 z-10 uppercase w-auto min-w-[28px]"
+              >
+                <option value="en" className="text-black">EN</option>
+                <option value="ja" className="text-black">JA</option>
+                <option value="ko" className="text-black">KO</option>
+                <option value="de" className="text-black">DE</option>
+                <option value="zh" className="text-black">ZH</option>
+              </select>
+            </div>
+
+            <div className={cn("hidden sm:flex transition-opacity duration-300 flex-shrink-0", isOpen && "opacity-0 invisible")}>
               <Link
-                href="/contact"
+                href={`/${currentLocale}/contact`}
                 className={cn(
-                  "inline-flex items-center px-8 md:px-10 py-2.5 rounded-full border transition-all duration-700 group relative overflow-hidden",
+                  "inline-flex items-center px-6 lg:px-8 xl:px-10 py-2 md:py-2.5 rounded-full border transition-all duration-700 group relative overflow-hidden",
                   scrolled 
                     ? 'border-black/10 hover:border-[var(--c-dark)] hover:bg-[var(--c-dark)]' 
                     : 'border-white/10 hover:border-[#FAF9F6] hover:bg-[#FAF9F6]'
@@ -183,19 +213,23 @@ export default function Navbar() {
           </div>
 
           <div className="space-y-1">
-            {navLinks.map((link) => (
-              <div key={link.href} className="overflow-hidden">
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "block text-2xl font-black uppercase tracking-tighter italic transition-all duration-300",
-                    pathname === link.href ? "text-[var(--c-primary)]" : "text-white/30"
-                  )}
-                >
-                  {link.name}
-                </Link>
-              </div>
-            ))}
+            {navLinks.map((link) => {
+               const localizedHref = `/${currentLocale}${link.href === '/' ? '' : link.href}`;
+               return (
+                <div key={link.href} className="overflow-hidden">
+                  <Link
+                    href={localizedHref}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "block text-2xl font-black uppercase tracking-tighter italic transition-all duration-300",
+                      pathname === localizedHref ? "text-[var(--c-primary)]" : "text-white/30"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                </div>
+               );
+            })}
           </div>
         </div>
 

@@ -23,7 +23,7 @@ export default function Hero() {
   });
 
   return (
-    <section ref={containerRef} className="shared-section-fit bg-[var(--c-dark)]">
+    <section ref={containerRef} className="relative w-full min-h-screen flex flex-col bg-[var(--c-dark)] overflow-hidden">
       {/* Aesthetic Background Image */}
       <div className="absolute inset-0 z-0">
         <Image 
@@ -33,12 +33,12 @@ export default function Hero() {
           className="object-cover brightness-50 contrast-125"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[var(--c-dark)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[var(--c-dark)]" />
       </div>
 
-      <div className="container-custom h-full flex flex-col justify-between relative z-10 pt-20 lg:pt-32 pb-4 lg:pb-8 overflow-hidden">
+      <div className="container-custom flex-1 flex flex-col justify-center relative z-10 pt-32 md:pt-40 lg:pt-48 pb-10 lg:pb-16 mt-auto mb-auto">
         {/* Main Content Space */}
-        <div className="flex-1 flex flex-col justify-center">
+        <div className="flex-1 flex flex-col justify-center my-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-12 items-center">
             
             {/* Left Column: Text Content */}

@@ -1,3 +1,7 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -9,6 +13,13 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    // Suppress the benign next-intl dynamic import Cache warning in dev console
+    config.infrastructureLogging = {
+      level: 'error',
+    };
+    return config;
+  },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
